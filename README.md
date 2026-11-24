@@ -5,6 +5,7 @@
 [![LangGraph](https://img.shields.io/badge/Agent-LangGraph%200.0.39-FF6F00.svg)](https://langchain.com/)
 [![Streamlit UI](https://img.shields.io/badge/Web%20UI-Streamlit%201.67-FF4B4B.svg?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Hardware](https://img.shields.io/badge/Hardware-RTX%203050%204GB%20VRAM-76B900.svg?logo=nvidia&logoColor=white)](https://nvidia.com/)
+[![Release](https://img.shields.io/badge/Release-v2.0.0-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Hệ thống AI Agent hỗ trợ sinh đề thi và kiểm định tự động môn **Tin học 10 (Chủ đề F – Giải quyết vấn đề với sự trợ giúp của máy tính: Lập trình Python, Bài 16 đến Bài 32)** theo định dạng cấu trúc đề kiểm tra mới (Trắc nghiệm nhiều lựa chọn 0,25đ; Trắc nghiệm Đúng/Sai bậc thang 0,1 – 0,25 – 0,5 – 1,0đ; Trả lời ngắn 0,5đ; Tự luận lập trình 1,0đ). 
@@ -232,6 +233,12 @@ Chỉ cần nhấp đúp tệp **`Start_Share_Web.bat`** (trên Windows) hoặc 
 python launch_public.py
 ```
 Hệ thống sẽ tự động khởi động Streamlit và tạo đường dẫn công khai bảo mật dạng `https://<random-id>.trycloudflare.com` để các thành viên khác có thể truy cập thử nghiệm từ xa trên điện thoại hoặc máy tính khác.
+
+---
+
+## 📝 Nhật Ký Cập Nhật (Changelog)
+
+Toàn bộ lịch sử nâng cấp và ghi chú phát hành qua các phiên bản được lưu trữ chi tiết tại tệp [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
