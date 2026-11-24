@@ -1,0 +1,40 @@
+# ==========================================
+# Git Ignore for NCKH_A.I_Sinhde_Auto Project
+# ==========================================
+
+# Python virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyd
+
+# Large precompiled binaries (auto-downloaded at runtime by launch_public.py)
+tools/cloudflared.exe
+tools/*.part
+*.exe
+
+# Streamlit secrets & local runtime
+.streamlit/secrets.toml
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Temporary files & logs
+~$*
+*.log
+tmp/
+temp/
+
+data_raw/
+*.pdf
+

@@ -1,0 +1,28 @@
+================================================================================
+HƯỚNG DẪN THẢ ĐỀ KIỂM TRA MẪU VÀO THƯ MỤC NÀY
+================================================================================
+
+1. MỤC ĐÍCH:
+   Thư mục `data/sample_exams/` dùng để lưu trữ các tệp đề kiểm tra mẫu, đề tham khảo 
+   hoặc đề thi do giáo viên/người dùng tự biên soạn để hệ thống tự động bóc tách câu hỏi 
+   và nạp vào Ngân hàng câu hỏi (`data/question_bank.json`).
+
+2. CÁC ĐỊNH DẠNG HỖ TRỢ:
+   - Tệp Word (.docx): Đề thi định dạng Word có tiêu đề, các câu hỏi và đáp án.
+   - Tệp JSON (.json): Danh sách câu hỏi hoặc đề thi dạng JSON chuẩn.
+   - Tệp văn bản (.txt) hoặc Markdown (.md): Văn bản thuần chứa câu hỏi theo định dạng.
+
+3. QUY TRÌNH NẠP ĐỀ:
+   Bước 1: Chép (copy) tệp đề kiểm tra mẫu của bạn vào thư mục này:
+           D:\AI_Agent_NCKH\data\sample_exams\
+   Bước 2: Mở giao diện Web (`app_ui.py`) hoặc dòng lệnh.
+   Bước 3: Tại thanh bên (sidebar), nhấn nút "📥 Nạp thêm đề từ thư mục data/sample_exams".
+   Bước 4: Hệ thống sẽ tự động quét, bóc tách câu hỏi theo 4 dạng (MCQ, Đúng/Sai, 
+           Trả lời ngắn, Tự luận Code), loại bỏ các câu trùng lặp và lưu vào Ngân hàng đề.
+
+4. LƯU Ý QUAN TRỌNG:
+   - Các đề mẫu này CHỈ được nạp vào Ngân hàng câu hỏi (`data/question_bank.json`) phục vụ 
+     luyện tập và tham khảo cho học sinh/giáo viên.
+   - Hệ thống TUYỆT ĐỐI KHÔNG nạp các tệp đề này vào Vector Database (`data/chroma_db_v2`), 
+     đảm bảo kho tri thức SGK Tin học 10 luôn sạch và chuẩn xác 100%.
+================================================================================

@@ -1,0 +1,236 @@
+{
+  "thong_tin_chung": {
+    "ten_cau_hinh": "Ma trận đề thi chuẩn Tin học 10 - Chủ đề F (Cấu trúc mới 2025-2026)",
+    "chuong_trinh": "Chương trình GDPT 2018",
+    "bo_sach": "Tin học 10 - Kết nối tri thức với cuộc sống (NXB Giáo dục Việt Nam)",
+    "pham_vi_kien_thuc": {
+      "chu_de": "Chủ đề F: Giải quyết vấn đề với sự trợ giúp của máy tính (Lập trình Python)",
+      "tu_bai": "Bài 16",
+      "den_bai": "Bài 32",
+      "trang_sgk": "87-156"
+    },
+    "thang_diem_tong": 10.0,
+    "nguon_nang_luc": "data_raw/Các thành phần năng lực tin học.pdf"
+  },
+  "cau_truc_va_thang_diem_2025_2026": {
+    "MCQ": {
+      "ten_dang": "Trắc nghiệm nhiều lựa chọn (4 phương án A, B, C, D)",
+      "phan_thi": "Phần I",
+      "diem_moi_cau": 0.25,
+      "quy_tac_cham": "Chọn đúng phương án duy nhất được 0.25 điểm; chọn sai hoặc không chọn được 0 điểm.",
+      "yeu_cau_ky_thuat": [
+        "Đúng 4 phương án A, B, C, D hoàn toàn khác nhau, không trùng lặp.",
+        "Độ dài 4 phương án tương đương nhau, tránh đáp án đúng dài vượt trội.",
+        "Chỉ có duy nhất 1 đáp án đúng; phương án nhiễu dựa trên lỗi sai phổ biến của học sinh."
+      ]
+    },
+    "TRUE_FALSE": {
+      "ten_dang": "Trắc nghiệm Đúng/Sai (mỗi câu gồm 4 ý a, b, c, d)",
+      "phan_thi": "Phần II",
+      "diem_toi_da_moi_cau": 1.0,
+      "thang_diem_bac_thang": {
+        "dung_0_y": 0.0,
+        "dung_1_y": 0.1,
+        "dung_2_y": 0.25,
+        "dung_3_y": 0.5,
+        "dung_4_y": 1.0
+      },
+      "quy_tac_cham": "Chấm điểm theo bậc thang dựa trên số ý trả lời chính xác trong cùng 1 câu hỏi (1 ý: 0.1đ; 2 ý: 0.25đ; 3 ý: 0.5đ; 4 ý: 1.0đ).",
+      "yeu_cau_ky_thuat": [
+        "Gồm 1 ngữ liệu/đoạn mã Python chung và đúng 4 mệnh đề a, b, c, d.",
+        "Phải có cả mệnh đề Đúng và mệnh đề Sai, sắp xếp theo mức độ tư duy tăng dần (NB -> TH -> VD)."
+      ]
+    },
+    "SHORT_ANSWER": {
+      "ten_dang": "Trắc nghiệm Trả lời ngắn",
+      "phan_thi": "Phần III",
+      "diem_moi_cau": 0.5,
+      "quy_tac_cham": "Ghi đúng kết quả ngắn gọn (giá trị số, kết quả in ra của đoạn mã Python hoặc xâu ngắn) được 0.5 điểm.",
+      "yeu_cau_ky_thuat": [
+        "Đáp án ngắn gọn, tường minh, duy nhất (thường là giá trị số hoặc đầu ra chính xác từ đoạn mã Python thực thi được)."
+      ]
+    },
+    "ESSAY_CODE": {
+      "ten_dang": "Tự luận lập trình Python (tùy chọn cho kiểm tra định kì / thực hành)",
+      "phan_thi": "Phần mở rộng (Kiểm tra tại trường)",
+      "diem_moi_cau": 1.0,
+      "quy_tac_cham": "Chấm theo rubric tiêu chí và kiểm thử tự động trong Sandbox Python.",
+      "yeu_cau_ky_thuat": [
+        "Nêu rõ dữ liệu đầu vào cụ thể trong tình huống.",
+        "Đáp án mẫu là mã Python 3 chuẩn cú pháp trong phạm vi Bài 16 - Bài 32 và chạy thành công trong Sandbox."
+      ]
+    }
+  },
+  "muc_do_nhan_thuc": {
+    "NB": {
+      "ten": "Nhận biết",
+      "mo_ta": "Nhận diện khái niệm, cú pháp, từ khoá, kiểu dữ liệu, tên hàm/phương thức cơ bản trong Python theo đúng SGK.",
+      "ti_le_goi_y": 0.4
+    },
+    "TH": {
+      "ten": "Thông hiểu",
+      "mo_ta": "Giải thích hoạt động của câu lệnh, đọc hiểu và dự đoán kết quả chạy của đoạn mã Python, phát hiện lỗi cú pháp/ngoại lệ/lôgic.",
+      "ti_le_goi_y": 0.3
+    },
+    "VD": {
+      "ten": "Vận dụng",
+      "mo_ta": "Sửa lỗi, hoàn thiện hoặc xây dựng đoạn chương trình/hàm Python giải quyết bài toán thực tiễn với dữ liệu danh sách, xâu kí tự, vòng lặp, rẽ nhánh.",
+      "ti_le_goi_y": 0.3
+    }
+  },
+  "chi_bao_nang_luc_NLc": {
+    "ten_thanh_phan": "NLc: Giải quyết vấn đề với sự hỗ trợ của CNTT & TT",
+    "mo_ta_chung": "Biết cách giải quyết vấn đề với sự hỗ trợ của máy tính; Biết được các cấu trúc dữ liệu và các thuật toán cơ bản; Sử dụng được các NNLT bậc cao; Sử dụng được các công cụ kỹ thuật số để hỗ trợ giải quyết vấn đề.",
+    "chi_bao": {
+      "CC1": {
+        "ma": "CC1",
+        "nhom": "Cốt lõi chung (NLc)",
+        "bieu_hien_chuan": "Biết được các cấu trúc dữ liệu cơ bản",
+        "bai_hoc_anh_xa": ["Bài 17", "Bài 18", "Bài 22", "Bài 23", "Bài 24", "Bài 25"],
+        "dang_cau_hoi_phu_hop": ["MCQ", "TRUE_FALSE", "SHORT_ANSWER"]
+      },
+      "CC2": {
+        "ma": "CC2",
+        "nhom": "Cốt lõi chung (NLc)",
+        "bieu_hien_chuan": "Biết các thuật toán sắp xếp và tìm kiếm cơ bản",
+        "bai_hoc_anh_xa": ["Bài 20", "Bài 21", "Bài 23", "Bài 25", "Bài 31", "Bài 32"],
+        "dang_cau_hoi_phu_hop": ["MCQ", "TRUE_FALSE", "SHORT_ANSWER"]
+      },
+      "CC4": {
+        "ma": "CC4",
+        "nhom": "Cốt lõi chung (NLc)",
+        "bieu_hien_chuan": "Viết được chương trình",
+        "bai_hoc_anh_xa": [
+          "Bài 16", "Bài 17", "Bài 18", "Bài 19", "Bài 20", "Bài 21",
+          "Bài 22", "Bài 23", "Bài 24", "Bài 25", "Bài 26", "Bài 27",
+          "Bài 28", "Bài 29", "Bài 30", "Bài 31", "Bài 32"
+        ],
+        "dang_cau_hoi_phu_hop": ["MCQ", "TRUE_FALSE", "SHORT_ANSWER", "ESSAY_CODE"]
+      },
+      "CS1": {
+        "ma": "CS1",
+        "nhom": "Định hướng Khoa học máy tính (CS - NLc)",
+        "bieu_hien_chuan": "Hiểu và vận dụng được các phương pháp làm mịn dần, thiết kế mô đun trong lập trình",
+        "bai_hoc_anh_xa": ["Bài 26", "Bài 27", "Bài 28", "Bài 31", "Bài 32"],
+        "dang_cau_hoi_phu_hop": ["TRUE_FALSE", "SHORT_ANSWER", "ESSAY_CODE"]
+      },
+      "CS2": {
+        "ma": "CS2",
+        "nhom": "Định hướng Khoa học máy tính (CS - NLc)",
+        "bieu_hien_chuan": "Xác định được cấu trúc dữ liệu thích hợp để biểu diễn thông tin, lựa chọn và xây dựng được thuật toán hiệu quả để giải quyết vấn đề",
+        "bai_hoc_anh_xa": ["Bài 22", "Bài 23", "Bài 24", "Bài 25", "Bài 31", "Bài 32"],
+        "dang_cau_hoi_phu_hop": ["TRUE_FALSE", "SHORT_ANSWER", "ESSAY_CODE"]
+      },
+      "CS3": {
+        "ma": "CS3",
+        "nhom": "Định hướng Khoa học máy tính (CS - NLc)",
+        "bieu_hien_chuan": "Sử dụng được ngôn ngữ lập trình bậc cao, qua đó phát triển tư duy điều khiển và tự động hoá",
+        "bai_hoc_anh_xa": [
+          "Bài 16", "Bài 19", "Bài 20", "Bài 21", "Bài 26", "Bài 27",
+          "Bài 28", "Bài 29", "Bài 30", "Bài 31", "Bài 32"
+        ],
+        "dang_cau_hoi_phu_hop": ["MCQ", "TRUE_FALSE", "SHORT_ANSWER", "ESSAY_CODE"]
+      }
+    }
+  },
+  "mau_ma_tran_de_10_diem": {
+    "mo_ta": "Cấu trúc đề kiểm tra chuẩn 10.0 điểm theo định dạng 2025-2026 (100% Chủ đề F - Python lớp 10)",
+    "tong_so_cau": 24,
+    "tong_diem": 10.0,
+    "phan_bo": [
+      {
+        "phan": "Phần I - Trắc nghiệm nhiều lựa chọn (MCQ)",
+        "loai": "MCQ",
+        "so_cau": 16,
+        "diem_moi_cau": 0.25,
+        "tong_diem_phan": 4.0,
+        "phan_bo_muc_do": {"NB": 10, "TH": 6, "VD": 0},
+        "chi_bao_trong_tam": ["CC1", "CC4", "CS3"]
+      },
+      {
+        "phan": "Phần II - Trắc nghiệm Đúng/Sai (4 ý/câu)",
+        "loai": "TRUE_FALSE",
+        "so_cau": 4,
+        "diem_moi_cau": 1.0,
+        "tong_diem_phan": 4.0,
+        "phan_bo_muc_do": {"NB": 4, "TH": 6, "VD": 6},
+        "ghi_chu_muc_do": "Tính theo 16 ý nhỏ (4 câu x 4 ý), chấm điểm bậc thang 0.1 - 0.25 - 0.5 - 1.0đ/câu",
+        "chi_bao_trong_tam": ["CC1", "CC2", "CC4", "CS1", "CS2", "CS3"]
+      },
+      {
+        "phan": "Phần III - Trắc nghiệm Trả lời ngắn",
+        "loai": "SHORT_ANSWER",
+        "so_cau": 4,
+        "diem_moi_cau": 0.5,
+        "tong_diem_phan": 2.0,
+        "phan_bo_muc_do": {"NB": 0, "TH": 1, "VD": 3},
+        "chi_bao_trong_tam": ["CC2", "CC4", "CS1", "CS2", "CS3"]
+      }
+    ]
+  },
+  "presets_ma_tran_10_diem": [
+    {
+      "id": "PRESET_1_15PHUT_GON",
+      "ten_hien_thi": "Đề kiểm tra 15 phút – Chủ đề F",
+      "tieu_de_in": "ĐỀ KIỂM TRA CHỦ ĐỀ F",
+      "thoi_gian": "15 phút",
+      "tong_so_cau": 18,
+      "tong_diem": 10.0,
+      "mo_ta": "8 MCQ (2.0đ) + 3 Đúng/Sai (3.0đ) + 4 Trả lời ngắn (2.0đ) + 3 Tự luận Code (3.0đ), phân bổ đều Bài 16–32 theo NB/TH/VD.",
+      "cau_truc": {"MCQ": 8, "TRUE_FALSE": 3, "SHORT_ANSWER": 4, "ESSAY_CODE": 3},
+      "specs": [
+        {"bai_hoc": "Bài 16", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 17", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 18", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 19", "loai_cau_hoi": "MCQ", "muc_do": "TH"},
+        {"bai_hoc": "Bài 20", "loai_cau_hoi": "MCQ", "muc_do": "TH"},
+        {"bai_hoc": "Bài 22", "loai_cau_hoi": "MCQ", "muc_do": "TH"},
+        {"bai_hoc": "Bài 24", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 29", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 19", "loai_cau_hoi": "TRUE_FALSE", "muc_do": "TH"},
+        {"bai_hoc": "Bài 20", "loai_cau_hoi": "TRUE_FALSE", "muc_do": "TH"},
+        {"bai_hoc": "Bài 26", "loai_cau_hoi": "TRUE_FALSE", "muc_do": "VD"},
+        {"bai_hoc": "Bài 17", "loai_cau_hoi": "SHORT_ANSWER", "muc_do": "TH"},
+        {"bai_hoc": "Bài 21", "loai_cau_hoi": "SHORT_ANSWER", "muc_do": "TH"},
+        {"bai_hoc": "Bài 25", "loai_cau_hoi": "SHORT_ANSWER", "muc_do": "VD"},
+        {"bai_hoc": "Bài 28", "loai_cau_hoi": "SHORT_ANSWER", "muc_do": "VD"},
+        {"bai_hoc": "Bài 22", "loai_cau_hoi": "ESSAY_CODE", "muc_do": "VD"},
+        {"bai_hoc": "Bài 26", "loai_cau_hoi": "ESSAY_CODE", "muc_do": "VD"},
+        {"bai_hoc": "Bài 31", "loai_cau_hoi": "ESSAY_CODE", "muc_do": "VD"}
+      ]
+    },
+    {
+      "id": "PRESET_2_45PHUT_DINH_KY",
+      "ten_hien_thi": "Đề kiểm tra 45 phút định kỳ – Chủ đề F",
+      "tieu_de_in": "ĐỀ KIỂM TRA CHỦ ĐỀ F",
+      "thoi_gian": "45 phút",
+      "tong_so_cau": 21,
+      "tong_diem": 10.0,
+      "mo_ta": "12 MCQ (3.0đ) + 3 Đúng/Sai (3.0đ) + 4 Trả lời ngắn (2.0đ) + 2 Tự luận Code (2.0đ), phủ đều từ Bài 16 đến Bài 32 theo 3 mức NB/TH/VD.",
+      "cau_truc": {"MCQ": 12, "TRUE_FALSE": 3, "SHORT_ANSWER": 4, "ESSAY_CODE": 2},
+      "specs": [
+        {"bai_hoc": "Bài 16", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 17", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 18", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 19", "loai_cau_hoi": "MCQ", "muc_do": "TH"},
+        {"bai_hoc": "Bài 20", "loai_cau_hoi": "MCQ", "muc_do": "TH"},
+        {"bai_hoc": "Bài 21", "loai_cau_hoi": "MCQ", "muc_do": "TH"},
+        {"bai_hoc": "Bài 22", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 23", "loai_cau_hoi": "MCQ", "muc_do": "TH"},
+        {"bai_hoc": "Bài 24", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 25", "loai_cau_hoi": "MCQ", "muc_do": "TH"},
+        {"bai_hoc": "Bài 27", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 29", "loai_cau_hoi": "MCQ", "muc_do": "NB"},
+        {"bai_hoc": "Bài 19", "loai_cau_hoi": "TRUE_FALSE", "muc_do": "TH"},
+        {"bai_hoc": "Bài 22", "loai_cau_hoi": "TRUE_FALSE", "muc_do": "VD"},
+        {"bai_hoc": "Bài 26", "loai_cau_hoi": "TRUE_FALSE", "muc_do": "VD"},
+        {"bai_hoc": "Bài 17", "loai_cau_hoi": "SHORT_ANSWER", "muc_do": "TH"},
+        {"bai_hoc": "Bài 20", "loai_cau_hoi": "SHORT_ANSWER", "muc_do": "VD"},
+        {"bai_hoc": "Bài 28", "loai_cau_hoi": "SHORT_ANSWER", "muc_do": "VD"},
+        {"bai_hoc": "Bài 30", "loai_cau_hoi": "SHORT_ANSWER", "muc_do": "TH"},
+        {"bai_hoc": "Bài 26", "loai_cau_hoi": "ESSAY_CODE", "muc_do": "VD"},
+        {"bai_hoc": "Bài 32", "loai_cau_hoi": "ESSAY_CODE", "muc_do": "VD"}
+      ]
+    }
+  ]
+}

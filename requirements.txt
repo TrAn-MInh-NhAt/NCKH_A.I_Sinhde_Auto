@@ -1,0 +1,37 @@
+# ========================================================
+# NCKH_A.I_Sinhde_Auto: Core Dependencies
+# Neuro-Symbolic Agentic RAG for Exam Generation & Audit
+# ========================================================
+
+# Local LLM & Multi-Agent Framework
+ollama>=0.1.7
+langgraph>=0.0.39
+langchain>=0.1.16
+langchain-community>=0.0.34
+langchain-core>=0.1.50
+langchain-text-splitters>=0.0.1
+
+# Vector Database & Semantic Retrieval
+chromadb>=0.4.24
+
+# Interactive Web Application
+streamlit>=1.35.0
+
+# Document Processing & Academic Export (.docx, .xlsx)
+python-docx>=1.1.0
+openpyxl>=3.1.2
+pandas>=2.0.0
+matplotlib>=3.8.0
+
+# PDF Parsing & Textbook Ingestion
+pymupdf>=1.23.0
+pypdf>=4.0.0
+
+# Networking & Cloud Tunneling
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+gdown>=5.0.0
+
+# Optional API Serving
+fastapi>=0.111.0
+uvicorn>=0.29.0

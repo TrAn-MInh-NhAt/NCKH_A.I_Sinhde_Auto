@@ -1,0 +1,275 @@
+{
+  "ten_ky_thi": "ĐỀ KIỂM TRA CHỦ ĐỀ F",
+  "tong_so_cau": 18,
+  "target_so_cau": 18,
+  "tong_diem": 10.0,
+  "phase1_retrieve_sec": 29.74,
+  "phase2_generate_sec": 294.34,
+  "tong_thoi_gian_sec": 326.15,
+  "backfill_rounds_used": 2,
+  "avg_fuzzy_score": 0.958,
+  "bang_diem_chi_tiet": {
+    "MCQ": {
+      "so_cau": 8,
+      "diem_moi_cau": 0.25,
+      "tong_diem_phan": 2.0
+    },
+    "TRUE_FALSE": {
+      "so_cau": 3,
+      "diem_moi_cau": 1.0,
+      "tong_diem_phan": 3.0
+    },
+    "SHORT_ANSWER": {
+      "so_cau": 4,
+      "diem_moi_cau": 0.5,
+      "tong_diem_phan": 2.0
+    },
+    "ESSAY_CODE": {
+      "so_cau": 3,
+      "diem_moi_cau": 1.0,
+      "tong_diem_phan": 3.0
+    }
+  },
+  "audit": {
+    "all_passed": true,
+    "total_errors": 0,
+    "criteria": {
+      "1_tieu_de_chuan": {
+        "pass": true,
+        "errors": []
+      },
+      "2_du_18_cau_10_diem": {
+        "pass": true,
+        "errors": []
+      },
+      "3_khong_cau_rong": {
+        "pass": true,
+        "errors": []
+      },
+      "4_khong_trung_lap": {
+        "pass": true,
+        "errors": []
+      },
+      "5_khong_sgk_va_1shot": {
+        "pass": true,
+        "errors": []
+      },
+      "6_sandbox_100_khop_stdout": {
+        "pass": true,
+        "code_questions_checked": 9,
+        "code_questions_passed": 9,
+        "errors": []
+      },
+      "7_html_sach_cuon_va_vien": {
+        "pass": true,
+        "errors": []
+      },
+      "8_docx_100_trang_den": {
+        "pass": true,
+        "errors": []
+      }
+    },
+    "docx_full_path": "D:\\AI_Agent_NCKH\\sample_exam_18cau_daydu.docx",
+    "docx_student_path": "D:\\AI_Agent_NCKH\\sample_exam_18cau_hocsinh.docx"
+  },
+  "chi_tiet_18_cau": [
+    {
+      "stt": 1,
+      "bai_hoc": "Bài 16",
+      "loai": "MCQ",
+      "muc_do": "NB",
+      "is_pass": true,
+      "fuzzy": 0.916,
+      "sandbox": false,
+      "retries": 0,
+      "latency_sec": 6.43
+    },
+    {
+      "stt": 2,
+      "bai_hoc": "Bài 17",
+      "loai": "MCQ",
+      "muc_do": "NB",
+      "is_pass": true,
+      "fuzzy": 0.925,
+      "sandbox": false,
+      "retries": 0,
+      "latency_sec": 7.52
+    },
+    {
+      "stt": 3,
+      "bai_hoc": "Bài 18",
+      "loai": "MCQ",
+      "muc_do": "NB",
+      "is_pass": true,
+      "fuzzy": 1.0,
+      "sandbox": false,
+      "retries": 0,
+      "latency_sec": 8.02
+    },
+    {
+      "stt": 4,
+      "bai_hoc": "Bài 19",
+      "loai": "MCQ",
+      "muc_do": "TH",
+      "is_pass": true,
+      "fuzzy": 0.961,
+      "sandbox": false,
+      "retries": 1,
+      "latency_sec": 16.75
+    },
+    {
+      "stt": 5,
+      "bai_hoc": "Bài 20",
+      "loai": "MCQ",
+      "muc_do": "TH",
+      "is_pass": true,
+      "fuzzy": 0.811,
+      "sandbox": false,
+      "retries": 0,
+      "latency_sec": 8.0
+    },
+    {
+      "stt": 6,
+      "bai_hoc": "Bài 22",
+      "loai": "MCQ",
+      "muc_do": "TH",
+      "is_pass": true,
+      "fuzzy": 0.97,
+      "sandbox": false,
+      "retries": 0,
+      "latency_sec": 7.53
+    },
+    {
+      "stt": 7,
+      "bai_hoc": "Bài 29",
+      "loai": "MCQ",
+      "muc_do": "NB",
+      "is_pass": true,
+      "fuzzy": 0.961,
+      "sandbox": false,
+      "retries": 0,
+      "latency_sec": 9.82
+    },
+    {
+      "stt": 8,
+      "bai_hoc": "Bài 19",
+      "loai": "TRUE_FALSE",
+      "muc_do": "TH",
+      "is_pass": true,
+      "fuzzy": 1.0,
+      "sandbox": true,
+      "retries": 0,
+      "latency_sec": 8.39
+    },
+    {
+      "stt": 9,
+      "bai_hoc": "Bài 26",
+      "loai": "TRUE_FALSE",
+      "muc_do": "VD",
+      "is_pass": true,
+      "fuzzy": 1.0,
+      "sandbox": true,
+      "retries": 1,
+      "latency_sec": 18.22
+    },
+    {
+      "stt": 10,
+      "bai_hoc": "Bài 21",
+      "loai": "SHORT_ANSWER",
+      "muc_do": "TH",
+      "is_pass": true,
+      "fuzzy": 1.0,
+      "sandbox": true,
+      "retries": 0,
+      "latency_sec": 6.74
+    },
+    {
+      "stt": 11,
+      "bai_hoc": "Bài 25",
+      "loai": "SHORT_ANSWER",
+      "muc_do": "VD",
+      "is_pass": true,
+      "fuzzy": 0.983,
+      "sandbox": false,
+      "retries": 0,
+      "latency_sec": 9.47
+    },
+    {
+      "stt": 12,
+      "bai_hoc": "Bài 28",
+      "loai": "SHORT_ANSWER",
+      "muc_do": "VD",
+      "is_pass": true,
+      "fuzzy": 1.0,
+      "sandbox": true,
+      "retries": 0,
+      "latency_sec": 7.09
+    },
+    {
+      "stt": 13,
+      "bai_hoc": "Bài 22",
+      "loai": "ESSAY_CODE",
+      "muc_do": "VD",
+      "is_pass": true,
+      "fuzzy": 0.965,
+      "sandbox": true,
+      "retries": 1,
+      "latency_sec": 14.03
+    },
+    {
+      "stt": 14,
+      "bai_hoc": "Bài 17",
+      "loai": "SHORT_ANSWER",
+      "muc_do": "TH",
+      "is_pass": true,
+      "fuzzy": 1.0,
+      "sandbox": true,
+      "retries": 0,
+      "latency_sec": 7.39
+    },
+    {
+      "stt": 15,
+      "bai_hoc": "Bài 26",
+      "loai": "ESSAY_CODE",
+      "muc_do": "VD",
+      "is_pass": true,
+      "fuzzy": 1.0,
+      "sandbox": true,
+      "retries": 0,
+      "latency_sec": 8.39
+    },
+    {
+      "stt": 16,
+      "bai_hoc": "Bài 31",
+      "loai": "ESSAY_CODE",
+      "muc_do": "VD",
+      "is_pass": true,
+      "fuzzy": 0.904,
+      "sandbox": true,
+      "retries": 0,
+      "latency_sec": 8.21
+    },
+    {
+      "stt": 17,
+      "bai_hoc": "Bài 24",
+      "loai": "MCQ",
+      "muc_do": "NB",
+      "is_pass": true,
+      "fuzzy": 0.896,
+      "sandbox": false,
+      "retries": 1,
+      "latency_sec": 14.98
+    },
+    {
+      "stt": 18,
+      "bai_hoc": "Bài 20",
+      "loai": "TRUE_FALSE",
+      "muc_do": "TH",
+      "is_pass": true,
+      "fuzzy": 0.954,
+      "sandbox": true,
+      "retries": 0,
+      "latency_sec": 10.59
+    }
+  ]
+}

@@ -1,0 +1,1592 @@
+{
+  "run_at": "2026-11-18 17:37:18",
+  "summary": [
+    {
+      "Config": "Config_1_LLM_Only",
+      "So_Cau": 12,
+      "Rule_Pass_Rate_%": 50.0,
+      "Dat_Rate_%": 50.0,
+      "Sandbox_Verified_%": 41.7,
+      "Avg_Fuzzy_Score": 0.458,
+      "Avg_SGK_Grounding": 0.418,
+      "Avg_Cognitive": 0.5,
+      "Avg_Distractor": 0.47,
+      "Avg_Retries": 0.0,
+      "Avg_Latency_Sec": 7.1
+    },
+    {
+      "Config": "Config_2_Naive_RAG",
+      "So_Cau": 12,
+      "Rule_Pass_Rate_%": 50.0,
+      "Dat_Rate_%": 50.0,
+      "Sandbox_Verified_%": 41.7,
+      "Avg_Fuzzy_Score": 0.461,
+      "Avg_SGK_Grounding": 0.464,
+      "Avg_Cognitive": 0.473,
+      "Avg_Distractor": 0.444,
+      "Avg_Retries": 0.0,
+      "Avg_Latency_Sec": 6.54
+    },
+    {
+      "Config": "Config_3_RAG_Glossary",
+      "So_Cau": 12,
+      "Rule_Pass_Rate_%": 41.7,
+      "Dat_Rate_%": 41.7,
+      "Sandbox_Verified_%": 75.0,
+      "Avg_Fuzzy_Score": 0.412,
+      "Avg_SGK_Grounding": 0.414,
+      "Avg_Cognitive": 0.406,
+      "Avg_Distractor": 0.417,
+      "Avg_Retries": 0.0,
+      "Avg_Latency_Sec": 6.79
+    },
+    {
+      "Config": "Config_4_Full_Agentic_RAG",
+      "So_Cau": 12,
+      "Rule_Pass_Rate_%": 75.0,
+      "Dat_Rate_%": 75.0,
+      "Sandbox_Verified_%": 83.3,
+      "Avg_Fuzzy_Score": 0.741,
+      "Avg_SGK_Grounding": 0.735,
+      "Avg_Cognitive": 0.739,
+      "Avg_Distractor": 0.75,
+      "Avg_Retries": 1.0,
+      "Avg_Latency_Sec": 11.83
+    }
+  ],
+  "details": [
+    {
+      "Task_ID": "T01",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 17",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "NB",
+      "Rule_Pass": true,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.91,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.775,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 162,
+      "Latency_Sec": 5.39,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Biến là một trong những khái niệm cơ bản nhất trong lập trình, được sử dụng để gán giá trị cho một tên gọi.",
+        "cau_hoi": "Trong Python, bạn có thể tạo biến bằng cách sử dụng lệnh gán (=). Ví dụ: a = 5",
+        "A": "a = 10",
+        "B": "a = 'Hồ Xuân Hương'",
+        "C": "b = True",
+        "D": "c = [1, 2, 3]",
+        "dap_an": "B",
+        "giai_thich": "Đáp án B đúng vì trong lệnh gán (=), bạn có thể đặt tên cho biến và gán giá trị vào đó. Trong ví dụ trên, 'a' là biến được tạo ra với giá trị là số nguyên 10."
+      }
+    },
+    {
+      "Task_ID": "T01",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 17",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "NB",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 568,
+      "Latency_Sec": 5.72,
+      "Ghi_Chu": "Trường 'dap_an' phải là một trong A, B, C, D (hiện tại: 'A, C').",
+      "question_json": {
+        "trich_dan_sgk": "Biến là tên (định danh) của một vùng nhớ dùng để lưu trữ giá trị (dữ liệu) và giá trị đó có thể được thay đổi khi thực hiện chương trình.",
+        "cau_hoi": "Các tên biến nào dưới đây là hợp lệ trong Python?",
+        "A": "Đúng, _name và My_name",
+        "B": "Không đúng, 12abc không phải tên biến hợp lệ",
+        "C": "Không đúng, My country không phải tên biến hợp lệ",
+        "D": "Không đúng, name không phải tên biến hợp lệ",
+        "dap_an": "A, C",
+        "giai_thich": "Tên biến trong Python chỉ gồm các chữ cái tiếng Anh, các chữ số từ 0 đến 9 và kí tự gạch dưới '_'. Không bắt đầu bằng chữ số. Phân biệt chữ hoa và chữ thường."
+      }
+    },
+    {
+      "Task_ID": "T01",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 17",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "NB",
+      "Rule_Pass": false,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1343,
+      "Latency_Sec": 6.48,
+      "Ghi_Chu": "Phương án C và D đang trùng nội dung 'x = 7, y = 3', bắt buộc đổi 1 phương án thành phương án nhiễu khác.",
+      "question_json": {
+        "trich_dan_sgk": "Biến là tên (định danh) của một vùng nhớ dùng để lưu trữ giá trị (dữ liệu) và giá trị đó có thể được thay đổi khi thực hiện chương trình.",
+        "cau_hoi": "Trong lệnh gán, nếu biến chưa được khai báo thì nó sẽ được khởi tạo ngay khi thực hiện lệnh gán. Ví dụ: \n x = 5\n y = x + 2\n Gibt kết quả gì?",
+        "A": "x = 7",
+        "B": "y = 3",
+        "C": "x = 7, y = 3",
+        "D": "x = 7, y = 3",
+        "dap_an": "B",
+        "giai_thich": "Vì trong lệnh gán x = x + 2, giá trị của x được tính trước đó là 5. Do đó, kết quả sẽ là y = 5 + 2 = 7."
+      }
+    },
+    {
+      "Task_ID": "T01",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 17",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "NB",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1343,
+      "Latency_Sec": 5.27,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Biến là tên (định danh) của một vùng nhớ dùng để lưu trữ giá trị (dữ liệu) và giá trị đó có thể được thay đổi khi thực hiện chương trình.",
+        "cau_hoi": "Trong lệnh gán, nếu biến chưa tồn tại thì biến sẽ được khởi tạo ngay khi thực hiện lệnh gán. Ví dụ: \n x = 7\n if x % 2 == 0:\n     print('Chan')\n else:\n     print('Le')\nKết quả in ra là gì?",
+        "A": "Le",
+        "B": "Chan",
+        "C": "x=7",
+        "D": "x%2==1",
+        "dap_an": "B",
+        "giai_thich": "Vì x chưa được khởi tạo trước khi thực hiện lệnh gán, nên chạy nhánh else in ra Le."
+      }
+    },
+    {
+      "Task_ID": "T02",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 19",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.901,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.85,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 0.87,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 160,
+      "Latency_Sec": 8.42,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Câu hỏi này được lấy từ câu hỏi trong bài học về Câu lệnh rẽ nhánh if-else và biểu thức lôgic.",
+        "cau_hoi": {
+          "noi_dung_cau_hoi": "Viết chương trình Python để kiểm tra xem một số đã đủ tuổi đi lái xe hay chưa. Nếu người đó đã đủ tuổi thì in ra thông báo người đó có thể đi lái xe, nếu không thì in ra thông báo người đó chưa đủ tuổi.",
+          "don_gian_moa": {
+            "don_dau": "{tuoi}",
+            "trich_dan": ";",
+            "don_ket_thuc": "}"
+          },
+          "danh_sach_don_gia": [
+            "int"
+          ]
+        },
+        "A": "if tuoi >=18: print('Bạn đã đủ tuổi đi lái xe') else: print('Bạn chưa đủ tuổi đi lái xe')",
+        "B": "tuoi = int(input()) if tuoi >= 18 then print('Bạn đã đủ tuổi đi lái xe') else print('Bạn chưa đủ tuổi đi lái xe')",
+        "C": "if (tuoi >= 18) { print('Bạn đã đủ tuổi đi lái xe'); } else { print('Bạn chưa đủ tuổi đi lái xe'); }",
+        "D": "print('Bạn đã đủ tuổi đi lái xe' if tuoi >= 18 else 'Bạn chưa đủ tuổi đi lái xe')",
+        "dap_an": "A",
+        "giai_thich": "Đáp án A là đúng vì nó sử dụng cú pháp if-else phù hợp trong Python. Câu lệnh rẽ nhánh if-else được sử dụng để kiểm tra một điều kiện và thực hiện hành động khác nhau dựa trên kết quả của điều đó."
+      }
+    },
+    {
+      "Task_ID": "T02",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 19",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "TH",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 532,
+      "Latency_Sec": 4.92,
+      "Ghi_Chu": "Thiếu giải thích ('giai_thich') rõ ràng cho đáp án MCQ.",
+      "question_json": {
+        "trich_dan_sgk": "Biểu thức lôgic là biểu thức chỉ nhận giá trị True hoặc False. Giá trị các biểu thức lôgic thuộc kiểu bool.",
+        "cau_hoi": "Mỗi biểu thức sau có giá trị True hay False?",
+        "A": "a) 100%4 == 0: False",
+        "B": "b) 111//5 != 20 or 20%3 != 0: True",
+        "C": "c) a = not b sẽ nhận giá trị sai nếu b là đúng: False",
+        "D": "d) 100 < 50: False",
+        "dap_an": "B"
+      }
+    },
+    {
+      "Task_ID": "T02",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 19",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "TH",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1286,
+      "Latency_Sec": 5.47,
+      "Ghi_Chu": "Phương án A và B đang trùng nội dung 'Le', bắt buộc đổi 1 phương án thành phương án nhiễu khác.; Mã Python chạy lỗi trên Sandbox (LỖI THỰC THI (RUNTIME ERROR)): Traceback (most rec",
+      "question_json": {
+        "trich_dan_sgk": "Biểu thức nào sau đây có thể đưa vào vị trí <điều kiện> trong lệnh:",
+        "cau_hoi": "Cho đoạn lệnh Python:\nif x % 2 == 0:\n    print('Chan')\nelse:\n    print('Le')\nKết quả in ra là gì?",
+        "A": "Le",
+        "B": "Le",
+        "C": "7",
+        "D": "0",
+        "dap_an": "A",
+        "giai_thich": "Vì 7 % 2 == 1 (sai điều kiện if) nên chạy nhánh else in ra Le."
+      }
+    },
+    {
+      "Task_ID": "T02",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 19",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "TH",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 3,
+      "Prompt_Tokens": 1376,
+      "Latency_Sec": 25.5,
+      "Ghi_Chu": "Độ dài 4 phương án A, B, C, D chênh lệch quá lớn (ngắn nhất 1 ký tự, dài nhất 42 ký tự). Hãy viết lại 4 phương án có độ dài tương đương.; Mã Python chạy lỗi trên Sandbox (LỖI THỰC ",
+      "question_json": {
+        "trich_dan_sgk": "Biểu thức nào sau đây có thể đưa vào vị trí <điều kiện> trong lệnh:",
+        "cau_hoi": "Cho đoạn lệnh Python:\nif x % 2 == 0:\n    print('Chan')\nelse:\n    print('Le')\nKết quả in ra là gì?",
+        "A": "Le",
+        "B": "Chan",
+        "C": "x = 7\nprint(x) if x % 2 == 0 else print(3)",
+        "D": "0",
+        "dap_an": "B",
+        "giai_thich": "Vì 7 % 2 == 1 (sai điều kiện if) nên chạy nhánh else in ra Le."
+      }
+    },
+    {
+      "Task_ID": "T03",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.932,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.831,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 163,
+      "Latency_Sec": 6.11,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Khởi tạo danh sách list bằng cách gán giá trị cho biến list.",
+        "cau_hoi": "Danh sách số học của bạn được khởi tạo như sau: \n numbers = [1, 2, 3] \n Bạn có thể thêm số mới vào danh sách này bằng phương thức append() không?",
+        "A": "Không",
+        "B": "Có",
+        "C": "Không cần",
+        "D": "Đúng",
+        "dap_an": "D",
+        "giai_thich": "Vì trong Python, bạn có thể sử dụng phương thức append() để thêm một phần tử vào cuối danh sách list. Ví dụ: \n numbers.append(4) \n Sau khi thực hiện, danh sách sẽ được cập nhật như sau: [1, 2, 3, 4]"
+      }
+    },
+    {
+      "Task_ID": "T03",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.88,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 0.85,
+      "Distractor_Score": 0.75,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 568,
+      "Latency_Sec": 5.84,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Khởi tạo danh sách list bằng cách gõ tên biến sau dấu . và gọi phương thức append() để thêm phần tử vào cuối danh sách",
+        "cau_hoi": "Khi nào độ dài của danh sách sẽ thay đổi khi sử dụng lệnh append()?",
+        "A": "Độ dài của danh sách không thay đổi",
+        "B": "Độ dài của danh sách tăng lên bằng số lượng phần tử được thêm vào",
+        "C": "Độ dài của danh sách giảm xuống bằng số lượng phần tử bị xóa khỏi danh sách",
+        "D": "Độ dài của danh sách không thay đổi, chỉ khi có phần tử mới được thêm vào hoặc phần tử cũ bị xóa",
+        "dap_an": "B",
+        "giai_thich": "Độ dài của danh sách tăng lên bằng số lượng phần tử được thêm vào"
+      }
+    },
+    {
+      "Task_ID": "T03",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1269,
+      "Latency_Sec": 6.2,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Biết được kiểu dữ liệu danh sách (list), cách khởi tạo và truy cập từng phần tử của danh sách.",
+        "cau_hoi": "Cho đoạn lệnh Python:\nA = [1,2,3]\nB = A[0] + 5\nC = B * 2\nD = C - 10\nKết quả in ra là gì?",
+        "A": "15",
+        "B": "20",
+        "C": "30",
+        "D": "40",
+        "dap_an": "A",
+        "giai_thich": "Vì A = [1,2,3], B = A[0] + 5 = 6, C = B * 2 = 12, D = C - 10 = 2. Suy ra đáp án đúng là A."
+      }
+    },
+    {
+      "Task_ID": "T03",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1269,
+      "Latency_Sec": 5.13,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Biết được kiểu dữ liệu danh sách (list), cách khởi tạo và truy cập từng phần tử của danh sách.",
+        "cau_hoi": "Cho đoạn lệnh Python:\nA = [1, 2, 3]\nB = A[0] + 5\nC = B * 2\nD = C - 10\nKết quả in ra là gì?",
+        "A": "15",
+        "B": "20",
+        "C": "30",
+        "D": "25",
+        "dap_an": "B",
+        "giai_thich": "Vì B = A[0] + 5, và A[0] = 1 nên B = 6. Sau đó C = B * 2 => C = 12. Cuối cùng D = C - 10 => D = 2."
+      }
+    },
+    {
+      "Task_ID": "T04",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "NB",
+      "Rule_Pass": true,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.885,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.809,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 0.87,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 162,
+      "Latency_Sec": 6.67,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Hàm là một phần của chương trình máy tính được viết bằng ngôn ngữ lập trình và có chức năng thực hiện các nhiệm vụ nhất định.",
+        "cau_hoi": "Viết lại hàm `x = a + b` theo cách sử dụng từ khóa `def` để tạo ra một hàm mới, sau đó gọi hàm này với giá trị của biến `a` và `b`.",
+        "A": "def cong(a,b): return a+b; x=cong(2,3); print(x)",
+        "B": "def cong(a,b): return a-b; x=cong(2,3); print(x)",
+        "C": "def cong(a,b): return a*b; x=cong(2,3); print(x)",
+        "D": "def cong(a,b): return a/b; x=cong(2,3); print(x)",
+        "dap_an": "A",
+        "giai_thich": "Đáp án A đúng vì trong hàm `cong` ta thực hiện phép cộng giữa hai số `a` và `b`, do đó khi gọi hàm này với giá trị của biến `a` và `b` sẽ trả về kết quả là tổng của chúng."
+      }
+    },
+    {
+      "Task_ID": "T04",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "NB",
+      "Rule_Pass": true,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.941,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.928,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 0.9,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 493,
+      "Latency_Sec": 7.24,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Sử dụng hàm prime để kiểm tra số nguyên tố",
+        "cau_hoi": "Kế hoạch lập trình: Dùng hàm inc() để tính tổng các số tự nhiên từ 1 đến n, sau đó dùng hàm thong_bao() để trả lại kết quả theo định dạng JSON.",
+        "A": "Sử dụng vòng for để lặp qua các số tự nhiên từ 1 đến n và cộng vào tổng",
+        "B": "Dùng hàm sum() để tính tổng các số tự nhiên từ 1 đến n, sau đó dùng hàm thong_bao() để trả lại kết quả theo định dạng JSON.",
+        "C": "Sử dụng hàm inc() để tính tổng các số tự nhiên từ 1 đến n và trả lại kết quả theo định dạng JSON",
+        "D": "Sử dụng hàm sum() để tính tổng các số tự nhiên từ 1 đến n, sau đó dùng hàm thong_bao() để tính tổng các số nguyên tố từ 2 đến n",
+        "dap_an": "C",
+        "giai_thich": "Vì sử dụng hàm inc() để tính tổng các số tự nhiên từ 1 đến n và sau đó dùng hàm thong_bao() để trả lại kết quả theo định dạng JSON, giúp tránh việc lặp qua các số nguyên tố một cách chính xác."
+      }
+    },
+    {
+      "Task_ID": "T04",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "NB",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1228,
+      "Latency_Sec": 6.82,
+      "Ghi_Chu": "Phương án A và B đang trùng nội dung 'Le', bắt buộc đổi 1 phương án thành phương án nhiễu khác.; Mã Python chạy lỗi trên Sandbox (LỖI THỰC THI (RUNTIME ERROR)): Traceback (most rec",
+      "question_json": {
+        "trich_dan_sgk": "Hàm trong Python được định nghĩa bằng từ khoá def, theo sau là tên",
+        "cau_hoi": "Cho đoạn lệnh Python:\nif x % 2 == 0:\n    print('Chan')\nelse:\n    print('Le')\nKết quả in ra là gì?",
+        "A": "Le",
+        "B": "Le",
+        "C": "7",
+        "D": "0",
+        "dap_an": "B",
+        "giai_thich": "Vì 7 % 2 == 1 (sai điều kiện if) nên chạy nhánh else in ra Le."
+      }
+    },
+    {
+      "Task_ID": "T04",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "MCQ",
+      "Muc_Do": "NB",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 3,
+      "Prompt_Tokens": 1323,
+      "Latency_Sec": 18.35,
+      "Ghi_Chu": "Phương án A và B đang trùng nội dung 'Le', bắt buộc đổi 1 phương án thành phương án nhiễu khác.; Mã Python chạy lỗi trên Sandbox (LỖI THỰC THI (RUNTIME ERROR)): Traceback (most rec",
+      "question_json": {
+        "trich_dan_sgk": "Hàm trong Python được định nghĩa bằng từ khoá def, theo sau là tên",
+        "cau_hoi": "Cho đoạn lệnh Python:\nif x % 2 == 0:\n    print('Chan')\nelse:\n    print('Le')\nKết quả in ra là gì?",
+        "A": "Le",
+        "B": "Le",
+        "C": "7",
+        "D": "0",
+        "dap_an": "A",
+        "giai_thich": "Vì 7 % 2 == 1 (sai điều kiện if) nên chạy nhánh else in ra Le."
+      }
+    },
+    {
+      "Task_ID": "T05",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 19",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "TH",
+      "Rule_Pass": false,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 224,
+      "Latency_Sec": 9.59,
+      "Ghi_Chu": "Trường 'trich_dan_sgk' không khớp từ vựng bằng chứng SGK (chỉ đạt 31%, cần >= 45%). Hãy sao chép chính xác 1 trong các câu nguyên văn SGK sau vào 'trich_dan_sgk': \"Để xử lí các tìn",
+      "question_json": {
+        "trich_dan_sgk": "Câu hỏi này được xây dựng dựa trên nội dung chương trình Tin học 10 (Python) theo SGK Kết nối tri thức với cuộc sống",
+        "cau_hoi_chung": "Cho đoạn chương trình Python sau:\n\nx = 5\ny = 3\nif x > y:\n    print('x lớn hơn y')\nelse:\n    print('x nhỏ hơn hoặc bằng y')",
+        "a": {
+          "menh_de": "Nhận định a: Câu lệnh if-else sẽ in ra thông tin về so sánh giá trị của hai biến x và y",
+          "dap_an": "Đúng",
+          "giai_thich": "Câu lệnh if-else sẽ kiểm tra giá trị của x và y, nếu x lớn hơn y thì sẽ in ra thông tin 'x lớn hơn y', nếu không thì sẽ in ra thông tin 'x nhỏ hơn hoặc bằng y'"
+        },
+        "b": {
+          "menh_de": "Nhận định b: Câu lệnh if-else sẽ luôn in ra thông tin về so sánh giá trị của hai biến x và y",
+          "dap_an": "Sai",
+          "giai_thich": "Câu lệnh if-else chỉ kiểm tra giá trị của x và y, không phải luôn in ra thông tin đó"
+        },
+        "c": {
+          "menh_de": "Nhận định c: Câu lệnh if-else sẽ không thực thi nếu có lỗi trong câu lệnh if",
+          "dap_an": "Đúng",
+          "giai_thich": "Câu lệnh if-else chỉ thực thi khi có giá trị hợp lệ cho biến kiểm soát, nếu có lỗi thì nó sẽ không được thực thi"
+        },
+        "d": {
+          "menh_de": "Nhận định d: Câu lệnh if-else sẽ luôn in ra thông tin về so sánh giá trị của hai biến x và y ngay cả khi chúng là số nguyên",
+          "dap_an": "Sai",
+          "giai_thich": "Câu lệnh if-else chỉ kiểm tra giá trị của x và y, không phải luôn in ra thông tin đó"
+        }
+      }
+    },
+    {
+      "Task_ID": "T05",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 19",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "TH",
+      "Rule_Pass": false,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 515,
+      "Latency_Sec": 8.29,
+      "Ghi_Chu": "4 mệnh đề Đúng/Sai phải có đủ cả nhận định Đúng và nhận định Sai (không được toàn Đúng hoặc toàn Sai).; Các mệnh đề a, b, c, d có nội dung bị trùng lặp.",
+      "question_json": {
+        "trich_dan_sgk": "Câu lệnh rẽ nhánh được thực hiện khi điều kiện sai.",
+        "cau_hoi_chung": "Cho đoạn chương trình Python sau:\nfor i in range(1,10):\n    if i % 2 == 0:\n        print(i)\n",
+        "a": {
+          "menh_de": "Câu lệnh rẽ nhánh được thực hiện khi điều kiện luôn đúng",
+          "dap_an": "Sai",
+          "giai_thich": "Câu lệnh rẽ nhánh được thực hiện khi điều kiện sai"
+        },
+        "b": {
+          "menh_de": "Câu lệnh rẽ nhánh không được sử dụng trong vòng lặp for",
+          "dap_an": "Sai",
+          "giai_thich": "Câu lệnh rẽ nhánh được thực hiện khi điều kiện sai, và nó có thể được sử dụng trong vòng lặp for"
+        },
+        "c": {
+          "menh_de": "Câu lệnh rẽ nhánh không được sử dụng trong vòng lặp while",
+          "dap_an": "Sai",
+          "giai_thich": "Câu lệnh rẽ nhánh được thực hiện khi điều kiện sai, và nó có thể được sử dụng trong vòng lặp for hoặc while"
+        },
+        "d": {
+          "menh_de": "Câu lệnh rẽ nhánh được thực hiện khi điều kiện luôn đúng",
+          "dap_an": "Sai",
+          "giai_thich": "Câu lệnh rẽ nhánh được thực hiện khi điều kiện sai"
+        }
+      }
+    },
+    {
+      "Task_ID": "T05",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 19",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1459,
+      "Latency_Sec": 7.97,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Để xử lí các tình huống rẽ nhánh, giống như các",
+        "cau_hoi_chung": "Cho đoạn chương trình Python:\ns = 0\nfor i in range(1, 5):\n    s = s + i\nprint(s)\nXét các phát biểu sau:",
+        "a": {
+          "menh_de": "Vòng lặp for thực hiện đúng 4 lần.",
+          "dap_an": "Đúng",
+          "giai_thich": "Vùng giá trị có 4 số nên chỉ lặp 4 lần."
+        },
+        "b": {
+          "menh_de": "Biến s thuộc kiểu xâu kí tự str.",
+          "dap_an": "Sai",
+          "giai_thich": "s gán bằng 0 và cộng số nguyên nên thuộc kiểu int."
+        },
+        "c": {
+          "menh_de": "Kết quả in ra màn hình là 10.",
+          "dap_an": "Đúng",
+          "giai_thich": "Tổng s = 0 + 1 + 2 + 3 + 4 = 10."
+        },
+        "d": {
+          "menh_de": "Lệnh if không được sử dụng trong vòng lặp for.",
+          "dap_an": "Sai",
+          "giai_thich": "Vòng lặp for thực hiện đúng 5 lần, nên lệnh if cũng cần được sử dụng."
+        }
+      }
+    },
+    {
+      "Task_ID": "T05",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 19",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1459,
+      "Latency_Sec": 6.78,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Để xử lí các tình huống rẽ nhánh, giống như các",
+        "cau_hoi_chung": "Cho đoạn chương trình Python:\ns = 0\nfor i in range(1, 5):\n    s = s + i\nprint(s)\nXét các phát biểu sau:",
+        "a": {
+          "menh_de": "Vòng lặp for thực hiện đúng 4 lần.",
+          "dap_an": "Đúng",
+          "giai_thich": "Vùng giá trị có 4 số nên chỉ lặp 4 lần."
+        },
+        "b": {
+          "menh_de": "Biến s thuộc kiểu xâu kí tự str.",
+          "dap_an": "Sai",
+          "giai_thich": "s gán bằng 0 và cộng số nguyên nên thuộc kiểu int."
+        },
+        "c": {
+          "menh_de": "Kết quả in ra màn hình là 10.",
+          "dap_an": "Đúng",
+          "giai_thich": "Tổng s = 0 + 1 + 2 + 3 + 4 = 10."
+        },
+        "d": {
+          "menh_de": "Lệnh if không được sử dụng trong vòng lặp for.",
+          "dap_an": "Sai",
+          "giai_thich": "Lệnh if được sử dụng để rẽ nhánh trong Python, nhưng trong vòng lặp for nó chỉ thực hiện một lần."
+        }
+      }
+    },
+    {
+      "Task_ID": "T06",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 20",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.904,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.835,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 0.9,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 223,
+      "Latency_Sec": 8.42,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Câu hỏi này yêu cầu học sinh hiểu và giải thích về cách sử dụng hàm range trong vòng lặp for để tạo ra danh sách các số tự nhiên từ 1 đến n.",
+        "cau_hoi_chung": "Cho đoạn chương trình Python sau:\nfor i in range(5):\n    print(i)\nXét phát biểu sau:",
+        "a": {
+          "menh_de": "Hàm range được sử dụng để tạo ra một danh sách các số tự nhiên từ 1 đến n",
+          "dap_an": "Đúng",
+          "giai_thich": "Hàm range() nhận một tham số là số nguyên n, và trả lại một đối tượng có thể được sử dụng trong vòng lặp for."
+        },
+        "b": {
+          "menh_de": "Vòng lặp for không cần phải kiểm tra trước khi thực hiện",
+          "dap_an": "Sai",
+          "giai_thich": "Học sinh nên hiểu rằng vòng lặp for chỉ thực thi mã trong ngoặc in nếu có giá trị cho biến được sử dụng."
+        },
+        "c": {
+          "menh_de": "Câu lệnh print() không cần phải kiểm tra trước khi thực hiện",
+          "dap_an": "Đúng",
+          "giai_thich": "Câu lệnh print(i) chỉ thực thi mã trong ngoặc in nếu có giá trị cho biến i."
+        },
+        "d": {
+          "menh_de": "Hàm range() không thể được sử dụng để tạo ra danh sách các số nguyên âm",
+          "dap_an": "Sai",
+          "giai_thich": "Hàm range() nhận một tham số là số nguyên n, và trả lại một đối tượng có thể được sử dụng trong vòng lặp for."
+        }
+      }
+    },
+    {
+      "Task_ID": "T06",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 20",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "TH",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 559,
+      "Latency_Sec": 7.94,
+      "Ghi_Chu": "Mệnh đề 'a' và 'b' quá giống nhau, chưa đảm bảo tính độc lập.; Mệnh đề 'a' và 'c' quá giống nhau, chưa đảm bảo tính độc lập.; Mệnh đề 'a' và 'd' quá giống nhau, chưa đảm bảo tính đ",
+      "question_json": {
+        "trich_dan_sgk": "Câu trả lời đúng là C0 đến n-1",
+        "cau_hoi_chung": "Cho đoạn chương trình Python sau:\nfor i in range(n):\n    print(i)\nXét phát biểu sau: \nA. Hàm range() khởi tạo dãy số nguyên từ 0 đến n - 1.\nB. Hàm range() khởi tạo dãy số nguyên từ 0 đến n\nC. Hàm range() khởi tạo dãy số nguyên từ 1 đến n-1.\nD. Hàm range() khởi tạo dãy số nguyên từ 1 đến n",
+        "a": {
+          "menh_de": "Nhận định a",
+          "dap_an": "Sai",
+          "giai_thich": "Giải thích a"
+        },
+        "b": {
+          "menh_de": "Nhận định b",
+          "dap_an": "Đúng",
+          "giai_thich": "Giải thích b: Hàm range() khởi tạo dãy số nguyên từ 0 đến n-1."
+        },
+        "c": {
+          "menh_de": "Nhận định c",
+          "dap_an": "Sai",
+          "giai_thich": "Giải thích c"
+        },
+        "d": {
+          "menh_de": "Nhận định d",
+          "dap_an": "Đúng",
+          "giai_thich": "Giải thích d: Hàm range() khởi tạo dãy số nguyên từ 1 đến n-1."
+        }
+      }
+    },
+    {
+      "Task_ID": "T06",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 20",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "TH",
+      "Rule_Pass": false,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1479,
+      "Latency_Sec": 7.81,
+      "Ghi_Chu": "Thiếu đối tượng mệnh đề 'b' trong câu hỏi Đúng/Sai.; Thiếu đối tượng mệnh đề 'c' trong câu hỏi Đúng/Sai.; Thiếu đối tượng mệnh đề 'd' trong câu hỏi Đúng/Sai.",
+      "question_json": {
+        "trich_dan_sgk": "Biến s thuộc kiểu xâu kí tự str.",
+        "cau_hoi_chung": "Cho đoạn chương trình Python:\ns = 0\nfor i in range(1, 5):\n    s = s + i\nprint(s)\nXét các phát biểu sau:",
+        "a": {
+          "menh_de": "Biến s gán bằng số nguyên nên thuộc kiểu int.",
+          "dap_an": "Đúng",
+          "giai_thich": "s được gán giá trị là tổng các số tự nhiên chẵn nhỏ hơn n, với n cho trước (n = 10). S = 0 for k in range(n): if k%2 == 0: s = s + k print(s) \nS = 0 for i in range(1, 5):\n    s = s + i\nprint(s)\n",
+          "b": {
+            "menh_de": "Biến s thuộc kiểu xâu kí tự str.",
+            "dap_an": "Đúng",
+            "giai_thich": "s gán bằng số nguyên nên thuộc kiểu int."
+          }
+        }
+      }
+    },
+    {
+      "Task_ID": "T06",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 20",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.926,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.814,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1479,
+      "Latency_Sec": 6.44,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Biến s thuộc kiểu xâu kí tự str.",
+        "cau_hoi_chung": "Cho đoạn chương trình Python:\ns = 0\nfor i in range(1, 5):\n    s = s + i\nprint(s)\nXét các phát biểu sau:",
+        "a": {
+          "menh_de": "Biến s được gán giá trị số nguyên.",
+          "dap_an": "Đúng",
+          "giai_thich": "s = s + i là phép cộng số nguyên."
+        },
+        "b": {
+          "menh_de": "Vòng lặp for thực hiện đúng 5 lần.",
+          "dap_an": "Sai",
+          "giai_thich": "Vùng giá trị có 4 số nên chỉ lặp 4 lần."
+        },
+        "c": {
+          "menh_de": "Kết quả in ra màn hình là 10.",
+          "dap_an": "Đúng",
+          "giai_thich": "Tổng s = 0 + 1 + 2 + 3 + 4 = 10."
+        },
+        "d": {
+          "menh_de": "Biến s thuộc kiểu xâu kí tự str.",
+          "dap_an": "Sai",
+          "giai_thich": "s gán bằng 0 và cộng số nguyên nên thuộc kiểu int."
+        }
+      }
+    },
+    {
+      "Task_ID": "T07",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 222,
+      "Latency_Sec": 8.99,
+      "Ghi_Chu": "Trường 'trich_dan_sgk' không khớp từ vựng bằng chứng SGK (chỉ đạt 33%, cần >= 45%). Hãy sao chép chính xác 1 trong các câu nguyên văn SGK sau vào 'trich_dan_sgk': \"Tuy nhiên, khi e",
+      "question_json": {
+        "trich_dan_sgk": "Câu hỏi này được soạn ra để kiểm tra khả năng hiểu và xử lý danh sách list trong Python",
+        "cau_hoi_chung": "Cho đoạn chương trình Python sau:\n\nlist_sach = ['Toàn Thắng', 'Nguyễn Quốc Hiển', 'Võ Hoàng Giang']\nfor i in range(len(list_sach)):\n    if list_sach[i] == 'Toàn Thắng':\n        print('Sách được tìm thấy')",
+        "a": {
+          "menh_de": "Câu hỏi có thể xác định được phần tử trong danh sách",
+          "dap_an": "Đúng",
+          "giai_thich": "Bằng cách sử dụng vòng lặp for và điều kiện if, người dùng có thể xác định được phần tử 'Toàn Thắng' trong danh sách"
+        },
+        "b": {
+          "menh_de": "Câu hỏi không kiểm tra xem list_sach là rỗng hay không",
+          "dap_an": "Sai",
+          "giai_thich": "Trước khi thực hiện vòng lặp for, người dùng nên kiểm tra xem danh sách list_sach có phần tử 'Toàn Thắng' hay không để tránh lỗi"
+        },
+        "c": {
+          "menh_de": "Câu hỏi không kiểm tra xem phần tử được tìm thấy có đúng không",
+          "dap_an": "Sai",
+          "giai_thich": "Sau khi xác định được phần tử 'Toàn Thắng', người dùng nên kiểm tra xem nó có đúng với thông tin thực tế hay không"
+        },
+        "d": {
+          "menh_de": "Câu hỏi không sử dụng biến cục bộ hoặc toàn cục để lưu kết quả",
+          "dap_an": "Sai",
+          "giai_thich": "Người dùng nên sử dụng biến cục bộ (ví dụ: result) để lưu kết quả và sau đó trả về giá trị đó"
+        }
+      }
+    },
+    {
+      "Task_ID": "T07",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "VD",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.884,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.893,
+      "Cognitive_Score": 0.825,
+      "Distractor_Score": 0.93,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 594,
+      "Latency_Sec": 8.56,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Danh sách là một kiểu dữ liệu trong Python được sử dụng để lưu trữ các phần tử có cùng loại.",
+        "cau_hoi_chung": "Cho đoạn chương trình Python sau:\nA = [1,2,3,4,5]\nB = [1.5, 2, \"Python\", \"List\", 0]\nXét phát biểu sau:",
+        "a": {
+          "menh_de": "Danh sách được khởi tạo bằng cách sử dụng dấu ngoặc nhọn []",
+          "dap_an": "Đúng",
+          "giai_thich": "Ví dụ: A = [1,2,3,4,5]"
+        },
+        "b": {
+          "menh_de": "Phần tử trong danh sách có thể được truy cập bằng cách sử dụng chỉ số",
+          "dap_an": "Đúng",
+          "giai_thich": "Ví dụ: A[0]"
+        },
+        "c": {
+          "menh_de": "Phần tử trong danh sách có thể được thay đổi bằng cách sử dụng dấu =",
+          "dap_an": "Sai",
+          "giai_thich": "Thay đổi phần tử trong danh sách không được phép, nhưng chúng ta có thể thêm hoặc xóa phần tử"
+        },
+        "d": {
+          "menh_de": "Phần tử trong danh sách có thể được xoá bằng cách sử dụng phương thức del()",
+          "dap_an": "Đúng",
+          "giai_thich": "Ví dụ: del A[0]"
+        }
+      }
+    },
+    {
+      "Task_ID": "T07",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1480,
+      "Latency_Sec": 8.31,
+      "Ghi_Chu": "Các mệnh đề a, b, c, d có nội dung bị trùng lặp.",
+      "question_json": {
+        "trich_dan_sgk": "Danh sách trong Python được khởi tạo như sau: <tên list> = [<v1>, <v2>,..., <vn>]",
+        "cau_hoi_chung": "Cho đoạn chương trình Python:\ns = 0\nfor i in range(1, 5):\n    s = s + i\nprint(s)\nXét các phát biểu sau:",
+        "a": {
+          "menh_de": "Vòng lặp for thực hiện đúng số lần.",
+          "dap_an": "Đúng",
+          "giai_thich": "Vùng giá trị có 4 số nên chỉ lặp 4 lần."
+        },
+        "b": {
+          "menh_de": "Kết quả in ra màn hình là 10.",
+          "dap_an": "Sai",
+          "giai_thich": "Tổng s = 0 + 1 + 2 + 3 + 4 = 10."
+        },
+        "c": {
+          "menh_de": "Biến s thuộc kiểu xâu kí tự str.",
+          "dap_an": "Sai",
+          "giai_thich": "s gán bằng 0 và cộng số nguyên nên thuộc kiểu int."
+        },
+        "d": {
+          "menh_de": "Vòng lặp for thực hiện đúng số lần.",
+          "dap_an": "Đúng",
+          "giai_thich": "Vùng giá trị có 4 số nên chỉ lặp 4 lần."
+        }
+      }
+    },
+    {
+      "Task_ID": "T07",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "VD",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1480,
+      "Latency_Sec": 7.38,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Danh sách trong Python được khởi tạo như sau: <tên list> = [<v1>, <v2>,..., <vn>]",
+        "cau_hoi_chung": "Cho đoạn chương trình Python:\ns = 0\nfor i in range(1, 5):\n    s = s + i\nprint(s)\nXét các phát biểu sau:",
+        "a": {
+          "menh_de": "Vòng lặp for thực hiện đúng số lần.",
+          "dap_an": "Đúng",
+          "giai_thich": "Vùng giá trị có số phần tử nên chỉ lặp số lần."
+        },
+        "b": {
+          "menh_de": "Kết quả in ra màn hình là 10.",
+          "dap_an": "Sai",
+          "giai_thich": "Tổng s = 0 + 1 + 2 + 3 + 4 = 10."
+        },
+        "c": {
+          "menh_de": "Biến s thuộc kiểu danh sách list.",
+          "dap_an": "Đúng",
+          "giai_thich": "s gán bằng 0 và cộng số nguyên nên thuộc kiểu int."
+        },
+        "d": {
+          "menh_de": "Danh sách trong Python được khởi tạo như sau: <tên list> = [<v1>, <v2>,..., <vn>]",
+          "dap_an": "Sai",
+          "giai_thich": "Phương thức append() là lệnh dành riêng cho dữ liệu kiểu danh sách có cú pháp <danh sách>.append(<phần tử>)"
+        }
+      }
+    },
+    {
+      "Task_ID": "T08",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 223,
+      "Latency_Sec": 7.82,
+      "Ghi_Chu": "Mệnh đề 'b' và 'c' quá giống nhau, chưa đảm bảo tính độc lập.; Mệnh đề 'b' và 'd' quá giống nhau, chưa đảm bảo tính độc lập.; Mệnh đề 'c' và 'd' quá giống nhau, chưa đảm bảo tính đ",
+      "question_json": {
+        "trich_dan_sgk": "Đoạn chương trình sau là một ví dụ về hàm tự định nghĩa def và return trong Python",
+        "cau_hoi_chung": "def x(a, b):\n    if a > b:\n        return a\n    else:\n        return b\nXét các phát biểu sau:",
+        "a": {
+          "menh_de": "Hàm x nhận một số nguyên tự nhiên lớn hơn 1 làm tham số",
+          "dap_an": "Đúng",
+          "giai_thich": "Giải thích: hàm này sẽ so sánh hai số nguyên và trả lại số lớn hơn"
+        },
+        "b": {
+          "menh_de": "Hàm x luôn trả lại giá trị của a khi b < a",
+          "dap_an": "Sai",
+          "giai_thich": "Giải thích: Hàm này sẽ trả lại giá trị nhỏ hơn nếu b < a, không phải giá trị của a"
+        },
+        "c": {
+          "menh_de": "Hàm x luôn trả lại giá trị của b khi a < b",
+          "dap_an": "Đúng",
+          "giai_thich": "Giải thích: Hàm này sẽ trả lại giá trị lớn hơn nếu a > b, không phải giá trị của b"
+        },
+        "d": {
+          "menh_de": "Hàm x luôn trả lại giá trị của a khi b >= a",
+          "dap_an": "Sai",
+          "giai_thich": "Giải thích: Hàm này sẽ trả lại giá trị nhỏ hơn nếu b < a, không phải giá trị của a"
+        }
+      }
+    },
+    {
+      "Task_ID": "T08",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "VD",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.9,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.75,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 628,
+      "Latency_Sec": 8.57,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Một biến được định nghĩa trong chương trình chính (bên ngoài các hàm) thì sẽ được sử dụng như thế nào bên trong các hàm?",
+        "cau_hoi_chung": "Cho đoạn chương trình Python sau:\ndef inc(n):\n    n = n + 1\n    return n\ndef thong_bao(x):\n    a, b = x\n    print(a, b)\na, b = 1, 2\nthong_bao((a, b))",
+        "a": {
+          "menh_de": "Biến được định nghĩa trong chương trình chính sẽ không thay đổi sau khi gọi hàm",
+          "dap_an": "Đúng",
+          "giai_thich": "Vì biến này được gán bên ngoài hàm và chỉ có tác dụng bên ngoài hàm"
+        },
+        "b": {
+          "menh_de": "Biến được khai báo bên trong một hàm thì có sử dụng?",
+          "dap_an": "Sai",
+          "giai_thich": "Biến này không thể truy cập được bên ngoài hàm vì nó chỉ có giá trị bên trong hàm"
+        },
+        "c": {
+          "menh_de": "Biến được định nghĩa trong chương trình chính sẽ bị báo lỗi khi gọi bên trong một hàm?",
+          "dap_an": "Đúng",
+          "giai_thich": "Vì biến này không được gán hoặc khai báo bên ngoài các hàm"
+        },
+        "d": {
+          "menh_de": "Biến được khai báo bên trong một hàm thì có thể truy cập được bên ngoài hàm?",
+          "dap_an": "Sai",
+          "giai_thich": "Không, vì biến này chỉ có giá trị bên trong hàm và không thể truy cập được bên ngoài"
+        }
+      }
+    },
+    {
+      "Task_ID": "T08",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1414,
+      "Latency_Sec": 8.05,
+      "Ghi_Chu": "Nội dung chưa khớp Bài 26 (Hàm trong Python): mã nguồn bắt buộc phải có định nghĩa hàm bằng từ khoá 'def'.",
+      "question_json": {
+        "trich_dan_sgk": "Biến C dùng để đếm số các ước thực sự của n.",
+        "cau_hoi_chung": "Cho đoạn chương trình Python:\ns = 0\nfor i in range(1, 5):\n    s = s + i\nprint(s)\nXét các phát biểu sau:",
+        "a": {
+          "menh_de": "Biến C dùng để đếm số ước thực sự của n.",
+          "dap_an": "Đúng",
+          "giai_thich": "C là biến dùng để đếm số ước thực sự của n."
+        },
+        "b": {
+          "menh_de": "Vòng lặp for thực hiện đúng 5 lần.",
+          "dap_an": "Sai",
+          "giai_thich": "Vùng giá trị có 4 số nên chỉ lặp 4 lần."
+        },
+        "c": {
+          "menh_de": "Kết quả in ra màn hình là 10.",
+          "dap_an": "Đúng",
+          "giai_thich": "Tổng s = 0 + 1 + 2 + 3 + 4 = 10."
+        },
+        "d": {
+          "menh_de": "Biến s thuộc kiểu int.",
+          "dap_an": "Sai",
+          "giai_thich": "s gán bằng 0 và cộng số nguyên nên thuộc kiểu int."
+        }
+      }
+    },
+    {
+      "Task_ID": "T08",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "TRUE_FALSE",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 3,
+      "Prompt_Tokens": 1512,
+      "Latency_Sec": 27.36,
+      "Ghi_Chu": "Nội dung chưa khớp Bài 26 (Hàm trong Python): mã nguồn bắt buộc phải có định nghĩa hàm bằng từ khoá 'def'.",
+      "question_json": {
+        "trich_dan_sgk": "Biến C dùng để đếm số các ước thực sự của n.",
+        "cau_hoi_chung": "Cho đoạn chương trình Python:\ns = 0\nfor i in range(1, 5):\n    s = s + i\nprint(s)\nXét các phát biểu sau:",
+        "a": {
+          "menh_de": "Biến C dùng để đếm số ước thực sự của n.",
+          "dap_an": "Đúng",
+          "giai_thich": "C là biến dùng để đếm số ước thực sự của n."
+        },
+        "b": {
+          "menh_de": "Vòng lặp for thực hiện đúng 5 lần.",
+          "dap_an": "Sai",
+          "giai_thich": "Vùng giá trị có 4 số nên chỉ lặp 4 lần."
+        },
+        "c": {
+          "menh_de": "Kết quả in ra màn hình là 10.",
+          "dap_an": "Đúng",
+          "giai_thich": "Tổng s = 0 + 1 + 2 + 3 + 4 = 10."
+        },
+        "d": {
+          "menh_de": "Biến s thuộc kiểu số nguyên int.",
+          "dap_an": "Sai",
+          "giai_thich": "s gán bằng 0 và cộng số nguyên nên thuộc kiểu int."
+        }
+      }
+    },
+    {
+      "Task_ID": "T09",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 17",
+      "Loai_Cau_Hoi": "SHORT_ANSWER",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.965,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.912,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 140,
+      "Latency_Sec": 5.65,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Câu trả lời cần phải chỉ ra giá trị của biến 'a' sau khi gán giá trị vào nó bằng lệnh gán.",
+        "cau_hoi": "Cho đoạn chương trình Python sau:\n a = 5\n if a > 3:\n   print(a)\n else:\n   print(-a) \nGiá trị in ra màn hình là bao nhiêu?",
+        "dap_an_ngan": "1",
+        "giai_thich": "Bước 1: Lệnh gán 'a = 5' cho biến 'a' giá trị 5.\nBước 2: Trong câu lệnh if-else, giá trị của biến 'a' là 5 (do được gán trong bước trước).\nBước 3: Vì giá trị của 'a' lớn hơn 3 nên sẽ thực thi dòng lệnh print(a) và in ra màn hình giá trị 5."
+      }
+    },
+    {
+      "Task_ID": "T09",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 17",
+      "Loai_Cau_Hoi": "SHORT_ANSWER",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 457,
+      "Latency_Sec": 5.2,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Biến là tên (định danh) của một vùng nhớ dùng để lưu trữ giá trị (dữ liệu) và giá trị đó có thể được thay đổi khi thực hiện chương trình.",
+        "cau_hoi": "Cho đoạn chương trình Python sau:\nx = 5\ny = x * 2\ngiá trị in ra màn hình là bao nhiêu?",
+        "dap_an_ngan": "1",
+        "giai_thich": "Bước 1: Tạo biến x và gán giá trị 5 cho nó.\nBước 2: Tạo biến y và gán giá trị của x * 2 vào nó.\nBước 3: In ra màn hình giá trị của y, kết quả là 10."
+      }
+    },
+    {
+      "Task_ID": "T09",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 17",
+      "Loai_Cau_Hoi": "SHORT_ANSWER",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1259,
+      "Latency_Sec": 5.45,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Biến là tên (định danh) của một vùng nhớ dùng để lưu trữ giá trị (dữ liệu) và giá trị đó có thể được thay đổi khi thực hiện chương trình.",
+        "cau_hoi": "Cho đoạn lệnh Python:\nfor i in range(5):\n    print(i)\nprint(\"\\n\")\nKết quả in ra là gì?",
+        "dap_an_ngan": "Dãy số từ 0 đến 4",
+        "giai_thich": "Câu lệnh for thực hiện lặp từ 0 đến 4, sau đó in dấu dòng rỗng để phân cách các giá trị."
+      }
+    },
+    {
+      "Task_ID": "T09",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 17",
+      "Loai_Cau_Hoi": "SHORT_ANSWER",
+      "Muc_Do": "TH",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1259,
+      "Latency_Sec": 5.37,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Biến là tên (định danh) của một vùng nhớ dùng để lưu trữ giá trị (dữ liệu) và giá trị đó có thể được thay đổi khi thực hiện chương trình.",
+        "cau_hoi": "Cho đoạn lệnh Python:\nfor i in range(1, 10):\n    if i % 2 == 0:\n        print(i)\nKết quả in ra là gì?",
+        "dap_an_ngan": "từ 2 đến 8",
+        "giai_thich": "Lặp for sẽ chạy từ 1 đến 9. Trong vòng lặp này, số 2 và 4 là các phần tử có giá trị chẵn (làm cho điều kiện if i % 2 == 0 trở thành đúng). Do đó, trong đoạn mã in ra màn hình các số 2, 4, 6, 8."
+      }
+    },
+    {
+      "Task_ID": "T10",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 20",
+      "Loai_Cau_Hoi": "SHORT_ANSWER",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 138,
+      "Latency_Sec": 5.66,
+      "Ghi_Chu": "Mã Python chạy lỗi trên Sandbox (LỖI THỰC THI (RUNTIME ERROR)): Traceback (most recent call last):\n  File \"C:\\Users\\Admin\\AppData\\Local\\Temp\\tmpe3p9omgb.py\", line 2, in <module>\n  ",
+      "question_json": {
+        "trich_dan_sgk": "Câu hỏi này yêu cầu bạn tính tổng của các số từ 1 đến 10 bằng vòng lặp for và range.",
+        "cau_hoi": "Cho đoạn chương trình Python sau:\nfor i in range(1,11):\n\ttong = tong + i\n\ntong = 0\nprint(tong)\nGiá trị in ra màn hình là bao nhiêu?",
+        "dap_an_ngan": "1",
+        "giai_thich": "Bước 1: Khởi tạo biến tổng bằng giá trị 0.\nBước 2: Sử dụng vòng lặp for để lặp qua các số từ 1 đến 10.\n   - Trong mỗi lần lặp, ta cộng giá trị hiện tại của i vào tổng.\n   - Sau khi lặp xong, in ra màn hình giá trị tổng đã tính được.\nBước 3: Kết thúc chương trình và trả về kết quả."
+      }
+    },
+    {
+      "Task_ID": "T10",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 20",
+      "Loai_Cau_Hoi": "SHORT_ANSWER",
+      "Muc_Do": "VD",
+      "Rule_Pass": true,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.925,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 0.75,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 543,
+      "Latency_Sec": 5.5,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Tính tổng các số tự nhiên chẵn nhỏ hơn n bằng vòng lặp for và range.",
+        "cau_hoi": "Viết chương trình Python để tính tổng các số tự nhiên chẵn từ 0 đến n (n = 10) bằng cách sử dụng lệnh lặp for",
+        "dap_an_ngan": "Tổng các số tự nhiên chẵn nhỏ hơn n là S = 0 + 2 + 4 + ... + n - 1",
+        "giai_thich": "Chương trình Python để tính tổng các số tự nhiên chẵn từ 0 đến n (n = 10) bằng cách sử dụng lệnh lặp for như sau:\nfor k in range(11):\n    if k % 2 == 0:\n        S = S + k\nprint(S)\n"
+      }
+    },
+    {
+      "Task_ID": "T10",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 20",
+      "Loai_Cau_Hoi": "SHORT_ANSWER",
+      "Muc_Do": "VD",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.986,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 0.965,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1203,
+      "Latency_Sec": 5.49,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Lệnh for lặp for được sử dụng để thực hiện một công việc nhiều lần với số lần biết trước.",
+        "cau_hoi": "Cho đoạn lệnh Python:\nfor i in range(5):\n    print(i)\nKết quả in ra là gì?",
+        "dap_an_ngan": "Số từ 0 đến 4",
+        "giai_thich": "Lệnh for lặp for thực hiện công việc in số từ 0 đến 4 nhiều lần với số lần biết trước là 5."
+      }
+    },
+    {
+      "Task_ID": "T10",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 20",
+      "Loai_Cau_Hoi": "SHORT_ANSWER",
+      "Muc_Do": "VD",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1203,
+      "Latency_Sec": 4.6,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Câu lệnh for là lệnh lặp với số lần biết trước trong Python, có cú pháp for <biến> in <vùng giá trị/dãy>: <khối lệnh>,",
+        "cau_hoi": "Cho đoạn chương trình sau:\nfor k in range(5):\n    if k%2 == 0:\n        print(k)\nGiá trị in ra màn hình là bao nhiêu?",
+        "dap_an_ngan": "3",
+        "giai_thich": "Có 3 phần tử chẵn trong dãy số từ 0 đến 4, đó là 0, 2 và 4."
+      }
+    },
+    {
+      "Task_ID": "T11",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "ESSAY_CODE",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 169,
+      "Latency_Sec": 6.24,
+      "Ghi_Chu": "Lỗi cú pháp Python (Sandbox/AST) ở đoạn mã #1 dòng 1: invalid syntax. Hãy sửa đúng thụt lề và dấu hai chấm (:).",
+      "question_json": {
+        "trich_dan_sgk": "Viết chương trình Python để tìm và in số lớn nhất trong danh sách các số nguyên dương",
+        "tinh_huong": "Tìm số lớn nhất trong danh sách các số nguyên dương A = [5, 2, 8, 3] bằng cách sử dụng thuật toán tìm kiếm lớn nhất (max())",
+        "yeu_cau_hoc_sinh": "Viết chương trình Python để thực hiện bài tập trên và yêu cầu viết chương trình Python lớp 10",
+        "dap_an_mau": "[print(max(A))] hoặc [def max_danh sach(a): return max(a); print(max_danh sach([5,2,8,3]))]",
+        "tieu_chi_cham_diem": [
+          "Tiêu chí 1 (0.3đ): Chương trình phải chạy được và không có lỗi cú pháp",
+          "Tiêu chí 2 (0.4đ): Chương trình phải tìm đúng số lớn nhất trong danh sách",
+          "Tiêu chí 3 (0.3đ): Chương trình phải viết bằng ngôn ngữ Python thuần lớp 10"
+        ]
+      }
+    },
+    {
+      "Task_ID": "T11",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "ESSAY_CODE",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 542,
+      "Latency_Sec": 2.63,
+      "Ghi_Chu": "Đầu ra không phải JSON hợp lệ hoặc JSON rỗng.",
+      "question_json": {}
+    },
+    {
+      "Task_ID": "T11",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "ESSAY_CODE",
+      "Muc_Do": "VD",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.961,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 0.87,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1281,
+      "Latency_Sec": 6.28,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Danh sách trong Python được khởi tạo như sau: <tên list> = [<v1>, <v2>,..., <vn>]",
+        "tinh_huong": "Cho danh sách A = [7, 4, 9, 6, 8].",
+        "yeu_cau_hoc_sinh": "Viết chương trình Python tính tổng các số chẵn trong A.",
+        "dap_an_mau": "A = [7, 4, 9, 6, 8]\ntong = 0\nfor x in A:\n    if x % 2 == 0:\n        tong += x\nprint(tong)",
+        "tieu_chi_cham_diem": [
+          "Khởi tạo A và tong đúng (0.3đ)",
+          "Duyệt for và lọc chẵn x % 2 == 0 (0.4đ)",
+          "In kết quả 18 đúng (0.3đ)"
+        ]
+      }
+    },
+    {
+      "Task_ID": "T11",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 22",
+      "Loai_Cau_Hoi": "ESSAY_CODE",
+      "Muc_Do": "VD",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.961,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 0.87,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1281,
+      "Latency_Sec": 5.51,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Danh sách trong Python được khởi tạo như sau: <tên list> = [<v1>, <v2>,..., <vn>]",
+        "tinh_huong": "Cho danh sách A = [7, 4, 9, 6, 8].",
+        "yeu_cau_hoc_sinh": "Viết chương trình Python tính tổng các số chẵn trong A.",
+        "dap_an_mau": "A = [7, 4, 9, 6, 8]\ntong = 0\nfor x in A:\n    if x % 2 == 0:\n        tong += x\nprint(tong)",
+        "tieu_chi_cham_diem": [
+          "Khởi tạo A và tong đúng (0.3đ)",
+          "Duyệt for và lọc chẵn x % 2 == 0 (0.4đ)",
+          "In kết quả 18 đúng (0.3đ)"
+        ]
+      }
+    },
+    {
+      "Task_ID": "T12",
+      "Config": "Config_1_LLM_Only",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "ESSAY_CODE",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 171,
+      "Latency_Sec": 6.2,
+      "Ghi_Chu": "Trường 'trich_dan_sgk' không khớp từ vựng bằng chứng SGK (chỉ đạt 33%, cần >= 45%). Hãy sao chép chính xác 1 trong các câu nguyên văn SGK sau vào 'trich_dan_sgk': \"Hàm trong Python",
+      "question_json": {
+        "trich_dan_sgk": "Viết chương trình Python để tính tổng của các số trong danh sách A = [3, 8, 2, 5] và sau đó tìm phần trăm của số lớn nhất so với tổng",
+        "tinh_huong": "Tính tổng của các số trong danh sách A = [3, 8, 2, 5], sau đó tính phần trăm của số lớn nhất so với tổng",
+        "yeu_cau_hoc_sinh": "Viết chương trình Python để thực hiện các bước trên",
+        "dap_an_mau": "[3 + 8 + 2 + 5] / 4 * 100 = 58.75%",
+        "tieu_chi_cham_diem": [
+          "Tiêu chí 1 (0.3đ): Chương trình có thể tính tổng và phần trăm của số lớn nhất",
+          "Tiêu chí 2 (0.4đ): Chương trình không có lỗi cú pháp hoặc ngoại lệ",
+          "Tiêu chí 3 (0.3đ): Chương trình thực hiện được yêu cầu chính"
+        ]
+      }
+    },
+    {
+      "Task_ID": "T12",
+      "Config": "Config_2_Naive_RAG",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "ESSAY_CODE",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 502,
+      "Latency_Sec": 8.12,
+      "Ghi_Chu": "Trường 'trich_dan_sgk' không khớp từ vựng bằng chứng SGK (chỉ đạt 25%, cần >= 45%). Hãy sao chép chính xác 1 trong các câu nguyên văn SGK sau vào 'trich_dan_sgk': \"Hàm trong Python",
+      "question_json": {
+        "trich_dan_sgk": "Số nguyên tố là số tự nhiên lớn hơn 1 có chỉ số phân giải duy nhất là 1",
+        "tinh_huong": "Viết chương trình Python yêu cầu nhập số tự nhiên n từ bàn phím và in các số nguyên tố nhỏ hơn hoặc bằng n ra màn hình. Sử dụng hàm prime(n) kiểm tra số n có là số nguyên tố.",
+        "yeu_cau_hoc_sinh": "Viết chương trình chính yêu cầu nhập số tự nhiên n từ bàn phím và in các số nguyên tố nhỏ hơn hoặc bằng n ra màn hình",
+        "dap_an_mau": "def prime(n):\n  if n <= 1:\n    return False\n  for i in range(2, int(n**0.5) + 1):\n    if n % i == 0:\n      return False\n  return True\ndef main():\n  n = int(input())\n  for i in range(2, n+1):\n    if prime(i):\n      print(i)\nif __name__ == \"__main__\":\n  main()",
+        "tieu_chi_cham_diem": [
+          "Tiêu chí 1 (0.3đ): Chương trình phải có tên chính thức và mô tả rõ ràng về bài toán",
+          "Tiêu chí 2 (0.4đ): Chương trình phải sử dụng hàm prime(n) kiểm tra số n có là số nguyên tố",
+          "Tiêu chí 3 (0.3đ): Chương trình phải chạy được không lỗi"
+        ]
+      }
+    },
+    {
+      "Task_ID": "T12",
+      "Config": "Config_3_RAG_Glossary",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "ESSAY_CODE",
+      "Muc_Do": "VD",
+      "Rule_Pass": false,
+      "Sandbox_Verified": false,
+      "Fuzzy_Score": 0.0,
+      "Xep_Loai": "KHÔNG ĐẠT",
+      "SGK_Grounding": 0.0,
+      "Cognitive_Score": 0.0,
+      "Distractor_Score": 0.0,
+      "Retry_Count": 0,
+      "Prompt_Tokens": 1222,
+      "Latency_Sec": 7.15,
+      "Ghi_Chu": "Mã Python chạy lỗi trên Sandbox (LỖI THỰC THI (RUNTIME ERROR)): Traceback (most recent call last):\n  File \"C:\\Users\\Admin\\AppData\\Local\\Temp\\tmpxor9lta5.py\", line 7, in <module>\n  ",
+      "question_json": {
+        "trich_dan_sgk": "Hàm trong Python được định nghĩa bằng từ khoá def, theo sau là tên hàm.",
+        "tinh_huong": "Biết chương trình con và các hàm chính của Python như int(), print().",
+        "yeu_cau_hoc_sinh": "Viết chương trình Python tính tổng các số chẵn trong danh sách A = [7, 4, 9, 6, 8].",
+        "dap_an_mau": "def thong_bao(x):\n    if x % 2 == 0:\n        return 'Số là chẵn'\n    else:\n        return 'Số không phải là chẵn'\ntong = 0\nfor i in A:\n    tong += int(thong_bao(i))\nprint(tong)",
+        "tieu_chi_cham_diem": [
+          "Khởi tạo danh sách A và tổng đúng (0.3đ)",
+          "Duyệt for và lọc số chẵn trong danh sách (0.4đ)",
+          "In kết quả tổng 20 đúng (0.3đ)"
+        ]
+      }
+    },
+    {
+      "Task_ID": "T12",
+      "Config": "Config_4_Full_Agentic_RAG",
+      "Bai_Hoc": "Bài 26",
+      "Loai_Cau_Hoi": "ESSAY_CODE",
+      "Muc_Do": "VD",
+      "Rule_Pass": true,
+      "Sandbox_Verified": true,
+      "Fuzzy_Score": 1.0,
+      "Xep_Loai": "ĐẠT",
+      "SGK_Grounding": 1.0,
+      "Cognitive_Score": 1.0,
+      "Distractor_Score": 1.0,
+      "Retry_Count": 3,
+      "Prompt_Tokens": 1320,
+      "Latency_Sec": 24.3,
+      "Ghi_Chu": "ĐẠT",
+      "question_json": {
+        "trich_dan_sgk": "Hàm trong Python được định nghĩa bằng từ khoá def, theo sau là tên hàm.",
+        "tinh_huong": "Viết chương trình tính tổng các số chẵn trong danh sách A = [7, 4, 9, 6, 8].",
+        "yeu_cau_hoc_sinh": "Viết chương trình Python lớp 10 để tính tổng các số chẵn trong danh sách A.",
+        "dap_an_mau": "def tong_chan(A):\n    tong = 0\n    for x in A:\n        if x % 2 == 0:\n            tong += x\n    return tong\ntong_chan([7, 4, 9, 6, 8])",
+        "tieu_chi_cham_diem": [
+          "Khởi tạo danh sách A = [3, 8, 2, 5] đúng (0.3đ)",
+          "Duyệt for và lọc chẵn x % 2 == 0 đúng (0.4đ)",
+          "In kết quả tổng các số chẵn là 15 đúng (0.3đ)"
+        ]
+      }
+    }
+  ]
+}

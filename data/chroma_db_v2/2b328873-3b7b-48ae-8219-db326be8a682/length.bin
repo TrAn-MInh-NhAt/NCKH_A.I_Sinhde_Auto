@@ -1,0 +1,1 @@
+invalid type: string "[Đề thi THPT quốc gia.pdf | MCQ - Câu 16]\nCâu 16.\nTìm hiểu đoạn chương trình Python sau:\n```python\nn = 1\nwhile n % a != 0 and n % b != 0:\n    n = n + 1\n```\nGiả sử a và b là hai số nguyên dương khác nhau, sau khi thực hiện đoạn chương trình trên, n là số nguyên dương thỏa mãn tính chất nào sau đây?\n.\nC. 6.\nD. 2."

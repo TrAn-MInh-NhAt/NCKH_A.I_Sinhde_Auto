@@ -1,0 +1,105 @@
+{
+  "phien_ban": "2025-2026",
+  "nguon_trich_form": [
+    "Các thành phần năng lực tin học.pdf",
+    "Module 03. Kiem tra danh gia - THPT - 12.8.2020 - Version 13.pdf",
+    "Cấu trúc chấm điểm Tin học THPT quốc gia.png",
+    "Đề thi CK2 trường Xuyên Mộc-TpHCM.pdf",
+    "Đề thi GK trường Lý Tự Trọng-Đà Nẵng.pdf",
+    "Đề thi GK trường Nguyễn Trãi-Hội An.pdf",
+    "Đề thi lớp 10.pdf",
+    "Đề thi THPT quốc gia.pdf"
+  ],
+  "ghi_chu": "Khuôn mẫu 2025-2026 kèm 1-shot trung tính, đa dạng Python 10 (Bài 16-32).",
+  "templates": {
+    "MCQ": [
+      {
+        "id": "MCQ_1_DOC_CODE",
+        "trinh_bay": "4 phương án A,B,C,D cụ thể, độ dài tương đương, 1 đáp án đúng.",
+        "diem": 0.25,
+        "vi_du_1shot": {
+          "cau_hoi": "Cho đoạn chương trình Python tính chu vi hình chữ nhật sau:\ndai = 6\nrong = 4\nchu_vi = 2 * (dai + rong)\nprint(chu_vi)\nKết quả in ra màn hình là gì?",
+          "A": "10",
+          "B": "20",
+          "C": "24",
+          "D": "12",
+          "dap_an": "B",
+          "giai_thich": "Biểu thức 2 * (6 + 4) = 2 * 10 = 20 nên lệnh print(chu_vi) in ra 20.",
+          "trich_dan_sgk": "Trong Python, lệnh gán dùng dấu = để gán giá trị của biểu thức cho biến."
+        }
+      },
+      {
+        "id": "MCQ_2_LY_THUYET",
+        "trinh_bay": "4 phương án là cú pháp/khái niệm Python cụ thể, không giữ chỗ.",
+        "diem": 0.25
+      }
+    ],
+    "TRUE_FALSE": [
+      {
+        "id": "TF_1_DOC_HIEU_CODE",
+        "trinh_bay": "Đoạn mã Python 3-5 dòng kèm 4 ý a,b,c,d độc lập, có cả Đúng và Sai.",
+        "thang_diem": "1ý:0.1|2ý:0.25|3ý:0.5|4ý:1.0",
+        "vi_du_1shot": {
+          "cau_hoi_chung": "Cho đoạn chương trình Python sau:\nchuoi = 'TinHoc10'\nn = len(chuoi)\nprint(n)\nXét các phát biểu sau:",
+          "a": {
+            "menh_de": "Biến chuoi lưu trữ dữ liệu thuộc kiểu xâu kí tự str.",
+            "dap_an": "Đúng",
+            "giai_thich": "Giá trị 'TinHoc10' đặt trong cặp dấu nháy đơn nên thuộc kiểu str."
+          },
+          "b": {
+            "menh_de": "Hàm len(chuoi) dùng để tách xâu thành nhiều phần tử riêng lẻ.",
+            "dap_an": "Sai",
+            "giai_thich": "Hàm len() trả về số lượng kí tự (độ dài) của xâu, không tách xâu."
+          },
+          "c": {
+            "menh_de": "Kết quả in ra màn hình là 8.",
+            "dap_an": "Đúng",
+            "giai_thich": "Xâu 'TinHoc10' gồm đúng 8 kí tự nên len(chuoi) bằng 8."
+          },
+          "d": {
+            "menh_de": "Biến n nhận giá trị thuộc kiểu số thực float.",
+            "dap_an": "Sai",
+            "giai_thich": "Hàm len() luôn trả về số nguyên kiểu int."
+          },
+          "trich_dan_sgk": "Hàm len() trả về độ dài của xâu kí tự trong Python."
+        }
+      },
+      {
+        "id": "TF_2_TINH_HUONG",
+        "trinh_bay": "Tình huống Python 10 với 4 ý tăng dần NB->TH->VD.",
+        "thang_diem": "1ý:0.1|2ý:0.25|3ý:0.5|4ý:1.0"
+      }
+    ],
+    "SHORT_ANSWER": [
+      {
+        "id": "SA_1_KET_QUA_CODE",
+        "trinh_bay": "Đoạn mã Python ngắn có lệnh print(), đáp án 1 số/xâu duy nhất.",
+        "diem": 0.5,
+        "vi_du_1shot": {
+          "cau_hoi": "Cho đoạn chương trình Python sau:\ndiem = [4, 9, 6, 11]\ndem = 0\nfor v in diem:\n    if v > 6:\n        dem += 1\nprint(dem)\nKết quả in ra màn hình là bao nhiêu?",
+          "dap_an_ngan": "2",
+          "giai_thich": "Trong danh sách diem có đúng 2 phần tử lớn hơn 6 là 9 và 11 nên biến dem bằng 2.",
+          "trich_dan_sgk": "Có thể duyệt lần lượt các phần tử của danh sách bằng lệnh for và toán tử in."
+        }
+      }
+    ],
+    "ESSAY_CODE": [
+      {
+        "id": "EC_1_VIET_CHUONG_TRINH",
+        "trinh_bay": "Dữ liệu cụ thể, không lộ lời giải trong đề, code Python chạy được, 3 tiêu chí chấm.",
+        "diem": 1.0,
+        "vi_du_1shot": {
+          "tinh_huong": "Cho danh sách điểm kiểm tra ds = [5, 12, 7, 15, 9].",
+          "yeu_cau_hoc_sinh": "Viết chương trình Python đếm số phần tử lớn hơn 8 trong danh sách ds và in kết quả ra màn hình.",
+          "dap_an_mau": "ds = [5, 12, 7, 15, 9]\ndem = 0\nfor v in ds:\n    if v > 8:\n        dem += 1\nprint(dem)",
+          "tieu_chi_cham_diem": [
+            "Khởi tạo đúng danh sách ds và biến đếm ban đầu (0.3đ)",
+            "Duyệt danh sách bằng vòng lặp for và kiểm tra điều kiện > 8 chính xác (0.4đ)",
+            "Cập nhật biến đếm và in kết quả ra màn hình chính xác (0.3đ)"
+          ],
+          "trich_dan_sgk": "Có thể duyệt nhanh từng phần tử của danh sách bằng toán tử in và lệnh for."
+        }
+      }
+    ]
+  }
+}

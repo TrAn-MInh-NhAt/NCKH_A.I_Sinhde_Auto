@@ -1,0 +1,152 @@
+[
+  {
+    "thuat_ngu": "Ngôn ngữ lập trình bậc cao",
+    "dinh_nghia_sgk": "Ngôn ngữ lập trình bậc cao có các câu lệnh được viết gần với ngôn ngữ tự nhiên giúp người lập trình dễ đọc, dễ viết và dễ hiểu; để máy tính thực hiện được cần chương trình dịch chuyển sang ngôn ngữ máy.",
+    "bai_hoc": "Bài 16",
+    "trang": 88
+  },
+  {
+    "thuat_ngu": "Chế độ gõ lệnh trực tiếp và chế độ soạn thảo",
+    "dinh_nghia_sgk": "Môi trường lập trình Python có hai chế độ làm việc: chế độ gõ lệnh trực tiếp (thường dùng để tính toán và kiểm tra nhanh từng lệnh sau dấu nhắc >>>) và chế độ soạn thảo (dùng để viết, lưu thành tệp .py và chạy chương trình nhiều dòng lệnh).",
+    "bai_hoc": "Bài 16",
+    "trang": 88
+  },
+  {
+    "thuat_ngu": "Lệnh print()",
+    "dinh_nghia_sgk": "Lệnh print() có chức năng đưa dữ liệu ra thiết bị ra chuẩn (mặc định là màn hình), có thể in ra một hoặc nhiều giá trị, kết quả tính toán hoặc xâu kí tự.",
+    "bai_hoc": "Bài 16",
+    "trang": 90
+  },
+  {
+    "thuat_ngu": "Biến",
+    "dinh_nghia_sgk": "Biến (variable) là tên (định danh) của một vùng nhớ dùng để lưu trữ giá trị (dữ liệu) và giá trị đó có thể được thay đổi khi thực hiện chương trình. Trong Python, biến được tạo ra và xác định kiểu dữ liệu tại thời điểm thực hiện lệnh gán.",
+    "bai_hoc": "Bài 17",
+    "trang": 92
+  },
+  {
+    "thuat_ngu": "Lệnh gán",
+    "dinh_nghia_sgk": "Lệnh gán có cú pháp <biến> = <giá trị> (hoặc <biểu thức>), dùng để gán giá trị bên phải dấu bằng (=) cho biến ở bên trái; nếu biến chưa tồn tại thì biến sẽ được khởi tạo ngay khi thực hiện lệnh gán.",
+    "bai_hoc": "Bài 17",
+    "trang": 92
+  },
+  {
+    "thuat_ngu": "Từ khoá",
+    "dinh_nghia_sgk": "Từ khoá (keyword) là các từ đặc biệt tham gia vào cấu trúc của ngôn ngữ lập trình Python (như if, else, for, while, def, return, True, False, global,...); khi viết chương trình không được đặt tên biến hay định danh trùng với từ khoá.",
+    "bai_hoc": "Bài 17",
+    "trang": 96
+  },
+  {
+    "thuat_ngu": "Lệnh input()",
+    "dinh_nghia_sgk": "Lệnh input() có chức năng nhập dữ liệu từ thiết bị vào chuẩn (thường là bàn phím) và luôn trả về kết quả là một xâu kí tự (str); muốn nhập số nguyên hoặc số thực cần chuyển đổi bằng int() hoặc float().",
+    "bai_hoc": "Bài 18",
+    "trang": 98
+  },
+  {
+    "thuat_ngu": "Kiểu dữ liệu cơ bản",
+    "dinh_nghia_sgk": "Một số kiểu dữ liệu cơ bản của Python gồm: int (số nguyên), float (số thực), str (xâu kí tự) và bool (lôgic chỉ nhận hai giá trị True hoặc False). Lệnh type() dùng để nhận biết kiểu dữ liệu của biến hoặc giá trị.",
+    "bai_hoc": "Bài 18",
+    "trang": 99
+  },
+  {
+    "thuat_ngu": "Biểu thức lôgic",
+    "dinh_nghia_sgk": "Trong Python, biểu thức lôgic là biểu thức chỉ nhận giá trị True (đúng) hoặc False (sai), thuộc kiểu bool; đơn giản nhất là các phép so sánh (<, <=, >, >=, ==, !=) và có thể kết hợp bằng các phép toán lôgic and (và), or (hoặc), not (phủ định).",
+    "bai_hoc": "Bài 19",
+    "trang": 102
+  },
+  {
+    "thuat_ngu": "Câu lệnh rẽ nhánh if",
+    "dinh_nghia_sgk": "Câu lệnh điều kiện if (dạng thiếu if <điều kiện>: và dạng đủ if <điều kiện>: ... else:) thể hiện cấu trúc rẽ nhánh trong Python; khối lệnh nhánh được viết sau dấu hai chấm (:), lùi vào và thẳng hàng nhau.",
+    "bai_hoc": "Bài 19",
+    "trang": 104
+  },
+  {
+    "thuat_ngu": "Câu lệnh lặp for",
+    "dinh_nghia_sgk": "Câu lệnh for là lệnh lặp với số lần biết trước trong Python, có cú pháp for <biến> in <vùng giá trị/dãy>: <khối lệnh>, trong đó biến chạy lần lượt nhận từng giá trị trong vùng giá trị của lệnh range() hoặc từng phần tử của danh sách/xâu kí tự.",
+    "bai_hoc": "Bài 20",
+    "trang": 106
+  },
+  {
+    "thuat_ngu": "Lệnh range()",
+    "dinh_nghia_sgk": "Lệnh range() tạo ra một vùng giá trị gồm các số nguyên liên tiếp: range(stop) trả lại vùng giá trị từ 0 đến stop - 1; range(start, stop) trả lại vùng giá trị từ start đến stop - 1.",
+    "bai_hoc": "Bài 20",
+    "trang": 107
+  },
+  {
+    "thuat_ngu": "Câu lệnh lặp while",
+    "dinh_nghia_sgk": "Câu lệnh while là lệnh lặp với số lần không biết trước, có cú pháp while <điều kiện>: <khối lệnh>. Python kiểm tra biểu thức điều kiện trước mỗi lần lặp; khối lệnh được lặp lại chừng nào điều kiện còn nhận giá trị True.",
+    "bai_hoc": "Bài 21",
+    "trang": 109
+  },
+  {
+    "thuat_ngu": "Danh sách (list)",
+    "dinh_nghia_sgk": "List là kiểu dữ liệu danh sách (dãy, mảng) trong Python dùng để lưu trữ một dãy các phần tử đặt trong cặp dấu ngoặc vuông [ ], ngăn cách bởi dấu phẩy; chỉ số của các phần tử bắt đầu từ 0 đến len(A) - 1.",
+    "bai_hoc": "Bài 22",
+    "trang": 113
+  },
+  {
+    "thuat_ngu": "Phương thức append()",
+    "dinh_nghia_sgk": "Phương thức append() là lệnh dành riêng cho dữ liệu kiểu danh sách có cú pháp <danh sách>.append(<phần tử>), dùng để bổ sung thêm một phần tử mới vào cuối danh sách.",
+    "bai_hoc": "Bài 22",
+    "trang": 114
+  },
+  {
+    "thuat_ngu": "Toán tử in",
+    "dinh_nghia_sgk": "Toán tử in dùng để kiểm tra một phần tử có nằm trong danh sách (hoặc một xâu có là xâu con của xâu khác) hay không, trả về True hoặc False; ngoài ra in còn dùng kết hợp với for để duyệt lần lượt từng phần tử của danh sách hoặc xâu.",
+    "bai_hoc": "Bài 23",
+    "trang": 116
+  },
+  {
+    "thuat_ngu": "Xâu kí tự (str)",
+    "dinh_nghia_sgk": "Xâu kí tự trong Python là một dãy các kí tự Unicode đặt trong cặp dấu nháy đơn hoặc nháy kép, có độ dài xác định bằng hàm len() và truy cập từng kí tự qua chỉ số từ 0 đến len(s) - 1; Python không có kiểu kí tự riêng mà kí tự chính là xâu độ dài 1.",
+    "bai_hoc": "Bài 24",
+    "trang": 121
+  },
+  {
+    "thuat_ngu": "Lệnh find()",
+    "dinh_nghia_sgk": "Lệnh find() là phương thức của xâu kí tự với cú pháp <xâu mẹ>.find(<xâu con>) hoặc <xâu mẹ>.find(<xâu con>, start), dùng để tìm vị trí xuất hiện đầu tiên của xâu con trong xâu mẹ; nếu không tìm thấy thì trả về -1.",
+    "bai_hoc": "Bài 25",
+    "trang": 125
+  },
+  {
+    "thuat_ngu": "Lệnh split() và join()",
+    "dinh_nghia_sgk": "Lệnh split() dùng để tách một xâu thành danh sách các từ (mặc định tách theo dấu cách hoặc theo kí tự tách chỉ định); ngược lại, lệnh join() có cú pháp <kí tự nối>.join(<danh sách>) dùng để nối các phần tử xâu của danh sách thành một xâu kí tự.",
+    "bai_hoc": "Bài 25",
+    "trang": 126
+  },
+  {
+    "thuat_ngu": "Hàm trong Python",
+    "dinh_nghia_sgk": "Hàm trong Python chính là chương trình con thực hiện một khối lệnh chuyên biệt, gồm hàm thiết kế sẵn và hàm tự định nghĩa bằng từ khoá def theo cú pháp def <tên hàm>(<tham số>): <khối lệnh>, có thể trả lại giá trị thông qua câu lệnh return.",
+    "bai_hoc": "Bài 26",
+    "trang": 129
+  },
+  {
+    "thuat_ngu": "Tham số và đối số của hàm",
+    "dinh_nghia_sgk": "Tham số (parameter) của hàm được định nghĩa khi khai báo hàm và được dùng như biến bên trong định nghĩa hàm; đối số (argument) là giá trị cụ thể được truyền vào cho các tham số khi thực hiện lời gọi hàm.",
+    "bai_hoc": "Bài 27",
+    "trang": 133
+  },
+  {
+    "thuat_ngu": "Biến cục bộ và biến toàn cục",
+    "dinh_nghia_sgk": "Trong Python, mọi biến khai báo bên trong hàm đều có tính địa phương (cục bộ), không có hiệu lực bên ngoài hàm; biến khai báo bên ngoài hàm muốn thay đổi được giá trị bên trong hàm cần khai báo lại trong hàm với từ khoá global.",
+    "bai_hoc": "Bài 28",
+    "trang": 138
+  },
+  {
+    "thuat_ngu": "Lỗi cú pháp (SyntaxError)",
+    "dinh_nghia_sgk": "Lỗi cú pháp (SyntaxError) phát sinh khi có câu lệnh viết sai quy tắc cú pháp hoặc sai cấu trúc ngôn ngữ Python quy định (như thiếu dấu hai chấm, sai thụt lề, dùng sai từ khoá); chương trình lập tức dừng và thông báo lỗi.",
+    "bai_hoc": "Bài 29",
+    "trang": 143
+  },
+  {
+    "thuat_ngu": "Lỗi ngoại lệ (Runtime / Exceptions error)",
+    "dinh_nghia_sgk": "Lỗi ngoại lệ (Runtime error hay Exceptions error) là lỗi xảy ra trong quá trình chương trình đang thực hiện (như ValueError, IndexError, ZeroDivisionError, TypeError, NameError), làm chương trình dừng đột ngột và trả lại mã lỗi ngoại lệ.",
+    "bai_hoc": "Bài 29",
+    "trang": 143
+  },
+  {
+    "thuat_ngu": "Lỗi lôgic và kiểm thử chương trình",
+    "dinh_nghia_sgk": "Lỗi lôgic (lỗi ngữ nghĩa) là lỗi khiến chương trình chạy bình thường không báo mã lỗi nhưng cho kết quả sai so với yêu cầu bài toán. Để phát hiện và gỡ lỗi cần kiểm thử chương trình bằng các bộ dữ liệu test (kể cả dữ liệu vùng biên), in biến trung gian bằng print() hoặc dùng điểm dừng.",
+    "bai_hoc": "Bài 30",
+    "trang": 146
+  }
+]
