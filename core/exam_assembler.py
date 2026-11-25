@@ -13,7 +13,7 @@ from docx.shared import Pt, Inches, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
 
-from core.generator import generate_question, OLLAMA_BASE_URL
+from core.generator import generate_question, OLLAMA_BASE_URL, MODEL_NAME
 from core.retriever import (
     get_exam_matrix,
     retrieve_evidence_package,
@@ -139,18 +139,17 @@ def _rotate_topic_f_specs(specs: list[dict]) -> list[dict]:
         random.shuffle(extended_sa)
         chosen_sa = extended_sa[:n_sa]
 
-    # 4. Xoay vòng ESSAY_CODE (kho bài toán thực tế đa dạng, không trùng bài học)
+    # 4. Xoay vòng ESSAY_CODE (chỉ các bài thực sự có blueprint ESSAY_CODE trong kho)
     n_ec = len(ec_specs)
     ec_pool = [
-        ("Bài 18", "Tính chỉ số thể trạng BMI và phân loại"),
+        ("Bài 19", "Tính chỉ số thể trạng BMI và phân loại"),
         ("Bài 19", "Tính tiền điện sinh hoạt theo bậc thang"),
         ("Bài 19", "Tính tiền nước sinh hoạt gia đình"),
         ("Bài 19", "Tính cước taxi theo km bậc thang"),
         ("Bài 19", "Kiểm tra 3 cạnh của một tam giác"),
-        ("Bài 20", "Tìm giá trị lớn nhất trong dãy số không dùng hàm max"),
         ("Bài 20", "Đếm số lượng số chính phương trong đoạn"),
         ("Bài 21", "Vòng lặp while cộng dồn đến khi vượt ngưỡng"),
-        ("Bài 21", "Tính tiền gửi tiết kiệm lãi kép qua các năm"),
+        ("Bài 21", "Tính tiền gửi tiết kiệm lãi kép qua các tháng"),
         ("Bài 22", "Lọc các ngày có nhiệt độ vượt ngưỡng trong danh sách"),
         ("Bài 22", "Tính điểm trung bình học tập của học sinh"),
         ("Bài 22", "Tìm phần tử lớn thứ nhì trong danh sách"),
@@ -160,16 +159,16 @@ def _rotate_topic_f_specs(specs: list[dict]) -> list[dict]:
         ("Bài 24", "Đếm số lần xuất hiện của kí tự trong xâu họ tên"),
         ("Bài 24", "Đếm số lượng nguyên âm trong xâu tiếng Anh"),
         ("Bài 25", "Chuẩn hóa xâu họ tên loại bỏ khoảng trắng thừa"),
+        ("Bài 25", "Lọc các từ có độ dài lớn hơn ngưỡng trong xâu"),
+        ("Bài 25", "Đếm tần suất xuất hiện từ khóa trong văn bản"),
         ("Bài 26", "Hàm tính chu vi và diện tích hình chữ nhật"),
         ("Bài 26", "Hàm kiểm tra tính hợp lệ của mật khẩu"),
         ("Bài 26", "Hàm kiểm tra và đếm số lượng số nguyên tố"),
         ("Bài 26", "Hàm tính diện tích hình tròn"),
-        ("Bài 27", "Hàm đánh giá độ mạnh của mật khẩu người dùng"),
+        ("Bài 26", "Hàm đánh giá độ mạnh của mật khẩu người dùng"),
         ("Bài 29", "Kiểm thử phòng ngừa lỗi chia cho 0 (ZeroDivisionError)"),
         ("Bài 31", "Đếm số chia hết cho 5 và tìm giá trị nhỏ nhất"),
-        ("Bài 31", "Lọc các từ có độ dài lớn hơn ngưỡng trong xâu"),
-        ("Bài 32", "Đếm số lượng chữ số trong xâu mã học sinh"),
-        ("Bài 32", "Đếm tần suất xuất hiện từ khóa trong văn bản"),
+        ("Bài 31", "Đếm số lượng chữ số trong xâu mã học sinh"),
     ]
     random.shuffle(ec_pool)
     chosen_ec = []
@@ -528,6 +527,25 @@ def _unload_embedding_vram() -> bool:
         return False
 
 
+def _unload_llm_vram(model_name: str = MODEL_NAME) -> bool:
+    """Giải phóng tức thì 100% VRAM/RAM của mô hình sinh đề (llama3.2_tinhoc10) sau khi ghép xong đề."""
+    try:
+        resp = requests.post(
+            f"{OLLAMA_BASE_URL}/api/generate",
+            json={"model": model_name, "keep_alive": 0},
+            timeout=15,
+        )
+        ok = resp.status_code == 200
+        print(
+            f"[VRAM CLEANUP] Giải phóng {model_name} (keep_alive=0): {'OK' if ok else f'HTTP {resp.status_code}'}",
+            flush=True,
+        )
+        return ok
+    except Exception as e:
+        print(f"[VRAM CLEANUP] Cảnh báo không thể giải phóng LLM VRAM ({model_name}): {e}", flush=True)
+        return False
+
+
 def _clone_evidence_with_fresh_seed(base_pkg: dict, loai: str) -> dict:
     """
     Sao chép Evidence Package đã tiền truy xuất và thay bằng 1 Hạt giống dữ liệu (Problem Seed)
@@ -568,7 +586,28 @@ def assemble_exam(
       - PHA 2 (Sinh & Kiểm định tuần tự): Ghim trọn `llama3.2_tinhoc10` trên 4GB VRAM, dùng ngữ cảnh
         tiền truy xuất (kèm Hạt giống dữ liệu tươi riêng cho từng ô & Backfill), chạy `exam_critic`
         và Backfill tối đa 2 vòng đảm bảo đề 18/21 câu đủ 100% số câu / trọn vẹn 10.0 điểm.
+      - CUỐI PHIÊN (`finally:`): Luôn giải phóng tức thì `llama3.2_tinhoc10` (`keep_alive=0`) để không chạy ngầm VRAM/RAM.
     """
+    try:
+        return _assemble_exam_core(
+            specs=specs,
+            enable_logging=enable_logging,
+            progress_callback=progress_callback,
+            max_backfill_rounds=max_backfill_rounds,
+            use_neuro_symbolic=use_neuro_symbolic,
+        )
+    finally:
+        _unload_llm_vram()
+        _unload_embedding_vram()
+
+
+def _assemble_exam_core(
+    specs: list[dict] | None = None,
+    enable_logging: bool = True,
+    progress_callback=None,
+    max_backfill_rounds: int = 2,
+    use_neuro_symbolic: bool = True,
+) -> dict[str, Any]:
     exam_specs = _rotate_topic_f_specs(specs if specs else DEFAULT_MINI_EXAM_SPECS)
     target_count = len(exam_specs)
     t0 = time.time()
@@ -618,7 +657,7 @@ def assemble_exam(
         f"   -> Tiền truy xuất xong {len(base_ev_cache)} cụm (bai_hoc, loai, muc_do) cho {target_count} câu trong {phase1_sec}s.",
         flush=True,
     )
-    if phase1_sec > 3.0:
+    if phase1_sec > 0.5:
         _unload_embedding_vram()
 
     # ==========================================================================
@@ -665,10 +704,12 @@ def assemble_exam(
             "bai_hoc": res["bai_hoc"],
             "loai_cau_hoi": res["loai_cau_hoi"],
             "muc_do": res["muc_do"],
+            "chi_bao_NLc": res.get("chi_bao_NLc", []),
             "chu_de_chi_tiet": chi_tiet,
             "blueprint_id": bp_id,
             "question_json": res.get("question_json", {}),
             "validation_result": val_res,
+            "rubric_9_criteria": val_res.get("rubric_9_criteria", {}),
             "retry_count": res.get("retry_count", 0),
             "prompt_tokens": res.get("prompt_tokens", 0),
             "latency_sec": res.get("latency_sec", 0.0),
@@ -782,10 +823,12 @@ def assemble_exam(
                 "bai_hoc": res["bai_hoc"],
                 "loai_cau_hoi": res["loai_cau_hoi"],
                 "muc_do": res["muc_do"],
+                "chi_bao_NLc": res.get("chi_bao_NLc", []),
                 "chu_de_chi_tiet": base_detail,
                 "blueprint_id": bp_id,
                 "question_json": res.get("question_json", {}),
                 "validation_result": bf_val,
+                "rubric_9_criteria": bf_val.get("rubric_9_criteria", {}),
                 "retry_count": res.get("retry_count", 0),
                 "prompt_tokens": res.get("prompt_tokens", 0),
                 "latency_sec": res.get("latency_sec", 0.0),
@@ -856,10 +899,12 @@ def assemble_exam(
                         "bai_hoc": res["bai_hoc"],
                         "loai_cau_hoi": res["loai_cau_hoi"],
                         "muc_do": res["muc_do"],
+                        "chi_bao_NLc": res.get("chi_bao_NLc", []),
                         "chu_de_chi_tiet": base_detail,
                         "blueprint_id": bp_id,
                         "question_json": res.get("question_json", {}),
                         "validation_result": bf_val,
+                        "rubric_9_criteria": bf_val.get("rubric_9_criteria", {}),
                         "retry_count": res.get("retry_count", 0),
                         "prompt_tokens": res.get("prompt_tokens", 0),
                         "latency_sec": res.get("latency_sec", 0.0),
@@ -1306,25 +1351,68 @@ def export_exam_to_docx(
             space_after=8,
         )
 
-        # Bảng tổng hợp biểu điểm
+        # Bảng tổng hợp biểu điểm kèm Chỉ báo năng lực (NLc)
         if bang_diem:
-            tbl = doc.add_table(rows=1, cols=4)
+            tbl = doc.add_table(rows=1, cols=5)
             tbl.style = "Table Grid"
             tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
-            headers = ["Dạng câu hỏi", "Số câu", "Điểm / câu", "Tổng điểm phần"]
+            headers = ["Dạng câu hỏi", "Số câu", "Điểm / câu", "Tổng điểm phần", "Chỉ báo năng lực (NLc)"]
             for i, h in enumerate(headers):
                 r = tbl.rows[0].cells[i].paragraphs[0].add_run(h)
-                _set_run_font(r, size_pt=11, bold=True)
+                _set_run_font(r, size_pt=10.5, bold=True)
             for loai_k, info in bang_diem.items():
+                nlc_part = sorted({
+                    str(c).strip()
+                    for it in items
+                    if it.get("loai_cau_hoi") == loai_k
+                    for c in (it.get("chi_bao_NLc") or [])
+                    if str(c).strip()
+                })
                 row_cells = tbl.add_row().cells
-                vals = [loai_k, str(info["so_cau"]), f"{info['diem_moi_cau']}đ", f"{info['tong_diem_phan']}đ"]
+                vals = [
+                    loai_k,
+                    str(info["so_cau"]),
+                    f"{info['diem_moi_cau']}đ",
+                    f"{info['tong_diem_phan']}đ",
+                    ", ".join(nlc_part) if nlc_part else "CC4",
+                ]
                 for i, v in enumerate(vals):
-                    _set_run_font(row_cells[i].paragraphs[0].add_run(v), size_pt=11)
+                    _set_run_font(row_cells[i].paragraphs[0].add_run(v), size_pt=10.5)
+            _add_styled_paragraph(doc, "", space_after=4)
+
+        # Bảng ma trận đặc tả chi tiết Chỉ báo năng lực (NLc) & Rubric 9 tiêu chí
+        if items:
+            _add_styled_paragraph(doc, "BẢNG MA TRẬN ĐẶC TẢ CÂU HỎI & CHỈ BÁO NĂNG LỰC (NLc)", size_pt=11, bold=True, space_after=3)
+            spec_tbl = doc.add_table(rows=1, cols=6)
+            spec_tbl.style = "Table Grid"
+            spec_tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
+            spec_headers = ["Câu", "Bài học", "Dạng", "Mức độ", "Chỉ báo năng lực (NLc)", "Rubric 9TC"]
+            for i, h in enumerate(spec_headers):
+                _set_run_font(spec_tbl.rows[0].cells[i].paragraphs[0].add_run(h), size_pt=10, bold=True)
+            for stt_i, it in enumerate(items, 1):
+                rc = spec_tbl.add_row().cells
+                nlc_str = ", ".join(it.get("chi_bao_NLc") or []) or "CC4"
+                r9 = it.get("rubric_9_criteria") or (it.get("validation_result") or {}).get("rubric_9_criteria") or {}
+                r9_txt = f"{r9.get('so_tieu_chi_dat', 9)}/9" if r9 else "9/9"
+                vals = [
+                    str(it.get("so_thu_tu", stt_i)),
+                    str(it.get("bai_hoc", "")),
+                    str(it.get("loai_cau_hoi", "")),
+                    str(it.get("muc_do", "")),
+                    nlc_str,
+                    r9_txt,
+                ]
+                for i, v in enumerate(vals):
+                    _set_run_font(rc[i].paragraphs[0].add_run(v), size_pt=10)
             _add_styled_paragraph(doc, "", space_after=4)
 
         # Chi tiết đáp án từng phần
         def _add_answer_header(title: str):
             _add_styled_paragraph(doc, title, size_pt=12, bold=True, space_after=4)
+
+        def _fmt_nlc(it: dict) -> str:
+            codes = it.get("chi_bao_NLc") or []
+            return f" – NLc: {', '.join(codes)}" if codes else ""
 
         if mcq_items:
             _add_answer_header("I. ĐÁP ÁN PHẦN I – TRẮC NGHIỆM NHIỀU LỰA CHỌN (0.25đ/câu)")
@@ -1333,7 +1421,7 @@ def export_exam_to_docx(
                 ans = str(q.get("dap_an", "A")).strip().upper()
                 p = doc.add_paragraph()
                 p.paragraph_format.space_after = Pt(2)
-                _set_run_font(p.add_run(f"Câu {idx} ({item.get('bai_hoc', '')} – {item.get('muc_do', '')}): Đáp án {ans} (0.25đ). "), size_pt=11.5, bold=True)
+                _set_run_font(p.add_run(f"Câu {idx} ({item.get('bai_hoc', '')} – {item.get('muc_do', '')}{_fmt_nlc(item)}): Đáp án {ans} (0.25đ). "), size_pt=11.5, bold=True)
                 _set_run_font(p.add_run(f"Giải thích: {q.get('giai_thich', '')}"), size_pt=11.5)
                 _add_styled_paragraph(doc, f"   Bằng chứng SGK: \"{q.get('trich_dan_sgk', '')}\"", size_pt=10.5, italic=True, space_after=4)
 
@@ -1341,7 +1429,7 @@ def export_exam_to_docx(
             _add_answer_header("II. ĐÁP ÁN PHẦN II – TRẮC NGHIỆM ĐÚNG/SAI (Bậc thang: 1ý 0.1đ | 2ý 0.25đ | 3ý 0.5đ | 4ý 1.0đ)")
             for idx, item in enumerate(tf_items, 1):
                 q = item.get("question_json", {})
-                _add_styled_paragraph(doc, f"Câu {idx} ({item.get('bai_hoc', '')} – {item.get('muc_do', '')}):", size_pt=11.5, bold=True, space_after=2)
+                _add_styled_paragraph(doc, f"Câu {idx} ({item.get('bai_hoc', '')} – {item.get('muc_do', '')}{_fmt_nlc(item)}):", size_pt=11.5, bold=True, space_after=2)
                 for letter in ("a", "b", "c", "d"):
                     obj = q.get(letter) or {}
                     da = obj.get("dap_an", "") if isinstance(obj, dict) else ""
@@ -1359,7 +1447,7 @@ def export_exam_to_docx(
                 q = item.get("question_json", {})
                 p = doc.add_paragraph()
                 p.paragraph_format.space_after = Pt(2)
-                _set_run_font(p.add_run(f"Câu {idx} ({item.get('bai_hoc', '')} – {item.get('muc_do', '')}): Đáp án = {q.get('dap_an_ngan', '')} (0.5đ). "), size_pt=11.5, bold=True)
+                _set_run_font(p.add_run(f"Câu {idx} ({item.get('bai_hoc', '')} – {item.get('muc_do', '')}{_fmt_nlc(item)}): Đáp án = {q.get('dap_an_ngan', '')} (0.5đ). "), size_pt=11.5, bold=True)
                 _set_run_font(p.add_run(f"Giải thích: {q.get('giai_thich', '')}"), size_pt=11.5)
                 _add_styled_paragraph(doc, f"   Bằng chứng SGK: \"{q.get('trich_dan_sgk', '')}\"", size_pt=10.5, italic=True, space_after=4)
 
@@ -1367,7 +1455,7 @@ def export_exam_to_docx(
             _add_answer_header("IV. ĐÁP ÁN & RUBRIC PHẦN IV – TỰ LUẬN LẬP TRÌNH PYTHON (1.0đ/câu)")
             for idx, item in enumerate(ec_items, 1):
                 q = item.get("question_json", {})
-                _add_styled_paragraph(doc, f"Câu {idx} ({item.get('bai_hoc', '')} – {item.get('muc_do', '')}) – Mã Python mẫu:", size_pt=11.5, bold=True, space_after=2)
+                _add_styled_paragraph(doc, f"Câu {idx} ({item.get('bai_hoc', '')} – {item.get('muc_do', '')}{_fmt_nlc(item)}) – Mã Python mẫu:", size_pt=11.5, bold=True, space_after=2)
                 raw_mau = q.get("dap_an_mau", "")
                 if isinstance(raw_mau, list):
                     raw_mau = "\n".join(str(x) for x in raw_mau)

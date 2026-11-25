@@ -108,6 +108,49 @@ def _normalize_lesson_num(bai_hoc: str) -> int:
     return int(m.group(1)) if m else 19
 
 
+BLUEPRINT_MUC_DO_MAP: dict[str, str] = {
+    # Nhận biết (NB)
+    "B16_MCQ_SCRIPT_MODE": "NB", "B16_MCQ_HIGH_LEVEL": "NB", "MCQ_B16_INTERPRETER": "NB", "MCQ_B16_EXT": "NB",
+    "B17_MCQ_VALID_VAR": "NB", "B17_MCQ_ASSIGN_VALID": "NB", "MCQ_B17_KW_ERR": "NB",
+    "B18_MCQ_TYPE_CAST": "NB", "MCQ_B18_FLOAT_CAST": "NB",
+    "MCQ_B19_LOGIC_NOT": "NB", "MCQ_B19_MISSING_COND": "NB",
+    "B22_MCQ_LIST_INDEX": "NB", "MCQ_B22_LEN_EMPTY": "NB", "MCQ_B22_LIST_IN": "NB",
+    "B24_MCQ_STR_LEN": "NB", "B24_MCQ_STR_INDEX": "NB", "MCQ_B24_STR_IN": "NB",
+    "B27_MCQ_PARAM_ARG": "NB", "B28_MCQ_SCOPE": "NB", "MCQ_B28_GLOBAL_KW": "NB",
+    "B29_MCQ_LOGIC_ERR": "NB", "B29_MCQ_ZERODIVISIONERROR": "NB", "B29_MCQ_INDEXERROR": "NB",
+    "B29_MCQ_NAMEERROR": "NB", "B29_MCQ_TYPEERROR": "NB", "MCQ_B29_TYPE_ERR": "NB", "MCQ_B29_ZERODIV": "NB",
+    "B30_MCQ_DEBUG_TEST": "NB", "MCQ_B30_BOUNDARY": "NB",
+    "TF_B16_MODES": "NB", "TF_B17_VARS": "NB", "B18_TF_IO": "NB", "TF_B22_METHODS": "NB",
+    "TF_B24_IMMUT": "NB", "B24_TF_STR": "NB", "TF_B30_TESTING": "NB",
+    "SA_B18_STR_LEN": "NB", "B25_SA_STR_SPLIT": "NB",
+    # Vận dụng (VD)
+    "MCQ_B19_NESTED_IF": "VD", "MCQ_B20_FOR_BREAK": "VD", "MCQ_B21_WHILE_BREAK": "VD",
+    "B22_TF_LIST_FILTER": "VD", "TF_B20_NESTED": "VD", "TF_B23_SLICE_MUT": "VD",
+    "B24_TF_STR_IMMUTABLE": "VD", "B26_TF_FUNC_DEF": "VD", "B27_TF_PARAM_ARG": "VD", "TF_B28_SCOPE": "VD",
+    "SA_B16_PRIORITY": "VD", "B20_SA_FOR_IF": "VD", "SA_B20_STEP_SUM": "VD", "SA_B20_BREAK_VAL": "VD",
+    "SA_B21_DIGIT_SUM": "VD", "SA_B22_NEG_SLICE": "VD", "B23_SA_LIST_OPS": "VD",
+    "B25_SA_STR_FIND": "VD", "SA_B25_SPLIT_CNT": "VD", "SA_B26_COMPOSE": "VD",
+    "B28_SA_SCOPE": "VD", "SA_B28_GLOBAL_CNT": "VD", "SA_B30_BUG_FIX": "VD",
+}
+
+
+def _infer_blueprint_muc_do(blueprint_id: str, loai: str, explicit_muc_do: str = "") -> str:
+    """Xác định chuẩn mức độ nhận thức (NB / TH / VD) của từng blueprint."""
+    md = str(explicit_muc_do or "").strip().upper()
+    if md in ("NB", "TH", "VD"):
+        return md
+    bp_up = str(blueprint_id or "").strip().upper()
+    if bp_up in BLUEPRINT_MUC_DO_MAP:
+        return BLUEPRINT_MUC_DO_MAP[bp_up]
+    if loai == "ESSAY_CODE":
+        return "VD"
+    if loai == "TRUE_FALSE":
+        return "TH"
+    if loai == "SHORT_ANSWER":
+        return "TH"
+    return "TH"
+
+
 def _pack_skeleton(
     blueprint_id: str,
     motif_tag: str,
@@ -118,8 +161,9 @@ def _pack_skeleton(
     sandbox_verified: bool = False,
     verified_explanation: str = "",
     verified_tf_explanations: dict[str, str] | None = None,
+    muc_do: str = "",
 ) -> dict[str, Any]:
-    """Đóng gói khung câu hỏi kèm bản sao bất biến các trường cốt lõi (locked_fields) và giải thích đã kiểm chứng 100%."""
+    """Đóng gói khung câu hỏi kèm bản sao bất biến các trường cốt lõi (locked_fields), mức độ và giải thích kiểm chứng 100%."""
     if not verified_explanation:
         verified_explanation = str(question_json.get("giai_thich", "")).strip()
         if not verified_explanation and loai == "ESSAY_CODE":
@@ -162,11 +206,14 @@ def _pack_skeleton(
             locked[k] = question_json[k]
         locked["giai_thich"] = verified_explanation
 
+    inferred_md = _infer_blueprint_muc_do(blueprint_id, loai, muc_do)
+
     return {
         "blueprint_id": blueprint_id,
         "motif_tag": motif_tag,
         "bai_hoc": bai_hoc,
         "loai_cau_hoi": loai,
+        "muc_do": inferred_md,
         "question_json": question_json,
         "locked_fields": locked,
         "sandbox_stdout": sandbox_stdout,
@@ -397,13 +444,16 @@ def _bp_b18_tf_io() -> dict:
     code = "a = int('18')\nb = float('2.5')\nprint(int(a + b))"
     out = _run_code_get_stdout(code)
     gt_tf = {
-        "a": "Hàm int() chuyển đổi xâu biểu diễn số nguyên '18' sang kiểu số nguyên int.",
+        "a": "Hàm int('18') chuyển đổi xâu kí tự '18' sang kiểu số nguyên int.",
         "b": "Hàm float('2.5') chuyển xâu thành số thực 2.5 thuộc kiểu float, không còn là kiểu str.",
-        "c": f"Tổng a + b = 18 + 2.5 = 20.5 và int(20.5) lấy phần nguyên là {out}.",
-        "d": "Hàm input() trong Python luôn trả về dữ liệu kiểu xâu kí tự str, cần gọi int() hoặc float() để chuyển sang kiểu số.",
+        "c": f"Tổng a + b = 18 + 2.5 = 20.5 và hàm int(20.5) lấy phần nguyên nên kết quả in ra là {out}.",
+        "d": "Hàm input() luôn trả về kiểu xâu str; nếu cộng trực tiếp với số mà chưa ép kiểu int()/float() sẽ gây lỗi TypeError.",
     }
     q = {
-        "cau_hoi_chung": f"Cho đoạn chương trình Python minh họa lệnh chuyển đổi kiểu và print() sau:\n{code}\nXét các phát biểu sau:",
+        "cau_hoi_chung": (
+            f"Một học sinh nhập số lượng vở a và đơn giá khuyến mãi b dưới dạng xâu kí tự rồi chuyển đổi kiểu để tính tổng trong đoạn mã sau:\n"
+            f"{code}\nXét các phát biểu sau:"
+        ),
         "a": {
             "menh_de": "Lệnh int('18') chuyển xâu kí tự '18' sang số nguyên kiểu int.",
             "dap_an": "Đúng",
@@ -420,7 +470,7 @@ def _bp_b18_tf_io() -> dict:
             "giai_thich": gt_tf["c"],
         },
         "d": {
-            "menh_de": "Hàm input() trong Python luôn trả về trực tiếp dữ liệu kiểu số nguyên int.",
+            "menh_de": "Nếu dùng hàm input() để nhập số rồi cộng trực tiếp mà không gọi int() hay float() thì chương trình luôn cộng đúng như số nguyên.",
             "dap_an": "Sai",
             "giai_thich": gt_tf["d"],
         },
@@ -430,7 +480,6 @@ def _bp_b18_tf_io() -> dict:
 
 
 def _bp_b18_tf_input_cast() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
     a = random.choice([10, 15, 20, 25])
     b_num = random.choice([2, 3, 4, 5])
     code = f"x = {a}\ns = '{b_num}'\nkq = x + int(s)\nprint(kq)"
@@ -439,12 +488,15 @@ def _bp_b18_tf_input_cast() -> dict:
     c_shown = out if c_claim_true else str(int(out) + 5)
     gt_tf = {
         "a": f"Giá trị {a} là số nguyên nên biến x có kiểu dữ liệu int.",
-        "b": f"Giá trị '{b_num}' được đặt trong cặp dấu nháy đơn nên biến s thuộc kiểu xâu kí tự str.",
-        "c": f"Biến s được ép kiểu bằng int('{b_num}') = {b_num}, cộng với x = {a} được kết quả {out}.",
+        "b": f"Giá trị '{b_num}' nằm trong cặp dấu nháy đơn nên biến s thuộc kiểu xâu kí tự str, cần int(s) để chuyển sang số.",
+        "c": f"Biến s được ép kiểu bằng int('{b_num}') = {b_num}, cộng với x = {a} được kết quả in ra là {out}.",
         "d": "Trong Python, phép cộng trực tiếp giữa kiểu số nguyên int và kiểu xâu str (x + s) sẽ báo lỗi TypeError.",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": (
+            f"Trong ứng dụng quản lý kho sách thư viện, số sách đang có là biến x và số sách vừa nhập thêm (đọc từ bàn phím dạng xâu) là biến s:\n"
+            f"{code}\nXét tính Đúng/Sai của các phát biểu sau:"
+        ),
         "a": {
             "menh_de": f"Biến x được gán giá trị {a} thuộc kiểu số nguyên int.",
             "dap_an": "Đúng",
@@ -565,23 +617,25 @@ def _bp_b19_sa_elif_grade() -> dict:
 
 
 def _bp_b19_tf_branch() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
     v = random.choice(["p", "n", "diem", "nhiet_do", "so_luong"])
     if v == "diem":
         val = random.choice([7.0, 8.0, 8.5, 9.0])
         nguong = 8.0
         code = f"{v} = {val}\nif {v} >= {nguong}:\n    print('DatChuan')\nelse:\n    print('ChuaDat')"
         lbl_t, lbl_f = "DatChuan", "ChuaDat"
+        scenario = f"Trong chương trình xét điều kiện nhận học bổng học sinh giỏi dựa trên điểm trung bình ({v}), đoạn mã Python sau được thực thi:\n{code}\nXét tính Đúng/Sai của các phát biểu sau:"
     elif v == "nhiet_do":
         val = random.choice([36, 37, 38, 39])
         nguong = 37
         code = f"{v} = {val}\nif {v} > {nguong}:\n    print('VuotMuc')\nelse:\n    print('AnToan')"
         lbl_t, lbl_f = "VuotMuc", "AnToan"
+        scenario = f"Một cảm biến đo nhiệt độ phòng máy chủ lưu giá trị đo vào biến {v} để tự động cảnh báo theo đoạn mã:\n{code}\nXét tính Đúng/Sai của các phát biểu sau:"
     else:
         val = random.choice([12, 15, 18, 21, 24])
         nguong = 14
         lbl_t, lbl_f = random.choice([("DatChuan", "ChuaDat"), ("HopLe", "KhongHopLe"), ("XuatSac", "Dat")])
         code = f"{v} = {val}\nif {v} >= {nguong} and {v} % 3 == 0:\n    print('{lbl_t}')\nelse:\n    print('{lbl_f}')"
+        scenario = f"Để kiểm tra tính hợp lệ của số lượng sản phẩm ({v}) khi đóng gói theo lốc 3 hộp và đạt mức tối thiểu {nguong}, hệ thống chạy đoạn mã:\n{code}\nXét tính Đúng/Sai của các phát biểu sau:"
 
     out = _run_code_get_stdout(code)
     cond_is_true = (out == lbl_t)
@@ -596,7 +650,7 @@ def _bp_b19_tf_branch() -> dict:
         "d": "Theo cú pháp Python chuẩn, dòng điều kiện if và dòng else đều bắt buộc kết thúc bằng dấu hai chấm (:).",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": scenario,
         "a": {
             "menh_de": f"Biến {v} được gán giá trị {val} thuộc kiểu {'float' if isinstance(val, float) else 'int'}.",
             "dap_an": "Đúng",
@@ -683,7 +737,6 @@ def _bp_b20_mcq_for_count_mult3() -> dict:
 
 
 def _bp_b20_tf_for_range() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
     start = random.choice([2, 3])
     stop = start + random.choice([5, 6])
     step = random.choice([1, 2])
@@ -704,10 +757,13 @@ def _bp_b20_tf_for_range() -> dict:
         "a": f"Hàm range({start}, {stop}, {step}) tạo các giá trị {vals}, không bao gồm cận trên {stop}.",
         "b": f"Vùng giá trị {vals} có đúng {cnt} phần tử nên vòng lặp for chỉ thực hiện đúng {cnt} lần lặp.",
         "c": f"Cộng dồn các giá trị {vals} ta thu được tong = {out}.",
-        "d": "Biến tong khởi tạo bằng 0 và chỉ cộng các số nguyên nên sau vòng lặp luôn mang kiểu int.",
+        "d": "Biến tong khởi tạo bằng 0 và chỉ cộng các số nguyên nên sau vòng lặp luôn mang kiểu int (hoặc đổi nếu cộng số thực).",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": (
+            f"Trong phong trào đọc sách học đường, học sinh lập trình tính tổng số trang sách (tong) theo các mốc số trang tăng đều k từ {start} đến dưới {stop}:\n"
+            f"{code}\nXét tính Đúng/Sai của các phát biểu sau:"
+        ),
         "a": {
             "menh_de": f"Hàm range({start}, {stop}, {step}) sinh dãy các giá trị nguyên bắt đầu từ {start} và nhỏ hơn {stop}.",
             "dap_an": "Đúng",
@@ -856,7 +912,6 @@ def _bp_b21_sa_while_acc() -> dict:
 
 
 def _bp_b21_tf_while() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
     limit = random.choice([9, 11, 13])
     code = (
         f"k = 1\n"
@@ -875,7 +930,10 @@ def _bp_b21_tf_while() -> dict:
         "d": "Nếu trong thân vòng lặp while không có câu lệnh tăng biến k (k += 3) thì điều kiện lặp luôn đúng gây ra vòng lặp vô hạn.",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": (
+            f"Một học sinh tính tổng tiền tiết kiệm bỏ ống heo theo từng đợt k tăng thêm 3 nghìn đồng cho đến khi dưới {limit} nghìn đồng bằng đoạn mã:\n"
+            f"{code}\nXét các phát biểu sau:"
+        ),
         "a": {
             "menh_de": f"Vòng lặp while tiếp tục thực hiện khi điều kiện k < {limit} còn đúng.",
             "dap_an": "Đúng",
@@ -902,7 +960,6 @@ def _bp_b21_tf_while() -> dict:
 
 
 def _bp_b21_tf_while_condition() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
     start = random.choice([8, 10, 12, 14])
     step = random.choice([2, 3])
     code = (
@@ -920,10 +977,13 @@ def _bp_b21_tf_while_condition() -> dict:
         "a": "Điều kiện lặp n > 0 được kiểm tra ở đầu mỗi lượt lặp trước khi thực hiện các lệnh trong thân vòng lặp.",
         "b": f"Mỗi lượt n giảm {step} nên sau {dem_val} lượt thì n = {n_val} (<= 0), vòng lặp dừng lại.",
         "c": f"Kết quả in ra gồm hai giá trị lần lượt là dem = {dem_val} và n = {n_val}.",
-        "d": "Vòng lặp while trong Python luôn chạy ít nhất 1 lần bất kể điều kiện ban đầu đúng hay sai.",
+        "d": "Vòng lặp while trong Python luôn kiểm tra điều kiện trước; nếu ngay ban đầu n <= 0 thì vòng lặp chạy 0 lần.",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": (
+            f"Một thiết bị tự động phát phiếu từ {start} tờ giấy (n), mỗi lượt phục vụ tiêu tốn {step} tờ và dùng biến dem để đếm số lượt phục vụ:\n"
+            f"{code}\nXét các phát biểu sau:"
+        ),
         "a": {
             "menh_de": "Điều kiện n > 0 được kiểm tra trước mỗi lượt lặp.",
             "dap_an": "Đúng",
@@ -991,7 +1051,6 @@ def _bp_b22_mcq_list_modify() -> dict:
 
 
 def _bp_b22_tf_list_filter() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
     nums = random.sample([3, 6, 9, 12, 15, 18], 5)
     cnt_even = len([x for x in nums if x % 2 == 0])
     code = (
@@ -1011,7 +1070,10 @@ def _bp_b22_tf_list_filter() -> dict:
         "d": "Trong Python, danh sách (list) là kiểu dữ liệu có thể thay đổi (mutable), cho phép gán lại hoặc xóa phần tử.",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": (
+            f"Một lớp học lưu danh sách mã số học sinh tham gia câu lạc bộ vào biến danh sách A = {nums} và đếm số mã số chẵn bằng đoạn mã:\n"
+            f"{code}\nXét các phát biểu sau:"
+        ),
         "a": {
             "menh_de": f"Biến A lưu trữ một danh sách gồm {len(nums)} phần tử số nguyên.",
             "dap_an": "Đúng",
@@ -1038,7 +1100,6 @@ def _bp_b22_tf_list_filter() -> dict:
 
 
 def _bp_b22_tf_list_indexing_slice() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
     nums = random.sample([5, 12, 18, 24, 30, 36], 5)
     code = f"ds = {nums}\nds[1] = ds[0] + ds[-1]\nprint(ds[1], len(ds))"
     out = _run_code_get_stdout(code)
@@ -1051,7 +1112,10 @@ def _bp_b22_tf_list_indexing_slice() -> dict:
         "d": "Danh sách trong Python là kiểu dữ liệu mutable nên cho phép thay đổi phần tử qua phép gán chỉ số.",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": (
+            f"Để cập nhật số lượng sách mượn qua các ngày trong tuần được lưu ở danh sách ds = {nums}, nhân viên thư viện chạy đoạn mã:\n"
+            f"{code}\nXét các phát biểu sau:"
+        ),
         "a": {
             "menh_de": f"Hàm len(ds) trả về số lượng phần tử của danh sách là {len(nums)}.",
             "dap_an": "Đúng",
@@ -1191,10 +1255,13 @@ def _bp_b24_tf_str() -> dict:
         "a": f"Giá trị '{sample}' nằm trong dấu nháy đơn nên biến s có kiểu str.",
         "b": f"Chỉ số 0 là kí tự đầu tiên '{sample[0]}', không phải '{sample[-1]}'.",
         "c": f"Hàm len(s) đếm đủ {out} kí tự trong xâu '{sample}'.",
-        "d": "Hàm len() luôn trả về độ dài dạng số nguyên kiểu int.",
+        "d": "Hàm len() luôn trả về độ dài dạng số nguyên kiểu int, đồng thời kiểu str không cho phép gán s[0] = 'X'.",
     }
     q = {
-        "cau_hoi_chung": f"Cho đoạn chương trình Python sau:\n{code}\nXét các phát biểu sau:",
+        "cau_hoi_chung": (
+            f"Hệ thống quản lý thi trực tuyến kiểm tra độ dài mã định danh lớp học lưu trong biến xâu s = '{sample}':\n"
+            f"{code}\nXét các phát biểu sau:"
+        ),
         "a": {
             "menh_de": f"Biến s thuộc kiểu xâu kí tự str với giá trị '{sample}'.",
             "dap_an": "Đúng",
@@ -1221,36 +1288,38 @@ def _bp_b24_tf_str() -> dict:
 
 
 def _bp_b24_tf_str_immutable() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
     sample = random.choice(["Python10", "TinHoc2026", "LapTrinhKNTT", "GiaiThuat10"])
     code = f"s = '{sample}'\nkq = s[0] + s[-1]\nprint(kq)"
     out = _run_code_get_stdout(code)
     gt_tf = {
         "a": f"Chỉ số 0 là kí tự đầu tiên '{sample[0]}' và chỉ số -1 là kí tự cuối cùng '{sample[-1]}'.",
-        "b": f"Phép cộng hai xâu kí tự s[0] và s[-1] ghép thành '{out}'.",
-        "c": "Trong Python, xâu kí tự là kiểu dữ liệu bất biến (immutable) nên lệnh gán thay thế s[0] = 'X' sẽ báo lỗi TypeError.",
-        "d": f"Toán tử 'in' dùng để kiểm tra xem một xâu con có xuất hiện trong xâu hay không, ví dụ '{sample[:3]}' in s cho kết quả True.",
+        "b": f"Toán tử '+' trên hai xâu s[0] và s[-1] thực hiện nối xâu, đồng thời toán tử 'in' kiểm tra '{sample[:3]}' in s cho kết quả True.",
+        "c": f"Khi chạy đoạn mã ghép hai kí tự đầu và cuối của xâu s, kết quả in ra màn hình là '{out}'.",
+        "d": "Trong Python, xâu kí tự là kiểu dữ liệu bất biến (immutable) nên lệnh gán thay thế s[0] = 'X' sẽ báo lỗi TypeError.",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": (
+            f"Để tạo mã viết tắt gồm kí tự đầu và kí tự cuối từ mã khóa học lưu trong biến xâu s = '{sample}', chương trình chạy đoạn mã:\n"
+            f"{code}\nXét các phát biểu sau:"
+        ),
         "a": {
             "menh_de": f"Kí tự đầu tiên của xâu s là '{sample[0]}' và kí tự cuối cùng là '{sample[-1]}'.",
             "dap_an": "Đúng",
             "giai_thich": gt_tf["a"],
         },
         "b": {
-            "menh_de": f"Kết quả in ra màn hình là '{out}'.",
+            "menh_de": "Toán tử 'in' cho phép kiểm tra sự xuất hiện của xâu con trong xâu kí tự s.",
             "dap_an": "Đúng",
             "giai_thich": gt_tf["b"],
         },
         "c": {
-            "menh_de": "Câu lệnh 's[0] = \"X\"' hợp lệ và thay đổi được kí tự đầu tiên của xâu s.",
-            "dap_an": "Sai",
+            "menh_de": f"Kết quả in ra màn hình là '{out}'.",
+            "dap_an": "Đúng",
             "giai_thich": gt_tf["c"],
         },
         "d": {
-            "menh_de": "Toán tử 'in' cho phép kiểm tra sự xuất hiện của xâu con trong xâu kí tự.",
-            "dap_an": "Đúng",
+            "menh_de": "Câu lệnh 's[0] = \"X\"' hợp lệ và thay đổi được kí tự đầu tiên của xâu s.",
+            "dap_an": "Sai",
             "giai_thich": gt_tf["d"],
         },
         "trich_dan_sgk": "",
@@ -1354,7 +1423,7 @@ def _bp_b25_sa_str_split() -> dict:
 
 def _bp_b26_sa_func_call() -> dict:
     lead = random.choice(STEM_SA_LEADINS)
-    a_val = random.randint(3, 7)
+    a_val = random.choice([3, 4, 5, 6, 8, 9])
     b_val = random.randint(2, 5)
     code = (
         f"def tinh_bieu_thuc(x, y):\n"
@@ -1393,7 +1462,6 @@ def _bp_b26_mcq_return_val() -> dict:
 
 
 def _bp_b26_tf_func_def() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
     a_val = random.randint(4, 9)
     b_val = random.randint(2, 6)
     code = (
@@ -1410,7 +1478,10 @@ def _bp_b26_tf_func_def() -> dict:
         "d": "Lệnh return dùng để trả về giá trị kết quả của hàm, nếu không có return hàm sẽ trả về None.",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": (
+            f"Để tính độ dài viền trang trí cho bảng tin lớp học hình chữ nhật kích thước dài {a_val}m, rộng {b_val}m, học sinh xây dựng hàm sau:\n"
+            f"{code}\nXét tính Đúng/Sai của các phát biểu sau:"
+        ),
         "a": {
             "menh_de": "Từ khóa def dùng để khai báo định nghĩa hàm trong Python.",
             "dap_an": "Đúng",
@@ -1479,8 +1550,7 @@ def _bp_b27_mcq_default_param() -> dict:
 
 
 def _bp_b27_tf_param_arg() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
-    base = random.randint(3, 7)
+    base = random.choice([3, 4, 5, 6, 8, 9])
     code = f"def tinh(x, he_so=2):\n    return x * he_so + 1\n\nkq = tinh({base})\nprint(kq)"
     out = _run_code_get_stdout(code)
     gt_tf = {
@@ -1490,7 +1560,10 @@ def _bp_b27_tf_param_arg() -> dict:
         "d": "Trong định nghĩa hàm Python, tham số có giá trị mặc định bắt buộc phải đặt sau các tham số không có giá trị mặc định.",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": (
+            f"Một đơn vị giao hàng tính điểm phí vận chuyển cho quãng đường x = {base} km theo công thức có hệ số mặc định (he_so=2):\n"
+            f"{code}\nXét tính Đúng/Sai của các phát biểu sau:"
+        ),
         "a": {
             "menh_de": "Trong hàm tinh, tham số 'he_so' có giá trị mặc định bằng 2.",
             "dap_an": "Đúng",
@@ -1621,7 +1694,10 @@ def _bp_b29_tf_error() -> dict:
         "d": "Dùng tên biến chưa khai báo phát sinh ngoại lệ NameError, không phải IndexError.",
     }
     q = {
-        "cau_hoi_chung": f"Cho đoạn chương trình Python đã kiểm thử và gỡ lỗi sau:\n{code}\nXét các phát biểu về lỗi và kiểm thử sau:",
+        "cau_hoi_chung": (
+            f"Trong bài toán chia đều a = 12 quyển vở vào b = 4 nhóm học tập, học sinh chạy kiểm thử đoạn mã Python:\n"
+            f"{code}\nXét các phát biểu về lỗi và ngoại lệ sau:"
+        ),
         "a": {
             "menh_de": "Đoạn chương trình trên viết đúng cú pháp và không phát sinh ngoại lệ khi chạy.",
             "dap_an": "Đúng",
@@ -1648,7 +1724,6 @@ def _bp_b29_tf_error() -> dict:
 
 
 def _bp_b29_tf_syntax_vs_runtime() -> dict:
-    lead_tmpl = random.choice(STEM_TF_LEADINS)
     a = random.choice([20, 24, 30, 36])
     b = random.choice([3, 4, 6])
     code = f"x = {a}\ny = {b}\nprint(x // y)"
@@ -1660,7 +1735,10 @@ def _bp_b29_tf_syntax_vs_runtime() -> dict:
         "d": "Lỗi cú pháp (SyntaxError) được phát hiện ngay trong giai đoạn biên dịch/dịch trước khi chương trình được chạy thực sự.",
     }
     q = {
-        "cau_hoi_chung": lead_tmpl.format(code=code),
+        "cau_hoi_chung": (
+            f"Để chia đều x = {a} phần quà vào y = {b} hộp đồng nhất, học sinh chạy kiểm tra đoạn mã:\n"
+            f"{code}\nXét tính Đúng/Sai của các phát biểu sau:"
+        ),
         "a": {
             "menh_de": "Đoạn mã trên hoàn toàn hợp lệ về mặt cú pháp và chạy bình thường.",
             "dap_an": "Đúng",
@@ -2397,6 +2475,23 @@ def list_blueprints() -> list[dict]:
 # BỘ SINH KHUNG CÂU HỎI & ĐÁP ÁN (NEURO-SYMBOLIC VERIFIED SKELETON)
 # ==============================================================================
 
+_FN_META_CACHE: dict[Callable[[], dict], tuple[str, str]] = {}
+
+
+def _get_fn_meta(fn: Callable[[], dict], built_now: dict[Callable[[], dict], dict[str, Any]]) -> tuple[str, str]:
+    """Lấy (blueprint_id, muc_do) đã cache để tránh chạy Sandbox hàng loạt khi lọc ứng viên."""
+    if fn in _FN_META_CACHE and getattr(fn, "__name__", "") != "_bp_b29_mcq_error_classify":
+        return _FN_META_CACHE[fn]
+    pack = built_now.get(fn)
+    if pack is None:
+        pack = fn()
+        built_now[fn] = pack
+    meta = (str(pack.get("blueprint_id", "")), str(pack.get("muc_do", "TH")))
+    if getattr(fn, "__name__", "") != "_bp_b29_mcq_error_classify":
+        _FN_META_CACHE[fn] = meta
+    return meta
+
+
 def build_verified_skeleton(
     bai_hoc: str,
     loai_cau_hoi: str,
@@ -2407,13 +2502,22 @@ def build_verified_skeleton(
 ) -> dict[str, Any]:
     """
     Sinh khung câu hỏi & đáp án đã kiểm chứng toán học/Sandbox 100% theo kiến trúc Neuro-Symbolic.
-    Ưu tiên bốc thăm không hoàn lại theo blueprint_id trong cùng một đề (used_blueprint_ids),
-    đồng thời chống lặp xuyên đề bằng cách ưu tiên bốc các blueprint KHÔNG nằm trong recent_blueprint_ids.
-    Tuyệt đối không gán nhãn bài học giả; giữ nguyên bài học gốc của blueprint đã bốc.
+    Ưu tiên bốc thăm khớp đúng mức độ nhận thức (`NB`, `TH`, `VD`), không hoàn lại theo `blueprint_id`
+    trong cùng một đề (`used_blueprint_ids`) và chống lặp xuyên đề (`recent_blueprint_ids`).
+    Nếu `(bai_hoc, loai, muc_do)` chưa có mẫu thì fallback sang mức gần nhất rồi mới mở rộng toàn kho.
     """
     lesson_num = _normalize_lesson_num(bai_hoc)
-    norm_lesson = f"Bài {lesson_num}"
     loai = str(loai_cau_hoi or "MCQ").strip().upper()
+    target_md = str(muc_do or "TH").strip().upper()
+    if target_md not in ("NB", "TH", "VD"):
+        target_md = "TH"
+
+    nearest_order = {
+        "NB": ["NB", "TH", "VD"],
+        "TH": ["TH", "NB", "VD"],
+        "VD": ["VD", "TH", "NB"],
+    }[target_md]
+
     used = used_blueprint_ids if isinstance(used_blueprint_ids, set) else set()
     recent = set(recent_blueprint_ids) if isinstance(recent_blueprint_ids, (set, list)) else set()
 
@@ -2439,52 +2543,39 @@ def build_verified_skeleton(
         candidates = fallback_by_type.get(loai, [_bp_b19_mcq_if_elif])
 
     random.shuffle(candidates)
+    built_now: dict[Callable[[], dict], dict[str, Any]] = {}
 
-    fresh_packs: list[dict[str, Any]] = []
-    fallback_packs: list[dict[str, Any]] = []
-    any_packs: list[dict[str, Any]] = []
+    def _pick_fn(fn_list: list[Callable[[], dict]]) -> Callable[[], dict] | None:
+        metas: list[tuple[Callable[[], dict], str, str]] = []
+        for fn in fn_list:
+            try:
+                bp_id, md = _get_fn_meta(fn, built_now)
+                metas.append((fn, bp_id, md))
+            except Exception as e:
+                print(f"   ⚠️ Lỗi khi sinh blueprint {fn}: {e}", flush=True)
 
-    for fn in candidates:
-        try:
-            pack = fn()
-            bp_id = pack["blueprint_id"]
-            any_packs.append(pack)
-            if bp_id not in used:
-                fallback_packs.append(pack)
-                if bp_id not in recent:
-                    fresh_packs.append(pack)
-        except Exception as e:
-            print(f"   ⚠️ Lỗi khi sinh blueprint {fn}: {e}", flush=True)
+        for md_lvl in nearest_order:
+            fresh = [fn for fn, bid, md in metas if md == md_lvl and bid not in used and bid not in recent]
+            if fresh:
+                return random.choice(fresh)
+        for md_lvl in nearest_order:
+            unused_fns = [fn for fn, bid, md in metas if md == md_lvl and bid not in used]
+            if unused_fns:
+                return random.choice(unused_fns)
+        return None
 
-    if fresh_packs:
-        chosen_pack = random.choice(fresh_packs)
-    elif fallback_packs:
-        chosen_pack = random.choice(fallback_packs)
-    else:
-        # Cặp (lesson_num, loai) đã hết blueprint chưa dùng trong đề này:
-        # Tìm trên toàn bộ các bài học khác trong registry có blueprint của loại này chưa dùng
-        global_fresh = []
-        global_fallback = []
+    chosen_fn = _pick_fn(candidates)
+    if chosen_fn is None:
+        global_fns: list[Callable[[], dict]] = []
         for (l_other, t_other), fns in registry.items():
             if t_other == loai and l_other != lesson_num:
-                for fn in fns:
-                    try:
-                        p = fn()
-                        bid = p["blueprint_id"]
-                        if bid not in used:
-                            if bid not in recent:
-                                global_fresh.append(p)
-                            else:
-                                global_fallback.append(p)
-                    except Exception:
-                        pass
-        if global_fresh:
-            chosen_pack = random.choice(global_fresh)
-        elif global_fallback:
-            chosen_pack = random.choice(global_fallback)
-        elif any_packs:
-            chosen_pack = random.choice(any_packs)
-        else:
-            chosen_pack = candidates[0]()
+                global_fns.extend(fns)
+        random.shuffle(global_fns)
+        chosen_fn = _pick_fn(global_fns)
 
+    if chosen_fn is None:
+        chosen_fn = candidates[0]
+
+    chosen_pack = built_now.get(chosen_fn) or chosen_fn()
+    chosen_pack["muc_do_muc_tieu"] = target_md
     return chosen_pack

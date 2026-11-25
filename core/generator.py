@@ -10,7 +10,7 @@ os.environ["ANONYMIZED_TELEMETRY"] = "False"
 
 from langgraph.graph import StateGraph, END
 
-from core.retriever import retrieve_evidence_package, estimate_tokens
+from core.retriever import retrieve_evidence_package, estimate_tokens, _get_nlc_and_scoring, normalize_lesson_name
 from core.symbolic_engine import build_verified_skeleton
 from core.validator import (
     validate_question,
@@ -104,6 +104,7 @@ class AgentState(TypedDict):
     chu_de_chi_tiet: str
     loai_cau_hoi: str
     muc_do: str
+    chi_bao_NLc: list[str]
     use_neuro_symbolic: bool
     avoid_snippets: list[str]
     used_blueprint_ids: list[str]
@@ -117,6 +118,7 @@ class AgentState(TypedDict):
     best_validation: dict
     best_score: float
     validation_result: dict
+    rubric_9_criteria: dict
     feedback: str
     is_pass: bool
     retry_count: int
@@ -641,6 +643,19 @@ def _auto_ground_question_json(parsed: dict, loai: str, evidence_package: dict) 
 # CÁC NODE LANGGRAPH (TUẦN TỰ: RETRIEVE -> GENERATE -> VALIDATE -> RETRY<=2)
 # ==============================================================================
 
+def _resolve_chi_bao_nlc(ev: dict | None, bai_hoc: str, loai: str) -> tuple[list[str], list[dict]]:
+    """Trả về (danh_sach_ma_NLc, danh_sach_chi_tiet_NLc) tương ứng bài học 16–32 và dạng câu hỏi."""
+    indicators = list((ev or {}).get("nlc_indicators") or [])
+    if not indicators:
+        try:
+            norm_bh = normalize_lesson_name(bai_hoc)
+        except Exception:
+            norm_bh = bai_hoc
+        indicators, _ = _get_nlc_and_scoring(norm_bh, loai)
+    codes = [str(x.get("ma", "")).strip() for x in indicators if isinstance(x, dict) and x.get("ma")]
+    return codes, indicators
+
+
 def retrieve_node(state: AgentState) -> dict:
     bai_hoc = state["bai_hoc"]
     loai = state["loai_cau_hoi"].strip().upper()
@@ -650,14 +665,19 @@ def retrieve_node(state: AgentState) -> dict:
     # Nếu đã tiền truy xuất ở Pha 1 (Exam Assembler), bỏ qua gọi ChromaDB/Embedding để giữ sạch 4GB VRAM
     pre_pkg = state.get("evidence_package")
     if isinstance(pre_pkg, dict) and pre_pkg.get("sgk_chunks") and pre_pkg.get("formatted_context"):
+        resolved_lesson = pre_pkg.get("bai_hoc", bai_hoc)
+        nlc_codes, nlc_objs = _resolve_chi_bao_nlc(pre_pkg, resolved_lesson, loai)
+        if not pre_pkg.get("nlc_indicators") and nlc_objs:
+            pre_pkg = dict(pre_pkg, nlc_indicators=nlc_objs)
         print(
-            f"\n[NODE 1 - RETRIEVE] Dùng ngữ cảnh tiền truy xuất {pre_pkg.get('bai_hoc', bai_hoc)} "
-            f"| Dạng: {loai} | Mức độ: {muc_do} (~{pre_pkg.get('estimated_context_tokens', 0)} ctx tokens, 0ms embed)",
+            f"\n[NODE 1 - RETRIEVE] Dùng ngữ cảnh tiền truy xuất {resolved_lesson} "
+            f"| Dạng: {loai} | Mức độ: {muc_do} | NLc: {','.join(nlc_codes) or 'N/A'} (~{pre_pkg.get('estimated_context_tokens', 0)} ctx tokens, 0ms embed)",
             flush=True,
         )
         return {
-            "bai_hoc": pre_pkg.get("bai_hoc", bai_hoc),
+            "bai_hoc": resolved_lesson,
             "loai_cau_hoi": loai,
+            "chi_bao_NLc": nlc_codes,
             "evidence_package": pre_pkg,
         }
 
@@ -669,15 +689,17 @@ def retrieve_node(state: AgentState) -> dict:
         muc_do=muc_do,
         max_context_tokens=600,
     )
+    nlc_codes, _ = _resolve_chi_bao_nlc(pkg, pkg["bai_hoc"], loai)
     print(
         f"   -> Truy xuất {len(pkg['sgk_chunks'])} chunks SGK ({pkg['bai_hoc']}), "
-        f"{len(pkg['glossary_terms'])} thuật ngữ chuẩn, 1 khuôn mẫu đề + 1-shot "
+        f"{len(pkg['glossary_terms'])} thuật ngữ chuẩn, NLc: {','.join(nlc_codes) or 'N/A'} "
         f"(~{pkg['estimated_context_tokens']} context tokens).",
         flush=True,
     )
     return {
         "bai_hoc": pkg["bai_hoc"],
         "loai_cau_hoi": loai,
+        "chi_bao_NLc": nlc_codes,
         "evidence_package": pkg,
     }
 
@@ -888,8 +910,16 @@ def generate_node(state: AgentState) -> dict:
             print(f"   ⚠️ Ollama phản hồi lỗi ({e}) -> dùng nguyên khung Symbolic + trích dẫn SGK.", flush=True)
 
         merged_q = _merge_symbolic_and_neural(skeleton, neural_parsed, loai, ev)
+        final_lesson = skeleton.get("bai_hoc", bai_hoc)
+        nlc_codes, nlc_objs = _resolve_chi_bao_nlc(ev if final_lesson == bai_hoc else None, final_lesson, loai)
+        ev_updated = dict(ev)
+        ev_updated["bai_hoc"] = final_lesson
+        if nlc_objs:
+            ev_updated["nlc_indicators"] = nlc_objs
         return {
-            "bai_hoc": skeleton.get("bai_hoc", bai_hoc),
+            "bai_hoc": final_lesson,
+            "chi_bao_NLc": nlc_codes,
+            "evidence_package": ev_updated,
             "question_json": merged_q,
             "blueprint_id": skeleton.get("blueprint_id", ""),
             "symbolic_skeleton": skeleton,
@@ -929,8 +959,9 @@ def validate_node(state: AgentState) -> dict:
     q = state.get("question_json", {})
     loai = state["loai_cau_hoi"]
     ev = state["evidence_package"]
+    muc_do = state.get("muc_do", "TH")
 
-    result = validate_question(q, loai, ev)
+    result = validate_question(q, loai, ev, muc_do=muc_do)
     # Neuro-Symbolic Guard: nếu phần diễn đạt LLM gây rớt Hard Gate -> khôi phục ngay khung Symbolic + trích dẫn SGK chuẩn (0 retry)
     if not result.get("is_pass") and state.get("use_neuro_symbolic", USE_NEURO_SYMBOLIC):
         skeleton = state.get("symbolic_skeleton")
@@ -938,7 +969,7 @@ def validate_node(state: AgentState) -> dict:
             fallback_q = copy.deepcopy(skeleton["question_json"])
             fallback_q["trich_dan_sgk"] = q.get("trich_dan_sgk", "")
             fallback_q = _ground_sgk_citation_fast(fallback_q, ev)
-            fb_res = validate_question(fallback_q, loai, ev)
+            fb_res = validate_question(fallback_q, loai, ev, muc_do=muc_do)
             if fb_res.get("is_pass"):
                 print(
                     "   🛡️ [NEURO-SYMBOLIC GUARD] Khôi phục khung Symbolic đã kiểm chứng + trích dẫn SGK -> PASS lượt đầu!",
@@ -951,11 +982,13 @@ def validate_node(state: AgentState) -> dict:
     xep_loai = result.get("xep_loai", "KHÔNG ĐẠT")
     is_pass = bool(result.get("is_pass", False))
     sb_ok = bool(result.get("sandbox_verified", False))
+    rubric9 = result.get("rubric_9_criteria", {})
+    r9_cnt = rubric9.get("so_tieu_chi_dat", 0)
 
     print(
         f"[NODE 3 - VALIDATE] Tầng 1: {'PASS' if result['tier1']['passed'] else 'FAIL'} | "
         f"Sandbox: {'OK' if sb_ok else 'N/A hoặc Lỗi'} | "
-        f"Tầng 2: {xep_loai} ({score:.3f}/1.0)"
+        f"Tầng 2: {xep_loai} ({score:.3f}/1.0) | Rubric 9TC: {r9_cnt}/9"
     )
     if not is_pass:
         print(f"   -> Phản hồi sửa: {result['feedback'][:240]}")
@@ -972,6 +1005,7 @@ def validate_node(state: AgentState) -> dict:
     return {
         "question_json": q,
         "validation_result": result,
+        "rubric_9_criteria": rubric9,
         "is_pass": is_pass,
         "feedback": result.get("feedback", ""),
         "retry_count": next_retry,
@@ -1020,6 +1054,7 @@ def generate_question(
         "chu_de_chi_tiet": chu_de_chi_tiet,
         "loai_cau_hoi": loai_cau_hoi.strip().upper(),
         "muc_do": muc_do,
+        "chi_bao_NLc": [],
         "use_neuro_symbolic": bool(use_neuro_symbolic),
         "avoid_snippets": list(avoid_snippets) if avoid_snippets else [],
         "used_blueprint_ids": list(used_blueprint_ids) if used_blueprint_ids else [],
@@ -1033,6 +1068,7 @@ def generate_question(
         "best_validation": {},
         "best_score": -1.0,
         "validation_result": {},
+        "rubric_9_criteria": {},
         "feedback": "",
         "is_pass": False,
         "retry_count": 0,
@@ -1049,6 +1085,15 @@ def generate_question(
             final_state["validation_result"] = final_state["best_validation"]
 
     val = final_state.get("validation_result", {})
+    if val.get("rubric_9_criteria"):
+        final_state["rubric_9_criteria"] = val["rubric_9_criteria"]
+    if not final_state.get("chi_bao_NLc"):
+        nlc_codes, _ = _resolve_chi_bao_nlc(
+            final_state.get("evidence_package"),
+            final_state.get("bai_hoc", bai_hoc),
+            final_state.get("loai_cau_hoi", loai_cau_hoi),
+        )
+        final_state["chi_bao_NLc"] = nlc_codes
     rule_pass = bool(val.get("tier1", {}).get("passed", False))
     sb_verified = bool(val.get("sandbox_verified", False))
     fuzzy_score = float(val.get("diem_chat_luong", 0.0))

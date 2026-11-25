@@ -67,7 +67,7 @@ def _bp_b16_mcq_interpreter_trait() -> dict:
 
 def _bp_b17_mcq_keyword_error() -> dict:
     lead = "Trong các tên biến sau đây, tên nào KHÔNG hợp lệ trong Python vì trùng với từ khóa của ngôn ngữ?"
-    kw = random.choice(["def", "for", "while", "if", "class", "return"])
+    kw = random.choice(["def", "for", "while", "if", "elif", "else", "return"])
     valid1 = random.choice(["_tong", "dem_so", "soLuong", "bien1"])
     valid2 = random.choice(["diem_tb", "x_val", "temp_c", "res_2"])
     valid3 = random.choice(["my_var", "n10", "chieu_dai", "ketQua"])
@@ -704,117 +704,117 @@ def _make_tf_question(stem: str, a: tuple, b: tuple, c: tuple, d: tuple, sgk_ref
 
 def _bp_b16_tf_interactive_vs_script() -> dict:
     q = _make_tf_question(
-        "Xét các phát biểu sau về hai chế độ làm việc trong môi trường lập trình Python:",
-        ("Chế độ gõ lệnh trực tiếp (Interactive Mode) phù hợp để chạy thử nghiệm nhanh từng câu lệnh đơn lẻ.", True, "Chế độ tương tác thực thi ngay từng câu lệnh sau khi nhấn Enter."),
-        ("Chương trình viết ở chế độ soạn thảo (Script Mode) được lưu trữ vào tệp có phần mở rộng .py để sử dụng lại.", True, "Chế độ soạn thảo lưu trữ chương trình thành tệp mã nguồn hoàn chỉnh."),
-        ("Ở chế độ gõ lệnh trực tiếp, khi đóng cửa sổ dòng lệnh thì toàn bộ các biến và câu lệnh đã gõ vẫn được tự động lưu lại vào ổ cứng.", False, "Chế độ tương tác không tự động lưu các lệnh vào tệp; khi đóng cửa sổ dữ liệu tạm sẽ mất."),
-        ("Dấu nhắc >>> là dấu hiệu nhận biết môi trường đang ở chế độ gõ lệnh trực tiếp của Python.", True, "Dấu nhắc >>> thể hiện Python đã sẵn sàng nhận lệnh trực tiếp từ người dùng.")
+        "Trong buổi thực hành lập trình đầu tiên bằng môi trường Python (IDLE) để viết chương trình giải bài tập Tin học 10, xét các phát biểu sau:",
+        ("Dấu nhắc >>> là dấu hiệu nhận biết môi trường đang ở chế độ gõ lệnh trực tiếp (Interactive Mode).", True, "Dấu nhắc >>> thể hiện Python đang ở chế độ tương tác nhận từng lệnh."),
+        ("Chế độ gõ lệnh trực tiếp phù hợp để thử nhanh từng lệnh đơn, còn chế độ soạn thảo (Script Mode) lưu mã vào tệp đuôi .py.", True, "Chế độ soạn thảo lưu chương trình thành tệp mã nguồn .py để chạy lại nhiều lần."),
+        ("Ở chế độ gõ lệnh trực tiếp, khi đóng cửa sổ dòng lệnh thì toàn bộ câu lệnh và biến đã gõ vẫn tự động lưu thành tệp hoàn chỉnh.", False, "Chế độ tương tác không tự động lưu tệp .py; khi đóng cửa sổ dữ liệu tạm sẽ mất."),
+        ("Khi cần xây dựng phần mềm quản lý điểm gồm hàng chục dòng lệnh để nộp cho giáo viên, lập trình viên nên dùng Script Mode.", True, "Script Mode giúp chỉnh sửa, lưu trữ và chạy lại chương trình dài thuận tiện.")
     )
     return _pack_skeleton("TF_B16_MODES", "tf_modes", "Bài 16", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b17_tf_vars_naming() -> dict:
     q = _make_tf_question(
-        "Xét các nhận định về biến và kiểu dữ liệu trong ngôn ngữ lập trình Python:",
-        ("Tên biến có thể bắt đầu bằng một chữ số (ví dụ: 1diem, 2so).", False, "Tên biến trong Python không được phép bắt đầu bằng chữ số."),
-        ("Python phân biệt chữ hoa và chữ thường trong tên biến (ví dụ: Tong và tong là hai biến khác nhau).", True, "Python là ngôn ngữ phân biệt chữ hoa và chữ thường trong định danh."),
-        ("Kiểu dữ liệu của biến trong Python được tự động xác định khi thực hiện phép gán giá trị.", True, "Python sử dụng cơ chế định kiểu động dựa trên giá trị của biến."),
-        ("Lệnh x = y = 0 gán đồng thời giá trị 0 cho cả hai biến x và y.", True, "Phép gán liên tiếp x = y = 0 hợp lệ và gán 0 cho cả hai biến.")
+        "Khi khai báo các biến `diem_toan` và `tong` để lưu điểm số học sinh trong chương trình quản lý điểm Tin học 10, xét các nhận định sau:",
+        ("Tên biến trong Python có thể bắt đầu bằng một chữ số (ví dụ: 1diem, 2so).", False, "Quy tắc đặt tên biến Python không cho phép bắt đầu bằng chữ số."),
+        ("Python phân biệt chữ hoa và chữ thường trong tên biến (ví dụ: Tong và tong là hai biến khác nhau).", True, "Python phân biệt hoa/thường nên Tong và tong là hai biến độc lập."),
+        ("Kiểu dữ liệu của biến `diem_toan` được xác định tự động ngay khi thực hiện lệnh gán giá trị (ví dụ: diem_toan = 8.5).", True, "Python định kiểu động dựa trên giá trị được gán cho biến."),
+        ("Nếu viết lệnh x = y = 0 thì cả hai biến x và y đều được khởi tạo giá trị 0, nhưng không thể đặt tên biến trùng từ khóa `for`.", True, "Phép gán liên tiếp hợp lệ và không được đặt tên biến trùng từ khóa của Python.")
     )
     return _pack_skeleton("TF_B17_VARS", "tf_vars", "Bài 17", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b18_tf_sep_end_cast() -> dict:
     q = _make_tf_question(
-        "Cho các nhận định về các lệnh vào/ra và chuyển đổi kiểu dữ liệu trong Python:",
-        ("Hàm input() luôn trả về dữ liệu thuộc kiểu số nguyên int.", False, "input() luôn trả về kiểu dữ liệu xâu kí tự str."),
-        ("Lệnh int('15.5') sẽ thực hiện chuyển đổi thành công thành số nguyên 15.", False, "int('15.5') gây lỗi ValueError vì xâu chứa dấu chấm thập phân."),
-        ("Lệnh print(1, 2, sep='-') sẽ in ra màn hình chuỗi '1-2'.", True, "Tham số sep='-' quy định dấu gạch ngang phân cách giữa các đối số."),
-        ("Tham số end='' trong lệnh print() ngăn việc tự động xuống dòng sau khi in.", True, "end='' ghi đè ký tự xuống dòng mặc định bằng ký tự rỗng.")
+        "Để nhập ngày tháng năm sinh của học sinh từ bàn phím và định dạng kết quả in bằng hàm `input()` và `print()` trong Python, xét các nhận định sau:",
+        ("Hàm input() luôn trả về dữ liệu thuộc kiểu số nguyên int.", False, "input() luôn trả về dữ liệu thuộc kiểu xâu kí tự str."),
+        ("Lệnh print(1, 2, sep='-') sẽ in ra màn hình chuỗi '1-2'.", True, "Tham số sep='-' quy định dấu gạch ngang phân cách giữa các giá trị in ra."),
+        ("Tham số end='' trong lệnh print() giúp giữ con trỏ trên cùng một dòng thay vì tự động xuống dòng.", True, "end='' thay thế ký tự xuống dòng mặc định bằng xâu rỗng."),
+        ("Lệnh int('15.5') sẽ tự động làm tròn và trả về số nguyên 15 mà không báo lỗi.", False, "int('15.5') phát sinh ngoại lệ ValueError vì xâu chứa dấu chấm thập phân.")
     )
     return _pack_skeleton("TF_B18_IO_CAST", "tf_io_cast", "Bài 18", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b19_tf_elif_logic() -> dict:
     q = _make_tf_question(
-        "Cho đoạn mã Python sau:\n```python\nx = 15\nif x < 10:\n    y = 1\nelif x <= 20:\n    y = 2\nelse:\n    y = 3\n```\nXét tính Đúng/Sai của các phát biểu sau:",
-        ("Biểu thức điều kiện x < 10 nhận giá trị False.", True, "15 < 10 là sai (False)."),
-        ("Khối lệnh sau elif x <= 20 được thực hiện vì điều kiện x <= 20 nhận giá trị True.", True, "15 <= 20 là đúng (True) nên khối lệnh của elif được thực thi."),
-        ("Sau khi thực hiện đoạn mã trên, biến y nhận giá trị bằng 3.", False, "Biến y nhận giá trị 2 sau nhánh elif."),
-        ("Nếu thay x = 25 thì giá trị cuối cùng của biến y sẽ là 3.", True, "Với x = 25, cả if và elif đều sai nên nhảy vào else gán y = 3.")
+        "Một hệ thống phân loại mức độ ưu tiên đơn hàng dựa trên điểm tích lũy `x = 15` chạy đoạn mã Python sau:\n```python\nx = 15\nif x < 10:\n    y = 1\nelif x <= 20:\n    y = 2\nelse:\n    y = 3\n```\nXét tính Đúng/Sai của các phát biểu sau:",
+        ("Biểu thức điều kiện x < 10 nhận giá trị False.", True, "Vì x = 15 nên 15 < 10 cho giá trị False."),
+        ("Khối lệnh sau elif x <= 20 được thực hiện vì điều kiện x <= 20 nhận giá trị True.", True, "15 <= 20 là True nên nhánh elif được thực thi."),
+        ("Sau khi thực hiện đoạn mã trên, biến y nhận giá trị bằng 3.", False, "Biến y nhận giá trị 2 ở nhánh elif."),
+        ("Nếu thay giá trị đầu vào thành x = 25 thì chương trình chạy nhánh else và gán y = 3.", True, "Với x = 25, cả if và elif đều False nên chạy nhánh else gán y = 3.")
     )
     return _pack_skeleton("TF_B19_ELIF", "tf_elif", "Bài 19", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b20_tf_nested_loop() -> dict:
     q = _make_tf_question(
-        "Cho đoạn chương trình sau:\n```python\ndem = 0\nfor i in range(3):\n    for j in range(4):\n        dem += 1\n```\nXét các phát biểu sau:",
-        ("Vòng lặp ngoài for i in range(3) thực hiện đúng 3 lần lặp.", True, "range(3) sinh ra các giá trị 0, 1, 2 tương ứng 3 lượt lặp."),
+        "Để đếm tổng số ghế ngồi trong một phòng thi có 3 hàng, mỗi hàng 4 ghế, chương trình dùng biến `dem` và hai vòng lặp lồng nhau:\n```python\ndem = 0\nfor i in range(3):\n    for j in range(4):\n        dem += 1\n```\nXét các phát biểu sau:",
+        ("Vòng lặp ngoài for i in range(3) thực hiện đúng 3 lần lặp.", True, "range(3) sinh ra 3 giá trị 0, 1, 2 tương ứng 3 lượt lặp."),
         ("Với mỗi lần lặp của vòng ngoài, vòng lặp trong for j in range(4) lặp 4 lần.", True, "Vòng trong lặp 4 lần ứng với j = 0, 1, 2, 3."),
-        ("Tổng số lần câu lệnh dem += 1 được thực hiện là 12 lần.", True, "Tổng số lần lặp bằng 3 * 4 = 12 lần."),
-        ("Sau khi hai vòng lặp kết thúc, giá trị của biến dem là 7.", False, "dem tăng 12 lần nên có giá trị là 12 chứ không phải 7.")
+        ("Sau khi hai vòng lặp kết thúc, giá trị của biến dem là 7.", False, "Tổng số lượt lặp là 3 * 4 = 12 nên dem bằng 12 chứ không phải 7."),
+        ("Nếu đổi range(3) thành range(5) (phòng thi có 5 hàng) thì tổng số ghế đếm được trong dem sẽ là 20.", True, "Với 5 hàng × 4 ghế, tổng dem = 5 * 4 = 20.")
     )
     return _pack_skeleton("TF_B20_NESTED", "tf_nested", "Bài 20", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b21_tf_while_counter() -> dict:
     q = _make_tf_question(
-        "Cho đoạn mã Python sau:\n```python\nk = 1\ns = 0\nwhile k <= 4:\n    s += k\n    k += 1\n```\nXét các phát biểu sau:",
-        ("Điều kiện lặp của vòng lặp while là k <= 4.", True, "Biểu thức k <= 4 quyết định việc tiếp tục lặp."),
-        ("Vòng lặp thực hiện đúng 4 lượt lặp tương ứng với k = 1, 2, 3, 4.", True, "k tăng từ 1 đến 4 thực hiện 4 lượt."),
-        ("Khi vòng lặp kết thúc, biến k có giá trị là 4.", False, "Khi thoát vòng lặp, k đã được tăng lên 5 để điều kiện k <= 4 thành False."),
-        ("Giá trị cuối cùng của biến s sau khi kết thúc vòng lặp là 10.", True, "s = 1 + 2 + 3 + 4 = 10.")
+        "Để tính tổng điểm thưởng tích lũy `s` qua các ngày `k` từ 1 đến 4 trong tuần thi đua, chương trình viết:\n```python\nk = 1\ns = 0\nwhile k <= 4:\n    s += k\n    k += 1\n```\nXét các phát biểu sau:",
+        ("Điều kiện lặp của vòng lặp while là k <= 4.", True, "Biểu thức điều kiện k <= 4 quyết định việc lặp."),
+        ("Vòng lặp thực hiện đúng 4 lượt lặp tương ứng với k = 1, 2, 3, 4.", True, "k tăng dần từ 1 đến 4 thực hiện 4 lượt."),
+        ("Giá trị cuối cùng của biến s sau khi kết thúc vòng lặp là 10.", True, "s = 1 + 2 + 3 + 4 = 10."),
+        ("Ngay khi vòng lặp kết thúc, biến k có giá trị là 4.", False, "Khi thoát vòng lặp, k đã tăng lên 5 khiến điều kiện k <= 4 thành False.")
     )
     return _pack_skeleton("TF_B21_COUNTER", "tf_counter", "Bài 21", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b22_tf_list_methods_all() -> dict:
     q = _make_tf_question(
-        "Cho danh sách a = [10, 20, 30]. Xét các nhận định sau về các thao tác trên danh sách:",
-        ("Lệnh a.append(40) sẽ thêm số 40 vào vị trí cuối cùng của danh sách.", True, "append() bổ sung phần tử vào cuối danh sách."),
-        ("Lệnh a[0] = 99 sẽ thay thế phần tử đầu tiên của danh sách thành 99.", True, "Danh sách hỗ trợ phép gán đè phần tử qua chỉ số."),
-        ("Phần tử a[-1] tương ứng với giá trị 10.", False, "a[-1] là phần tử cuối cùng (giá trị 30), a[0] mới là 10."),
-        ("Hàm len(a) trả về độ dài hiện tại của danh sách a.", True, "len() đếm số lượng phần tử của danh sách.")
+        "Danh sách điểm ba bài kiểm tra của một học sinh được lưu trong biến danh sách `a = [10, 20, 30]`. Xét các nhận định sau về các thao tác trên danh sách:",
+        ("Hàm len(a) trả về độ dài hiện tại của danh sách a là 3.", True, "len() đếm số lượng phần tử trong danh sách a."),
+        ("Phần tử a[-1] tương ứng với giá trị 10.", False, "Chỉ số âm -1 trỏ tới phần tử cuối cùng (30), còn a[0] mới là 10."),
+        ("Sau khi chạy lần lượt lệnh a.append(40) và a[0] = 99, danh sách a trở thành [99, 20, 30, 40].", True, "append(40) thêm vào cuối và a[0] = 99 cập nhật phần tử đầu."),
+        ("Nếu cố gắng truy xuất phần tử a[10] vượt quá số phần tử hiện có, Python tự động trả về giá trị 0 mà không báo lỗi.", False, "Truy xuất chỉ số vượt phạm vi danh sách sẽ phát sinh ngoại lệ IndexError.")
     )
     return _pack_skeleton("TF_B22_METHODS", "tf_methods", "Bài 22", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b23_tf_list_slice_mut() -> dict:
     q = _make_tf_question(
-        "Cho danh sách ds = [1, 2, 3, 4, 5]. Đánh giá tính Đúng/Sai của các phát biểu sau:",
+        "Danh sách `ds = [1, 2, 3, 4, 5]` lưu mã số thứ tự các thí sinh tham gia vòng chung kết. Đánh giá tính Đúng/Sai của các phát biểu sau:",
         ("Phép cắt lát ds[1:4] trả về danh sách con [2, 3, 4].", True, "Lấy các phần tử tại chỉ số 1, 2, 3 là [2, 3, 4]."),
-        ("Lệnh ds.clear() sẽ xóa sạch toàn bộ phần tử và đưa ds về danh sách rỗng [].", True, "clear() xóa tất cả phần tử trong danh sách."),
-        ("Lệnh ds.remove(x) sẽ xóa tất cả các phần tử có giá trị bằng x trong danh sách.", False, "remove(x) chỉ xóa phần tử đầu tiên tìm thấy."),
-        ("Phép toán ds * 2 sẽ nhân đôi giá trị của từng phần tử bên trong danh sách ds.", False, "ds * 2 tạo danh sách mới lặp lại danh sách cũ 2 lần.")
+        ("Lệnh ds.remove(x) sẽ xóa tất cả các phần tử có giá trị bằng x trong danh sách.", False, "remove(x) chỉ xóa phần tử đầu tiên tìm thấy có giá trị x."),
+        ("Phép toán ds * 2 sẽ nhân đôi giá trị của từng phần tử bên trong danh sách ban đầu.", False, "ds * 2 tạo danh sách mới lặp lại danh sách cũ 2 lần, không nhân đôi giá trị số."),
+        ("Gọi lệnh ds.clear() sẽ xóa toàn bộ phần tử và đưa danh sách ds về danh sách rỗng [].", True, "Phương thức clear() xóa sạch tất cả phần tử của danh sách.")
     )
     return _pack_skeleton("TF_B23_SLICE_MUT", "tf_slice_mut", "Bài 23", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b24_tf_str_indexing_immut() -> dict:
     q = _make_tf_question(
-        "Cho xâu ký tự s = 'Python'. Xét tính Đúng/Sai của các phát biểu sau:",
-        ("Ký tự đầu tiên s[0] là chữ cái 'P'.", True, "Chỉ số 0 trỏ tới ký tự đầu tiên của xâu."),
-        ("Hàm len(s) trả về giá trị là 6.", True, "Xâu 'Python' có đúng 6 ký tự."),
-        ("Câu lệnh s[0] = 'p' sẽ chuyển chữ 'P' hoa thành chữ 'p' thường một cách hợp lệ.", False, "Xâu ký tự là bất biến (immutable), không thể gán lại phần tử."),
-        ("Xâu ký tự trong Python là kiểu dữ liệu bất biến (immutable).", True, "Định nghĩa chuẩn của kiểu str trong Python là bất biến.")
+        "Hệ thống học trực tuyến lưu tên ngôn ngữ lập trình trong biến xâu `s = 'Python'`. Xét tính Đúng/Sai của các phát biểu sau:",
+        ("Ký tự đầu tiên s[0] là chữ cái 'P' và hàm len(s) trả về giá trị 6.", True, "Chỉ số 0 là ký tự đầu 'P' và xâu 'Python' có độ dài 6 ký tự."),
+        ("Xâu ký tự trong Python là kiểu dữ liệu bất biến (immutable).", True, "Kiểu str trong Python không cho phép sửa trực tiếp từng ký tự tại chỗ."),
+        ("Phép cắt lát s[0:2] cho kết quả là xâu 'Pyt'.", False, "s[0:2] lấy chỉ số 0 và 1 nên cho kết quả là 'Py', không bao gồm chỉ số 2."),
+        ("Câu lệnh s[0] = 'p' sẽ chuyển chữ 'P' hoa thành chữ 'p' thường một cách hợp lệ.", False, "Vì xâu bất biến nên gán s[0] = 'p' sẽ phát sinh lỗi TypeError.")
     )
     return _pack_skeleton("TF_B24_IMMUT", "tf_immut", "Bài 24", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b25_tf_str_methods_split() -> dict:
     q = _make_tf_question(
-        "Cho xâu ký tự st = 'Ha Noi, Viet Nam'. Đánh giá tính Đúng/Sai của các phát biểu sau:",
-        ("Phương thức st.find('Noi') trả về vị trí chỉ số xuất hiện đầu tiên của từ 'Noi'.", True, "find() trả về chỉ số bắt đầu của xâu con tìm thấy."),
-        ("Phương thức st.count('a') đếm số lần xuất hiện của chữ cái 'a' thường trong xâu.", True, "count() đếm số lần xuất hiện của ký tự con."),
-        ("Phương thức st.split(',') sẽ tách xâu st thành một danh sách gồm 2 phần tử.", True, "Tách theo dấu phẩy thành ['Ha Noi', ' Viet Nam']."),
-        ("Nếu từ khóa tìm kiếm không có trong xâu, phương thức find() sẽ làm chương trình báo lỗi dừng lại.", False, "find() trả về -1 khi không tìm thấy, không gây lỗi chương trình.")
+        "Hệ thống quản lý học sinh lưu địa chỉ một học sinh dưới dạng xâu `st = 'Ha Noi, Viet Nam'`. Đánh giá tính Đúng/Sai của các phát biểu sau:",
+        ("Phương thức st.count('a') đếm số lần xuất hiện của chữ cái 'a' thường trong xâu.", True, "count() đếm chính xác số lần xuất hiện phân biệt hoa/thường."),
+        ("Phương thức st.find('Noi') trả về vị trí chỉ số xuất hiện đầu tiên của từ 'Noi'.", True, "find() trả về chỉ số bắt đầu tìm thấy xâu con 'Noi'."),
+        ("Phương thức st.split(',') sẽ tách xâu st thành một danh sách gồm 2 phần tử.", True, "Tách theo dấu phẩy tạo danh sách ['Ha Noi', ' Viet Nam'] có 2 phần tử."),
+        ("Nếu từ khóa tìm kiếm không có trong xâu st, phương thức find() sẽ làm chương trình báo lỗi dừng lại.", False, "find() trả về -1 khi không tìm thấy xâu con, không gây lỗi dừng chương trình.")
     )
     return _pack_skeleton("TF_B25_METHODS", "tf_str_methods", "Bài 25", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b28_tf_scope_local_global() -> dict:
     stem = (
-        "Cho đoạn mã nguồn Python sau:\n"
+        "Trong chương trình tính điểm thưởng cho lớp học với mức thưởng chung toàn cục `x = 10` và hàm `kiem_tra()`, xét đoạn mã Python sau:\n"
         "```python\n"
         "x = 10\n"
         "def kiem_tra():\n"
@@ -825,21 +825,21 @@ def _bp_b28_tf_scope_local_global() -> dict:
     )
     q = _make_tf_question(
         stem,
-        ("Biến y được tạo ra bên trong hàm kiem_tra() là biến cục bộ (local variable) của hàm đó.", True, "Biến y được khai báo trong thân hàm kiem_tra() nên có phạm vi cục bộ."),
-        ("Biến cục bộ y có thể được truy cập và in ra trực tiếp từ bên ngoài hàm kiem_tra().", False, "Biến y không thể truy xuất từ phạm vi bên ngoài hàm kiem_tra()."),
-        ("Biến x được khai báo bên ngoài hàm là biến toàn cục (global variable) đối với hàm kiem_tra().", True, "Biến x được định nghĩa ở cấp module ngoài hàm nên là biến toàn cục."),
-        ("Để thay đổi trực tiếp giá trị của biến toàn cục x từ bên trong hàm kiem_tra(), cần sử dụng từ khóa global.", True, "Để thay đổi giá trị của biến x từ bên trong hàm kiem_tra(), cần dùng từ khóa global x.")
+        ("Biến y được tạo ra bên trong hàm kiem_tra() là biến cục bộ (local variable), còn biến x bên ngoài hàm là biến toàn cục.", True, "Biến y khai báo trong hàm là biến cục bộ, biến x ngoài hàm là biến toàn cục."),
+        ("Hàm kiem_tra() có thể đọc được giá trị biến toàn cục x để cộng với y.", True, "Bên trong hàm có thể truy xuất đọc giá trị biến toàn cục x nên kiem_tra() trả về 15."),
+        ("Biến cục bộ y có thể được truy cập và in ra trực tiếp từ bên ngoài hàm kiem_tra().", False, "Biến y không thể truy xuất từ phạm vi bên ngoài hàm kiem_tra() (sẽ báo NameError)."),
+        ("Để thay đổi trực tiếp giá trị của biến toàn cục x từ bên trong hàm kiem_tra(), cần sử dụng từ khóa global.", True, "Để gán lại biến toàn cục x trong hàm kiem_tra(), phải khai báo global x.")
     )
     return _pack_skeleton("TF_B28_SCOPE", "tf_scope", "Bài 28", "TRUE_FALSE", q, "", False)
 
 
 def _bp_b30_tf_blackbox_testing() -> dict:
     q = _make_tf_question(
-        "Xét các phát biểu sau về phương pháp kiểm thử và gỡ lỗi chương trình trong Python:",
-        ("Kiểm thử chương trình nhằm mục đích phát hiện các lỗi còn tiềm ẩn trước khi đưa vào sử dụng.", True, "Mục tiêu chính của kiểm thử là phát hiện lỗi."),
-        ("Kiểm thử hộp đen (Black-box testing) chỉ quan tâm đến đầu vào và đầu ra mà không cần biết cấu trúc mã nguồn bên trong.", True, "Định nghĩa chuẩn của kiểm thử hộp đen."),
-        ("Chèn các câu lệnh print() để in giá trị biến trung gian là một phương pháp gỡ lỗi thủ công hiệu quả.", True, "Kỹ thuật gỡ lỗi in vết biến bằng lệnh print()."),
-        ("Nếu chương trình chạy qua một bộ dữ liệu thử nghiệm (test case) duy nhất mà không báo lỗi thì khẳng định 100% chương trình không có lỗi.", False, "Một ca kiểm thử không thể chứng minh tính đúng đắn cho mọi trường hợp đầu vào.")
+        "Trong quy trình kiểm thử phần mềm chấm điểm thi Tin học 10 trước khi bàn giao cho nhà trường sử dụng, xét các phát biểu sau:",
+        ("Kiểm thử chương trình nhằm mục đích phát hiện các lỗi còn tiềm ẩn trước khi đưa vào sử dụng.", True, "Mục tiêu chính của kiểm thử là phát hiện lỗi cú pháp, ngoại lệ và lỗi logic."),
+        ("Kiểm thử hộp đen (Black-box testing) chỉ quan tâm đến đầu vào và đầu ra mà không cần biết cấu trúc mã nguồn bên trong.", True, "Định nghĩa chuẩn của kiểm thử hộp đen dựa trên đặc tả vào/ra."),
+        ("Chèn các câu lệnh print() để in giá trị biến trung gian là một phương pháp gỡ lỗi thủ công hiệu quả.", True, "Kỹ thuật gỡ lỗi in vết giá trị biến bằng print() giúp khoanh vùng lỗi logic."),
+        ("Nếu chương trình chạy qua một bộ dữ liệu thử nghiệm (test case) duy nhất mà không báo lỗi thì khẳng định 100% chương trình không có lỗi.", False, "Một ca kiểm thử đơn lẻ không thể chứng minh chương trình đúng với mọi dữ liệu biên.")
     )
     return _pack_skeleton("TF_B30_TESTING", "tf_testing", "Bài 30", "TRUE_FALSE", q, "", False)
 
@@ -1385,7 +1385,7 @@ def _bp_ec_filter_revenue(bai_hoc: str = "Bài 22") -> dict:
     )
     out = _run_code_get_stdout(code)
     q = {
-        "tinh_huong": f"Bảng số liệu doanh thu hàng ngày của một cửa hàng (đơn vị: nghìn đồng) là doanh_so = {rev}.",
+        "tinh_huong": f"Dữ liệu thống kê doanh thu hàng ngày của một cửa hàng (đơn vị: nghìn đồng) được lưu trong danh sách doanh_so = {rev}.",
         "yeu_cau_hoc_sinh": f"Viết chương trình đếm và in ra số ngày có doanh thu đạt từ {threshold} nghìn đồng trở lên.",
         "dap_an_mau": code,
         "tieu_chi_cham_diem": [

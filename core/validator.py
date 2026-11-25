@@ -939,7 +939,7 @@ def _check_missing_code_or_uninit_var(question_json: dict, loai: str, snippets: 
                 defined_in_stem.add(pn)
 
     for m in re.finditer(
-        r"(?:giá\s+trị\s+(?:của\s+)?biến|kết\s+quả\s+(?:của\s+)?biến)\s+[`'\"]?([A-Za-z_][A-Za-z0-9_]*)[`'\"]?",
+        r"(?:giá\s+trị\s+(?:của\s+)?biến|kết\s+quả\s+(?:của\s+)?biến)\s+[`'\"]?([A-Za-z_][A-Za-z0-9_]*)[`'\"]?(?![A-Za-zÀ-ỹ0-9_])",
         stem,
         re.IGNORECASE,
     ):
@@ -1389,7 +1389,13 @@ def rule_validate(
     has_code_in_stem = bool(snippets) or ("```" in full_text)
 
     # 5a. Chặn thiếu code khi hỏi tính giá trị biểu thức/kết quả & biến chưa khởi tạo
-    errors.extend(_check_missing_code_or_uninit_var(question_json, loai, snippets))
+    is_intentional_err_mcq = (
+        loai == "MCQ"
+        and bai_hoc_target in ("Bài 29", "Bài 30")
+        and any(cue in full_lower for cue in ("ngoại lệ", "phát sinh", "báo lỗi gì", "loại lỗi nào", "lỗi thời gian chạy"))
+    )
+    if not (is_intentional_err_mcq and "nameerror" in full_lower):
+        errors.extend(_check_missing_code_or_uninit_var(question_json, loai, snippets))
 
     if loai == "MCQ":
         cau_hoi = str(question_json.get("cau_hoi", "")).strip()
@@ -1628,9 +1634,25 @@ def rule_validate(
     # 6. Tích hợp Sandbox (timeout_sec=2.0) kiểm chứng MỌI đoạn mã Python thực thi được trong câu hỏi / dap_an_mau
     has_code, sb_ok, sb_errors, sandbox_stdout = _run_sandbox_verification(snippets)
     if has_code:
-        sandbox_verified = sb_ok
-        if not sb_ok:
-            errors.extend(sb_errors)
+        # Ngoại lệ có chủ đích cho câu MCQ Bài 29/30 hỏi nhận diện lỗi/ngoại lệ
+        is_intentional_err_mcq = (
+            loai == "MCQ"
+            and bai_hoc_target in ("Bài 29", "Bài 30")
+            and any(cue in full_lower for cue in ("ngoại lệ", "phát sinh", "báo lỗi gì", "loại lỗi nào", "lỗi thời gian chạy"))
+        )
+        if is_intentional_err_mcq and not sb_ok:
+            dap_an_lbl = str(question_json.get("dap_an", "")).strip().upper()
+            expected_err = str(question_json.get(dap_an_lbl, "")).strip()
+            err_joined = " ".join(sb_errors)
+            if expected_err and expected_err.lower() in err_joined.lower():
+                sandbox_verified = True
+            else:
+                sandbox_verified = False
+                errors.extend(sb_errors)
+        else:
+            sandbox_verified = sb_ok
+            if not sb_ok:
+                errors.extend(sb_errors)
 
     # 6b. Bắt buộc SHORT_ANSWER phải sinh ra stdout khác rỗng khi chạy trên Sandbox
     if loai == "SHORT_ANSWER" and has_code and sb_ok and not sandbox_stdout.strip():
@@ -1869,31 +1891,209 @@ def fuzzy_quality_validate(
     }
 
 
+def _check_cognitive_and_tf_progression(
+    question_json: dict,
+    loai: str,
+    muc_do: str,
+) -> tuple[bool, list[str], float]:
+    """
+    Kiểm tra chuẩn mức độ nhận thức (`NB`/`TH`/`VD`) và tính tăng dần độ khó `a -> b -> c -> d`
+    cho dạng Đúng/Sai (`TRUE_FALSE`):
+      - `a`: Nhận biết kiểu dữ liệu/cú pháp/khái niệm cơ bản
+      - `b`: Thông hiểu biểu thức/số lần lặp/cơ chế
+      - `c`: Thông hiểu/Vận dụng đầu ra thực thi
+      - `d`: Vận dụng biên/lỗi/mở rộng
+    Trả về `(muc_do_khop, notes, progression_score)`.
+    """
+    notes: list[str] = []
+    md = str(muc_do or "TH").strip().upper()
+    if md not in ("NB", "TH", "VD"):
+        md = "TH"
+
+    full_text = _flatten_question_text(question_json, loai).lower()
+    has_code = bool(_extract_executable_python_snippets(question_json, loai)) or ("```" in full_text)
+    prog_score = 1.0
+    muc_do_khop = True
+
+    if loai == "TRUE_FALSE":
+        stmts = [str((question_json.get(k) or {}).get("menh_de", "")).strip().lower() for k in ("a", "b", "c", "d")]
+        if all(stmts):
+            a_txt, d_txt = stmts[0], stmts[3]
+            adv_cues = ("nếu bỏ", "nếu thay", "nếu đổi", "vòng lặp vô hạn", "ngoại lệ", "typeerror", "indexerror", "valueerror", "zero")
+            basic_cues = ("kiểu dữ liệu", "từ khóa", "dấu nhắc", "cú pháp")
+            # Chặn đảo ngược thô thiển: ý a hỏi lỗi/biên nâng cao trong khi ý d chỉ hỏi nhận diện kiểu/từ khóa đơn giản
+            if any(c in a_txt for c in adv_cues) and any(c in d_txt for c in basic_cues) and not any(c in d_txt for c in adv_cues):
+                prog_score = 0.55
+                muc_do_khop = False
+                notes.append("Thứ tự 4 mệnh đề Đúng/Sai (a→b→c→d) chưa tăng dần hợp lý từ Nhận biết đến Vận dụng/Biên.")
+    elif loai == "MCQ":
+        if md == "NB" and ("for " in full_text and "while " in full_text):
+            prog_score = 0.70
+            muc_do_khop = False
+            notes.append("Câu MCQ mức Nhận biết (NB) không nên lồng ghép cả for và while phức tạp.")
+    elif loai == "ESSAY_CODE":
+        if md == "NB":
+            prog_score = 0.75
+            notes.append("Dạng Tự luận lập trình (ESSAY_CODE) thường tương ứng mức Thông hiểu/Vận dụng.")
+
+    # Nếu mức VD cho câu có code thực thi hoặc lý thuyết phân tích
+    if md == "VD" and loai in ("MCQ", "SHORT_ANSWER") and not has_code and len(full_text) < 80:
+        prog_score = min(prog_score, 0.75)
+
+    return muc_do_khop, notes, round(prog_score, 3)
+
+
+def _build_rubric_9_criteria(
+    question_json: dict,
+    loai_cau_hoi: str,
+    evidence_package: dict,
+    muc_do: str,
+    tier1: dict,
+    tier2: dict | None,
+    muc_do_khop: bool,
+    prog_notes: list[str],
+    prog_score: float,
+) -> dict[str, Any]:
+    """
+    Ánh xạ chuẩn bộ kiểm định 2 tầng + Sandbox thành cấu trúc Rubric 9 tiêu chí (3 cổng bắt buộc C1..C3 + C4..C9),
+    không gọi thêm LLM Judge để đảm bảo 0 VRAM phụ trội và độ trễ tối thiểu.
+    """
+    loai = loai_cau_hoi.strip().upper()
+    errs = list(tier1.get("errors") or [])
+    err_low = " | ".join(errs).lower()
+    chi_tiet_t2 = (tier2 or {}).get("chi_tiet") or {}
+
+    # 3 CỔNG BẮT BUỘC (Hard Gates: C1, C2, C3)
+    c1_fail = any(
+        kw in err_low
+        for kw in ("json", "thiếu nội dung", "thiếu đối tượng", "trường 'dap_an'", "thiếu trường", "trống hoặc quá ngắn", "thiếu tình huống", "thiếu yêu cầu", "thiếu mã nguồn", "thiếu tiêu chí")
+    )
+    c1_pass = bool(isinstance(question_json, dict) and question_json and not c1_fail)
+
+    c2_fail = any(
+        kw in err_low
+        for kw in ("sandbox", "cú pháp", "vượt cấp", "chưa được gán", "stdout bị rỗng", "thực thi", "syntaxerror", "nameerror", "zerodivisionerror")
+    )
+    snippets = _extract_executable_python_snippets(question_json, loai) if isinstance(question_json, dict) else []
+    c2_pass = (not c2_fail) and (not snippets or bool(tier1.get("sandbox_verified", False)))
+
+    c3_fail = any(
+        kw in err_low
+        for kw in ("ngoài chương trình", "placeholder", "chuỗi rỗng", "trùng nội dung", "trùng lặp", "quá giống nhau", "chép nguyên văn hình/bảng", "lời giải", "1-shot", "tiếng anh", "nối ghép nhiều đề bài", "giữ chỗ", "vô nghĩa")
+    )
+    c3_pass = not c3_fail
+
+    # 6 TIÊU CHÍ CHẤT LƯỢNG (C4..C9)
+    c4_fail = any(kw in err_low for kw in ("trich_dan_sgk", "chưa khớp bài"))
+    s_sgk = float(chi_tiet_t2.get("bam_nguon_sgk", 0.0 if c4_fail else 0.85))
+    c4_pass = (not c4_fail) and s_sgk >= 0.55
+
+    s_cog_t2 = float(chi_tiet_t2.get("nhan_thuc_su_pham", 0.0 if not tier1.get("passed") else 0.85))
+    c5_score = round(0.5 * s_cog_t2 + 0.5 * prog_score, 3)
+    c5_pass = bool(muc_do_khop and c5_score >= 0.65)
+
+    c6_fail = any(
+        kw in err_low
+        for kw in ("độ dài", "đáp án đúng", "đơn trị", "đáp án ngắn", "vừa đúng vừa sai", "toàn đúng", "toàn sai", "phép toán '/='", "khai báo giá trị cụ thể")
+    )
+    s_dis = float(chi_tiet_t2.get("chat_luong_nhieu", 0.0 if c6_fail else 0.85))
+    c6_pass = (not c6_fail) and s_dis >= 0.60
+
+    # C7: Tình huống thực tiễn & ngữ cảnh cho TRUE_FALSE / ESSAY_CODE
+    if loai == "TRUE_FALSE":
+        stem_tf = str((question_json or {}).get("cau_hoi_chung", "")).strip()
+        c7_pass = len(stem_tf) >= 35 and not any(kw in err_low for kw in ("câu dẫn chung", "chưa hoàn chỉnh"))
+        c7_score = 1.0 if c7_pass else 0.4
+    elif loai == "ESSAY_CODE":
+        th_ec = str((question_json or {}).get("tinh_huong", "")).strip()
+        c7_pass = len(th_ec) >= 30 and not any(kw in err_low for kw in ("tình huống",))
+        c7_score = 1.0 if c7_pass else 0.4
+    else:
+        stem_other = str((question_json or {}).get("cau_hoi", "")).strip()
+        c7_pass = len(stem_other) >= 20
+        c7_score = 1.0 if c7_pass else 0.5
+
+    # C8: Chính xác lời giải thích
+    c8_fail = any(kw in err_low for kw in ("giải thích", "giai_thich", "nhắc tới biến", "trùng lặp"))
+    if loai == "TRUE_FALSE":
+        exps = [str(((question_json or {}).get(k) or {}).get("giai_thich", "")).strip() for k in ("a", "b", "c", "d")]
+        c8_pass = (not c8_fail) and all(len(e) >= 12 for e in exps)
+    else:
+        gt_txt = str((question_json or {}).get("giai_thich", "")).strip()
+        c8_pass = (not c8_fail) and (len(gt_txt) >= 15 or (loai == "ESSAY_CODE" and bool((question_json or {}).get("tieu_chi_cham_diem"))))
+    c8_score = 1.0 if c8_pass else 0.0
+
+    # C9: Gắn mã chỉ báo năng lực NLc (CC1..CS3)
+    nlc_list = evidence_package.get("nlc_indicators") or []
+    nlc_codes = [str(x.get("ma", "")).strip() for x in nlc_list if isinstance(x, dict) and x.get("ma")]
+    c9_pass = len(nlc_codes) >= 1
+    c9_score = 1.0 if c9_pass else 0.0
+
+    criteria = {
+        "C1_CauTruc_JSON_Schema": {"dat": c1_pass, "diem": 1.0 if c1_pass else 0.0, "cong_bat_buoc": True},
+        "C2_ThucThi_Sandbox_AST": {"dat": c2_pass, "diem": 1.0 if c2_pass else 0.0, "cong_bat_buoc": True},
+        "C3_ChongTrung_Va_SạchPrompt": {"dat": c3_pass, "diem": 1.0 if c3_pass else 0.0, "cong_bat_buoc": True},
+        "C4_BamSat_SGK_Grounding": {"dat": c4_pass, "diem": round(s_sgk, 3), "cong_bat_buoc": False},
+        "C5_ChuanMucDo_NhanThuc": {"dat": c5_pass, "diem": c5_score, "cong_bat_buoc": False, "muc_do": muc_do, "ghi_chu": "; ".join(prog_notes)},
+        "C6_ToanVen_PhuongAn_DapAn": {"dat": c6_pass, "diem": round(s_dis, 3), "cong_bat_buoc": False},
+        "C7_TinhHuong_ThucTien_TF": {"dat": c7_pass, "diem": c7_score, "cong_bat_buoc": False},
+        "C8_ChinhXac_GiaiThich": {"dat": c8_pass, "diem": c8_score, "cong_bat_buoc": False},
+        "C9_GanMa_ChiBao_NLc": {"dat": c9_pass, "diem": c9_score, "cong_bat_buoc": False, "ma_nlc": nlc_codes},
+    }
+    passed_count = sum(1 for v in criteria.values() if v["dat"])
+    gates_passed = c1_pass and c2_pass and c3_pass
+
+    return {
+        **criteria,
+        "cong_bat_buoc_dat": gates_passed,
+        "so_tieu_chi_dat": passed_count,
+        "tong_tieu_chi": 9,
+    }
+
+
 def validate_question(
     question_json: dict,
     loai_cau_hoi: str,
     evidence_package: dict,
+    muc_do: str | None = None,
 ) -> dict:
-    """Chạy đầy đủ quy trình kiểm định 2 tầng (Tầng 1 Hard Gate + Sandbox -> Tầng 2 Fuzzy Quality)."""
+    """Chạy đầy đủ quy trình kiểm định 2 tầng + Rubric 9 tiêu chí (3 cổng bắt buộc C1..C3)."""
     if isinstance(question_json, dict) and "trich_dan_sgk" in question_json:
         question_json["trich_dan_sgk"] = _clean_sgk_citation(question_json["trich_dan_sgk"])
+
+    target_md = str(muc_do or evidence_package.get("muc_do") or "TH").strip().upper()
     tier1 = rule_validate(question_json, loai_cau_hoi, evidence_package)
     sandbox_verified = bool(tier1.get("sandbox_verified", False))
+    muc_do_khop, prog_notes, prog_score = _check_cognitive_and_tf_progression(
+        question_json if isinstance(question_json, dict) else {},
+        loai_cau_hoi.strip().upper(),
+        target_md,
+    )
 
     if not tier1["passed"]:
         feedback = "LỖI TẦNG 1 (HARD GATE - BẮT BUỘC SỬA): " + " | ".join(tier1["errors"])
+        rubric9 = _build_rubric_9_criteria(
+            question_json, loai_cau_hoi, evidence_package, target_md,
+            tier1, None, muc_do_khop, prog_notes, prog_score,
+        )
         return {
             "is_pass": False,
             "xep_loai": "KHÔNG ĐẠT",
             "diem_chat_luong": 0.0,
             "sandbox_verified": sandbox_verified,
             "sandbox_stdout": tier1.get("sandbox_stdout", ""),
+            "muc_do_khop": muc_do_khop,
             "tier1": tier1,
             "tier2": None,
+            "rubric_9_criteria": rubric9,
             "feedback": feedback,
         }
 
     tier2 = fuzzy_quality_validate(question_json, loai_cau_hoi, evidence_package)
+    rubric9 = _build_rubric_9_criteria(
+        question_json, loai_cau_hoi, evidence_package, target_md,
+        tier1, tier2, muc_do_khop, prog_notes, prog_score,
+    )
     is_pass = tier2["xep_loai"] == "ĐẠT"
     feedback = ""
     if not is_pass:
@@ -1909,8 +2109,10 @@ def validate_question(
         "diem_chat_luong": tier2["diem_tong"],
         "sandbox_verified": sandbox_verified,
         "sandbox_stdout": tier1.get("sandbox_stdout", ""),
+        "muc_do_khop": muc_do_khop,
         "tier1": tier1,
         "tier2": tier2,
+        "rubric_9_criteria": rubric9,
         "feedback": feedback,
     }
 
