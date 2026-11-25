@@ -571,19 +571,16 @@ def _bp_b25_mcq_str_replace() -> dict:
 def _bp_b26_mcq_no_return() -> dict:
     lead = random.choice(STEM_MCQ_LEADINS)
     code = (
-        f"def chao(ten):\n"
-        f"    print('Xin chao', ten)\n"
-        f"kq = chao('Nam')\n"
-        f"print(kq)"
+        "def chao(ten):\n"
+        "    a = ten\n"
+        "kq = chao('Nam')\n"
+        "print(kq)"
     )
-    # Lấy dòng in ra thứ 2
-    raw = _run_code_get_stdout(code)
-    lines = raw.splitlines()
-    out = lines[-1].strip() if lines else "None"
+    out = _run_code_get_stdout(code)
     opts, ans = _shuffle_mcq_options(out, ["'Xin chao Nam'", "0", "True", "None"])
-    gt = "Hàm chao() không có câu lệnh return, nên khi gán vào biến kq thì kq sẽ nhận giá trị đặc biệt là None."
+    gt = "Hàm chao() không có câu lệnh return, nên giá trị trả về mặc định của hàm là None khi in biến kq."
     q = {
-        "cau_hoi": f"{lead}\n```python\n{code}\n```\nDòng in ra cuối cùng của biến kq là gì?",
+        "cau_hoi": f"{lead}\n```python\n{code}\n```\nKết quả in ra màn hình là:",
         "phuong_an": opts,
         "dap_an": ans,
         "giai_thich": gt,
@@ -816,12 +813,22 @@ def _bp_b25_tf_str_methods_split() -> dict:
 
 
 def _bp_b28_tf_scope_local_global() -> dict:
+    stem = (
+        "Cho đoạn mã nguồn Python sau:\n"
+        "```python\n"
+        "x = 10\n"
+        "def kiem_tra():\n"
+        "    y = 5\n"
+        "    return x + y\n"
+        "```\n"
+        "Xét tính Đúng/Sai của các nhận định về phạm vi biến (Scope) trong chương trình:"
+    )
     q = _make_tf_question(
-        "Xét các nhận định về phạm vi biến (Scope) trong Python:",
-        ("Biến được tạo ra bên trong một hàm là biến cục bộ (local variable) của hàm đó.", True, "Biến khai báo trong hàm có phạm vi cục bộ."),
-        ("Biến cục bộ có thể được truy cập và sử dụng ở bất kỳ đâu bên ngoài hàm.", False, "Biến cục bộ không thể truy xuất từ bên ngoài hàm."),
-        ("Biến được khai báo bên ngoài tất cả các hàm là biến toàn cục (global variable).", True, "Biến cấp module ngoài hàm là biến toàn cục."),
-        ("Để thay đổi giá trị của biến toàn cục từ bên trong một hàm, cần sử dụng từ khóa global.", True, "Từ khóa global cho phép hàm ghi đè biến toàn cục.")
+        stem,
+        ("Biến y được tạo ra bên trong hàm kiem_tra() là biến cục bộ (local variable) của hàm đó.", True, "Biến y được khai báo trong thân hàm kiem_tra() nên có phạm vi cục bộ."),
+        ("Biến cục bộ y có thể được truy cập và in ra trực tiếp từ bên ngoài hàm kiem_tra().", False, "Biến y không thể truy xuất từ phạm vi bên ngoài hàm kiem_tra()."),
+        ("Biến x được khai báo bên ngoài hàm là biến toàn cục (global variable) đối với hàm kiem_tra().", True, "Biến x được định nghĩa ở cấp module ngoài hàm nên là biến toàn cục."),
+        ("Để thay đổi trực tiếp giá trị của biến toàn cục x từ bên trong hàm kiem_tra(), cần sử dụng từ khóa global.", True, "Để thay đổi giá trị của biến x từ bên trong hàm kiem_tra(), cần dùng từ khóa global x.")
     )
     return _pack_skeleton("TF_B28_SCOPE", "tf_scope", "Bài 28", "TRUE_FALSE", q, "", False)
 
@@ -1522,7 +1529,7 @@ def _bp_ec_even_odd_list_split(bai_hoc: str = "Bài 23") -> dict:
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_EVEN_ODD_SPLIT", "ec_even_odd_split_ext", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_EVEN_ODD_LIST_SPLIT", "ec_even_odd_split_ext", bai_hoc, "ESSAY_CODE", q, out, True)
 
 
 def _bp_ec_first_negative_index(bai_hoc: str = "Bài 22") -> dict:
@@ -1688,23 +1695,27 @@ def _bp_ec_bank_interest(bai_hoc: str = "Bài 21") -> dict:
     code = (
         f"von = {tien}\n"
         f"lai_suat = {lai_suat}\n"
-        f"for _ in range({thang}):\n"
+        f"thang_da_gui = 0\n"
+        f"while thang_da_gui < {thang}:\n"
         f"    von += von * (lai_suat / 12)\n"
+        f"    thang_da_gui += 1\n"
         f"print(int(von))"
     )
     out = _run_code_get_stdout(code)
+    gt = f"Sử dụng vòng lặp while lặp {thang} tháng, mỗi tháng tiền vốn được cộng thêm von * ({lai_suat}/12). Sau {thang} tháng, kết quả làm tròn nguyên in ra là {out}."
     q = {
         "tinh_huong": f"Bác Ba gửi tiết kiệm {tien:,} đồng vào ngân hàng với lãi suất {lai_suat*100}%/năm, tiền lãi mỗi tháng được cộng dồn vào vốn gốc. Thời hạn gửi là {thang} tháng.",
-        "yeu_cau_hoc_sinh": "Viết chương trình tính và in ra số tiền (làm tròn số nguyên) bác Ba nhận được sau thời hạn trên.",
+        "yeu_cau_hoc_sinh": "Sử dụng vòng lặp while để tính và in ra số tiền (làm tròn số nguyên) bác Ba nhận được sau thời hạn trên.",
         "dap_an_mau": code,
         "tieu_chi_cham_diem": [
             "Khởi tạo đúng số tiền gốc và lãi suất (0.3đ)",
-            "Sử dụng vòng lặp cập nhật lãi kép hàng tháng (0.4đ)",
+            "Sử dụng vòng lặp while cập nhật lãi kép hàng tháng (0.4đ)",
             f"In ra kết quả số nguyên đúng ({out}) (0.3đ)",
         ],
-        "trich_dan_sgk": "",
+        "giai_thich": gt,
+        "trich_dan_sgk": "Vòng lặp while thực hiện lặp khi điều kiện lặp còn đúng.",
     }
-    return _pack_skeleton("EC_BANK_INTEREST", "ec_bank_interest", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_BANK_INTEREST", "ec_bank_interest", bai_hoc, "ESSAY_CODE", q, out, True, gt)
 
 
 def _bp_ec_is_perfect_number(bai_hoc: str = "Bài 26") -> dict:
@@ -1773,54 +1784,52 @@ EXT_REGISTRY_ENTRIES: Dict[Tuple[int, str], List[Callable[[], dict]]] = {
     (16, "MCQ"): [_bp_b16_mcq_ext_extension, _bp_b16_mcq_interpreter_trait],
     (16, "TRUE_FALSE"): [_bp_b16_tf_interactive_vs_script],
     (16, "SHORT_ANSWER"): [_bp_b16_sa_calc_priority],
-    (16, "ESSAY_CODE"): [lambda: _bp_ec_water_bill("Bài 16"), lambda: _bp_ec_triangle_check("Bài 16")],
 
     # Bài 17
     (17, "MCQ"): [_bp_b17_mcq_keyword_error, _bp_b17_mcq_multi_assign, _bp_b17_mcq_compound_ops],
     (17, "TRUE_FALSE"): [_bp_b17_tf_vars_naming],
     (17, "SHORT_ANSWER"): [_bp_b17_sa_multi_assign_calc],
-    (17, "ESSAY_CODE"): [lambda: _bp_ec_triangle_check("Bài 17"), lambda: _bp_ec_water_bill("Bài 17")],
 
     # Bài 18
     (18, "MCQ"): [_bp_b18_mcq_sep_end, _bp_b18_mcq_float_cast],
     (18, "TRUE_FALSE"): [_bp_b18_tf_sep_end_cast],
     (18, "SHORT_ANSWER"): [_bp_b18_sa_str_repeat_len],
-    (18, "ESSAY_CODE"): [lambda: _bp_ec_bmi_calculator("Bài 18"), lambda: _bp_ec_taxi_fare("Bài 18")],
+    (18, "ESSAY_CODE"): [_bp_ec_bmi_calculator],
 
     # Bài 19
     (19, "MCQ"): [_bp_b19_mcq_nested_if, _bp_b19_mcq_logic_not, _bp_b19_mcq_missing_condition],
     (19, "TRUE_FALSE"): [_bp_b19_tf_elif_logic],
     (19, "SHORT_ANSWER"): [_bp_b19_sa_nested_branch_val],
     (19, "ESSAY_CODE"): [
-        lambda: _bp_ec_water_bill("Bài 19"),
-        lambda: _bp_ec_grade_classification("Bài 19"),
-        lambda: _bp_ec_leap_year("Bài 19"),
-        lambda: _bp_ec_taxi_fare("Bài 19"),
-        lambda: _bp_ec_bmi_calculator("Bài 19"),
+        _bp_ec_water_bill,
+        _bp_ec_grade_classification,
+        _bp_ec_triangle_check,
+        _bp_ec_leap_year,
+        _bp_ec_taxi_fare,
     ],
 
     # Bài 20
     (20, "MCQ"): [_bp_b20_mcq_range_3args, _bp_b20_mcq_for_break, _bp_b20_mcq_for_continue],
     (20, "TRUE_FALSE"): [_bp_b20_tf_nested_loop],
     (20, "SHORT_ANSWER"): [_bp_b20_sa_for_step_sum, _bp_b20_sa_for_break_val],
-    (20, "ESSAY_CODE"): [lambda: _bp_ec_count_perfect_squares("Bài 20"), lambda: _bp_ec_bank_interest("Bài 20")],
+    (20, "ESSAY_CODE"): [_bp_ec_count_perfect_squares],
 
     # Bài 21
     (21, "MCQ"): [_bp_b21_mcq_while_break, _bp_b21_mcq_while_find_factor],
     (21, "TRUE_FALSE"): [_bp_b21_tf_while_counter],
     (21, "SHORT_ANSWER"): [_bp_b21_sa_while_digit_sum, _bp_b21_sa_while_count_divisors],
-    (21, "ESSAY_CODE"): [lambda: _bp_ec_bank_interest("Bài 21"), lambda: _bp_ec_water_bill("Bài 21")],
+    (21, "ESSAY_CODE"): [_bp_ec_bank_interest],
 
     # Bài 22
     (22, "MCQ"): [_bp_b22_mcq_negative_index, _bp_b22_mcq_list_in_op, _bp_b22_mcq_list_len_empty],
     (22, "TRUE_FALSE"): [_bp_b22_tf_list_methods_all],
     (22, "SHORT_ANSWER"): [_bp_b22_sa_list_negative_slice],
     (22, "ESSAY_CODE"): [
-        lambda: _bp_ec_second_largest("Bài 22"),
-        lambda: _bp_ec_filter_revenue("Bài 22"),
-        lambda: _bp_ec_even_index_sum("Bài 22"),
-        lambda: _bp_ec_first_negative_index("Bài 22"),
-        lambda: _bp_ec_is_sorted_asc("Bài 22"),
+        _bp_ec_second_largest,
+        _bp_ec_filter_revenue,
+        _bp_ec_even_index_sum,
+        _bp_ec_first_negative_index,
+        _bp_ec_is_sorted_asc,
     ],
 
     # Bài 23
@@ -1828,9 +1837,8 @@ EXT_REGISTRY_ENTRIES: Dict[Tuple[int, str], List[Callable[[], dict]]] = {
     (23, "TRUE_FALSE"): [_bp_b23_tf_list_slice_mut],
     (23, "SHORT_ANSWER"): [_bp_b23_sa_list_insert_pop],
     (23, "ESSAY_CODE"): [
-        lambda: _bp_ec_even_odd_list_split("Bài 23"),
-        lambda: _bp_ec_count_max_frequency("Bài 23"),
-        lambda: _bp_ec_second_largest("Bài 23"),
+        _bp_ec_even_odd_list_split,
+        _bp_ec_count_max_frequency,
     ],
 
     # Bài 24
@@ -1838,8 +1846,8 @@ EXT_REGISTRY_ENTRIES: Dict[Tuple[int, str], List[Callable[[], dict]]] = {
     (24, "TRUE_FALSE"): [_bp_b24_tf_str_indexing_immut],
     (24, "SHORT_ANSWER"): [_bp_b24_sa_str_slice_rev],
     (24, "ESSAY_CODE"): [
-        lambda: _bp_ec_count_vowels("Bài 24"),
-        lambda: _bp_ec_reverse_string("Bài 24"),
+        _bp_ec_count_vowels,
+        _bp_ec_reverse_string,
     ],
 
     # Bài 25
@@ -1847,66 +1855,44 @@ EXT_REGISTRY_ENTRIES: Dict[Tuple[int, str], List[Callable[[], dict]]] = {
     (25, "TRUE_FALSE"): [_bp_b25_tf_str_methods_split],
     (25, "SHORT_ANSWER"): [_bp_b25_sa_str_split_count],
     (25, "ESSAY_CODE"): [
-        lambda: _bp_ec_normalize_fullname("Bài 25"),
-        lambda: _bp_ec_words_longer_than("Bài 25"),
-        lambda: _bp_ec_keyword_frequency("Bài 25"),
+        _bp_ec_normalize_fullname,
     ],
 
     # Bài 26
     (26, "MCQ"): [_bp_b26_mcq_no_return],
-    (26, "TRUE_FALSE"): [_bp_b26_tf_func_def if '_bp_b26_tf_func_def' in globals() else _bp_b28_tf_scope_local_global],
     (26, "SHORT_ANSWER"): [_bp_b26_sa_func_compose],
     (26, "ESSAY_CODE"): [
-        lambda: _bp_ec_password_strength("Bài 26"),
-        lambda: _bp_ec_func_circle_area("Bài 26"),
-        lambda: _bp_ec_is_perfect_number("Bài 26"),
+        _bp_ec_func_circle_area,
+        _bp_ec_is_perfect_number,
     ],
 
     # Bài 27
     (27, "MCQ"): [_bp_b27_mcq_keyword_args],
-    (27, "TRUE_FALSE"): [_bp_b28_tf_scope_local_global],
     (27, "SHORT_ANSWER"): [_bp_b27_sa_func_default_param],
-    (27, "ESSAY_CODE"): [lambda: _bp_ec_func_circle_area("Bài 27"), lambda: _bp_ec_password_strength("Bài 27")],
+    (27, "ESSAY_CODE"): [
+        _bp_ec_password_strength,
+    ],
 
     # Bài 28
     (28, "MCQ"): [_bp_b28_mcq_global_keyword],
     (28, "TRUE_FALSE"): [_bp_b28_tf_scope_local_global],
     (28, "SHORT_ANSWER"): [_bp_b28_sa_global_counter],
-    (28, "ESSAY_CODE"): [lambda: _bp_ec_is_perfect_number("Bài 28"), lambda: _bp_ec_password_strength("Bài 28")],
 
     # Bài 29
     (29, "MCQ"): [_bp_b29_mcq_zerodiv_error, _bp_b29_mcq_type_error],
-    (29, "TRUE_FALSE"): [_bp_b30_tf_blackbox_testing],
-    (29, "SHORT_ANSWER"): [_bp_b30_sa_bug_fix_output],
-    (29, "ESSAY_CODE"): [lambda: _bp_ec_water_bill("Bài 29"), lambda: _bp_ec_taxi_fare("Bài 29")],
 
     # Bài 30
     (30, "MCQ"): [_bp_b30_mcq_test_boundary],
     (30, "TRUE_FALSE"): [_bp_b30_tf_blackbox_testing],
     (30, "SHORT_ANSWER"): [_bp_b30_sa_bug_fix_output],
-    (30, "ESSAY_CODE"): [lambda: _bp_ec_is_sorted_asc("Bài 30"), lambda: _bp_ec_second_largest("Bài 30")],
 
     # Bài 31
-    (31, "MCQ"): [_bp_b22_mcq_negative_index, _bp_b23_mcq_list_insert, _bp_b20_mcq_range_3args],
-    (31, "TRUE_FALSE"): [_bp_b22_tf_list_methods_all, _bp_b23_tf_list_slice_mut],
-    (31, "SHORT_ANSWER"): [_bp_b21_sa_while_digit_sum, _bp_b25_sa_str_split_count],
     (31, "ESSAY_CODE"): [
-        lambda: _bp_ec_water_bill("Bài 31"),
-        lambda: _bp_ec_grade_classification("Bài 31"),
-        lambda: _bp_ec_count_perfect_squares("Bài 31"),
-        lambda: _bp_ec_second_largest("Bài 31"),
-        lambda: _bp_ec_normalize_fullname("Bài 31"),
+        _bp_ec_words_longer_than,
     ],
 
     # Bài 32
-    (32, "MCQ"): [_bp_b19_mcq_nested_if, _bp_b25_mcq_str_split, _bp_b28_mcq_global_keyword],
-    (32, "TRUE_FALSE"): [_bp_b19_tf_elif_logic, _bp_b25_tf_str_methods_split],
-    (32, "SHORT_ANSWER"): [_bp_b26_sa_func_compose, _bp_b28_sa_global_counter],
     (32, "ESSAY_CODE"): [
-        lambda: _bp_ec_password_strength("Bài 32"),
-        lambda: _bp_ec_filter_revenue("Bài 32"),
-        lambda: _bp_ec_is_perfect_number("Bài 32"),
-        lambda: _bp_ec_even_odd_list_split("Bài 32"),
-        lambda: _bp_ec_bank_interest("Bài 32"),
+        _bp_ec_keyword_frequency,
     ],
 }

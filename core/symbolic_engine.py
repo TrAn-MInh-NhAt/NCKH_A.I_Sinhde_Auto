@@ -1790,10 +1790,22 @@ def _bp_ec_temp_filter(bai_hoc: str = "Bài 22") -> dict:
         f"print(dem)"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Khởi tạo danh sách nhiệt độ nhiet_do = {temps} và biến đếm dem = 0.\n"
+        f"2. Sử dụng vòng lặp for duyệt từng giá trị t trong danh sách nhiet_do.\n"
+        f"3. Dùng câu lệnh if kiểm tra điều kiện t > {threshold}, nếu đúng thì tăng dem lên 1.\n"
+        f"4. Sau khi kết thúc vòng lặp, in giá trị dem ra màn hình ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Khởi tạo đúng danh sách nhiệt độ và biến đếm ban đầu bằng 0 (0.3đ)\n"
+        f"- Sử dụng đúng vòng lặp for và câu lệnh if kiểm tra điều kiện > {threshold} (0.4đ)\n"
+        f"- In ra đúng số lượng ngày thỏa mãn ({out} ngày) (0.3đ)"
+    )
     q = {
         "tinh_huong": f"Nhiệt độ đo được trong 5 ngày liên tiếp tại một trạm quan trắc là danh sách nhiet_do = {temps} (độ C).",
         "yeu_cau_hoc_sinh": f"Viết chương trình Python đếm và in ra số ngày có nhiệt độ vượt ngưỡng {threshold} độ C.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
             "Khởi tạo đúng danh sách nhiệt độ và biến đếm ban đầu bằng 0 (0.3đ)",
             f"Sử dụng đúng vòng lặp for và câu lệnh if kiểm tra điều kiện > {threshold} (0.4đ)",
@@ -1801,7 +1813,7 @@ def _bp_ec_temp_filter(bai_hoc: str = "Bài 22") -> dict:
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_TEMP_FILTER", "ec_temp_filter", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_TEMP_FILTER", "ec_temp_filter", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_avg_score(bai_hoc: str = "Bài 22") -> dict:
@@ -1815,10 +1827,22 @@ def _bp_ec_avg_score(bai_hoc: str = "Bài 22") -> dict:
         f"print(tb)"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Khởi tạo danh sách điểm diem = {scores} và biến tích lũy tong = 0.\n"
+        f"2. Sử dụng vòng lặp for duyệt từng điểm d trong danh sách để cộng dồn vào tong.\n"
+        f"3. Tính điểm trung bình bằng tong / len(diem) và dùng hàm round(..., 2) làm tròn 2 chữ số thập phân.\n"
+        f"4. In kết quả điểm trung bình ra màn hình ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Khởi tạo đúng danh sách điểm và biến tổng ban đầu (0.3đ)\n"
+        f"- Duyệt các phần tử và tính chính xác tổng điểm của danh sách (0.4đ)\n"
+        f"- Chia cho độ dài len(diem) và in kết quả đúng ({out}) (0.3đ)"
+    )
     q = {
         "tinh_huong": f"Kết quả kiểm tra môn Tin học của một học sinh được lưu trong danh sách diem = {scores}.",
         "yeu_cau_hoc_sinh": "Viết chương trình Python tính và in ra điểm trung bình của học sinh đó (làm tròn 2 chữ số thập phân).",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
             "Khởi tạo đúng danh sách điểm và biến tổng ban đầu (0.3đ)",
             "Duyệt các phần tử và tính chính xác tổng điểm của danh sách (0.4đ)",
@@ -1826,7 +1850,7 @@ def _bp_ec_avg_score(bai_hoc: str = "Bài 22") -> dict:
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_AVG_SCORE", "ec_avg_score", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_AVG_SCORE", "ec_avg_score", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_max_value(bai_hoc: str = "Bài 22") -> dict:
@@ -1840,10 +1864,22 @@ def _bp_ec_max_value(bai_hoc: str = "Bài 22") -> dict:
         f"print(max_val)"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Khởi tạo danh sách A = {nums} và gán max_val bằng phần tử đầu tiên A[0].\n"
+        f"2. Duyệt qua từng phần tử x trong danh sách A bằng vòng lặp for.\n"
+        f"3. Dùng lệnh if so sánh: nếu x > max_val thì cập nhật max_val = x.\n"
+        f"4. Sau khi duyệt hết danh sách, in giá trị max_val ra màn hình ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Khởi tạo đúng danh sách A và biến lưu giá trị lớn nhất ban đầu (0.3đ)\n"
+        f"- Duyệt từng phần tử và cập nhật giá trị lớn nhất chính xác qua lệnh if (0.4đ)\n"
+        f"- In ra giá trị lớn nhất đúng ({out}) (0.3đ)"
+    )
     q = {
         "tinh_huong": f"Cho danh sách các số nguyên A = {nums}.",
         "yeu_cau_hoc_sinh": "Viết chương trình Python tìm và in ra giá trị lớn nhất trong danh sách A mà không sử dụng hàm max() có sẵn.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
             "Khởi tạo đúng danh sách A và biến lưu giá trị lớn nhất ban đầu (0.3đ)",
             "Duyệt từng phần tử và cập nhật giá trị lớn nhất chính xác qua lệnh if (0.4đ)",
@@ -1851,7 +1887,7 @@ def _bp_ec_max_value(bai_hoc: str = "Bài 22") -> dict:
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_MAX_VALUE", "ec_max_value", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_MAX_VALUE", "ec_max_value", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_func_password(bai_hoc: str = "Bài 26") -> dict:
@@ -1863,50 +1899,72 @@ def _bp_ec_func_password(bai_hoc: str = "Bài 26") -> dict:
         f"print(kiem_tra_mat_khau(mk))"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Định nghĩa hàm kiem_tra_mat_khau(s) bằng từ khóa def với tham số hình thức s.\n"
+        f"2. Sử dụng biểu thức điều kiện len(s) >= 8 để trả về kết quả True hoặc False qua câu lệnh return.\n"
+        f"3. Khởi tạo xâu mk = '{pwd}', gọi hàm kiem_tra_mat_khau(mk) và in kết quả ra màn hình ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Định nghĩa đúng hàm bằng từ khóa def kèm tham số hình thức (0.3đ)\n"
+        f"- Kiểm tra độ dài xâu và trả về kết quả qua lệnh return (0.4đ)\n"
+        f"- Gọi hàm và in kết quả chính xác ra màn hình ({out}) (0.3đ)"
+    )
     q = {
         "tinh_huong": f"Một hệ thống yêu cầu kiểm tra tính an toàn của mật khẩu người dùng mk = '{pwd}'.",
-        "yeu_cau_hoc_sinh": "Viết hàm kiem_tra_mat_khau(s) trả về True nếu độ dài xâu s >= 8 kí tự, ngược lại trả về False; sau đó gọi hàm kiểm tra với xâu mk và in kết quả ra màn hình.",
+        "yeu_cau_hoc_sinh": f"Viết hàm kiem_tra_mat_khau(s) trả về True nếu độ dài xâu s >= 8 kí tự, ngược lại trả về False; sau đó gọi hàm kiểm tra với xâu mk = '{pwd}' và in kết quả ra màn hình.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
-            "Định nghĩa đúng hàm bằng từ khóa def kèm tham số (0.3đ)",
+            "Định nghĩa đúng hàm bằng từ khóa def kèm tham số hình thức (0.3đ)",
             "Kiểm tra độ dài xâu và trả về kết quả qua lệnh return (0.4đ)",
-            "Gọi hàm và in kết quả chính xác ra màn hình (0.3đ)",
+            f"Gọi hàm và in kết quả chính xác ra màn hình ({out}) (0.3đ)",
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_FUNC_PASSWORD", "ec_func_pwd", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_FUNC_PASSWORD", "ec_func_password", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_func_prime_count(bai_hoc: str = "Bài 26") -> dict:
-    nums = random.sample([4, 7, 10, 11, 13, 16, 17], 5)
+    n_limit = random.choice([15, 20, 25, 30])
     code = (
-        f"def la_nguyen_to(n):\n"
+        f"def la_so_nguyen_to(n):\n"
         f"    if n < 2:\n"
         f"        return False\n"
         f"    for i in range(2, int(n**0.5) + 1):\n"
         f"        if n % i == 0:\n"
         f"            return False\n"
         f"    return True\n"
-        f"ds = {nums}\n"
         f"dem = 0\n"
-        f"for x in ds:\n"
-        f"    if la_nguyen_to(x):\n"
+        f"for x in range(1, {n_limit} + 1):\n"
+        f"    if la_so_nguyen_to(x):\n"
         f"        dem += 1\n"
         f"print(dem)"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Định nghĩa hàm la_so_nguyen_to(n): nếu n < 2 trả về False; duyệt các số i từ 2 đến căn bậc hai của n, nếu n chia hết cho i thì trả về False; ngược lại trả về True.\n"
+        f"2. Khởi tạo biến đếm dem = 0; duyệt x từ 1 đến {n_limit} qua vòng lặp for.\n"
+        f"3. Nếu la_so_nguyen_to(x) là True thì tăng dem lên 1.\n"
+        f"4. In ra số lượng các số nguyên tố ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Định nghĩa đúng cấu trúc hàm kiểm tra số nguyên tố (0.4đ)\n"
+        f"- Duyệt vòng lặp đếm đúng số nguyên tố từ 1 đến {n_limit} (0.3đ)\n"
+        f"- In ra kết quả chính xác ({out}) (0.3đ)"
+    )
     q = {
-        "tinh_huong": f"Cho danh sách các số nguyên dương ds = {nums}.",
-        "yeu_cau_hoc_sinh": "Viết hàm la_nguyen_to(n) kiểm tra một số nguyên có phải là số nguyên tố hay không; sau đó đếm và in ra số lượng các số nguyên tố có trong danh sách ds.",
+        "tinh_huong": f"Yêu cầu thống kê số lượng các số nguyên tố trong phạm vi từ 1 đến {n_limit}.",
+        "yeu_cau_hoc_sinh": f"Viết hàm la_so_nguyen_to(n) trả về True nếu n là số nguyên tố, ngược lại trả về False; sau đó đếm và in ra số lượng số nguyên tố trong đoạn từ 1 đến {n_limit}.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
-            "Định nghĩa đúng hàm la_nguyen_to với các điều kiện dừng chính xác (0.4đ)",
-            "Duyệt danh sách ds và gọi hàm kiểm tra từng phần tử (0.3đ)",
-            f"Đếm và in ra kết quả số lượng đúng ({out}) (0.3đ)",
+            "Định nghĩa đúng cấu trúc hàm kiểm tra số nguyên tố (0.4đ)",
+            f"Duyệt vòng lặp đếm đúng số nguyên tố từ 1 đến {n_limit} (0.3đ)",
+            f"In ra kết quả chính xác ({out}) (0.3đ)",
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_FUNC_PRIME", "ec_func_prime", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_FUNC_PRIME", "ec_func_prime", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_func_rect_area(bai_hoc: str = "Bài 26") -> dict:
@@ -1921,114 +1979,171 @@ def _bp_ec_func_rect_area(bai_hoc: str = "Bài 26") -> dict:
         f"print(cv, dt)"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Định nghĩa hàm tinh_hcn(dai, rong) nhận 2 tham số hình thức dai và rong.\n"
+        f"2. Tính chu vi = 2 * (dai + rong), diện tích = dai * rong và trả về cặp (chu_vi, dien_tich) qua return.\n"
+        f"3. Gọi hàm tinh_hcn({a}, {b}) với các giá trị dai = {a}, rong = {b} đã cho và in kết quả ra màn hình ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Định nghĩa đúng cấu trúc hàm với 2 tham số hình thức dai, rong (0.3đ)\n"
+        f"- Tính đúng công thức chu vi và diện tích, trả về qua return (0.4đ)\n"
+        f"- Gọi hàm tinh_hcn({a}, {b}) và in ra hai giá trị chính xác ({out}) (0.3đ)"
+    )
     q = {
         "tinh_huong": f"Một mảnh vườn hình chữ nhật có chiều dài dai = {a} mét và chiều rộng rong = {b} mét.",
-        "yeu_cau_hoc_sinh": "Viết hàm tinh_hcn(dai, rong) tính chu vi và diện tích hình chữ nhật rồi trả về hai giá trị; sau đó gọi hàm và in kết quả ra màn hình.",
+        "yeu_cau_hoc_sinh": f"Viết hàm tinh_hcn(dai, rong) tính chu vi và diện tích hình chữ nhật rồi trả về hai giá trị; sau đó gọi hàm tinh_hcn({a}, {b}) với các giá trị dai = {a}, rong = {b} đã cho và in kết quả ra màn hình.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
-            "Định nghĩa đúng cấu trúc hàm với 2 tham số hình thức (0.3đ)",
+            "Định nghĩa đúng cấu trúc hàm với 2 tham số hình thức dai, rong (0.3đ)",
             "Tính đúng công thức chu vi và diện tích, trả về qua return (0.4đ)",
-            f"Gọi hàm và in ra hai giá trị chính xác ({out}) (0.3đ)",
+            f"Gọi hàm tinh_hcn({a}, {b}) và in ra hai giá trị chính xác ({out}) (0.3đ)",
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_FUNC_RECT", "ec_func_rect", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_FUNC_RECT", "ec_func_rect", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_min_and_count_div5(bai_hoc: str = "Bài 31") -> dict:
-    nums = random.sample([10, 15, 23, 30, 42, 55, 68], 6)
+    nums = random.sample([10, 15, 7, 25, 33, 40, 12, 5], 6)
     code = (
         f"ds = {nums}\n"
-        f"dem_5 = 0\n"
+        f"dem = 0\n"
         f"min_val = ds[0]\n"
         f"for x in ds:\n"
         f"    if x % 5 == 0:\n"
-        f"        dem_5 += 1\n"
+        f"        dem += 1\n"
         f"    if x < min_val:\n"
         f"        min_val = x\n"
-        f"print(dem_5, min_val)"
+        f"print(dem, min_val)"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Khởi tạo danh sách ds = {nums}, biến đếm dem = 0 và min_val = ds[0].\n"
+        f"2. Duyệt từng phần tử x trong ds: nếu x % 5 == 0 thì tăng dem lên 1; nếu x < min_val thì cập nhật min_val = x.\n"
+        f"3. In ra hai giá trị đếm và giá trị nhỏ nhất ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Khởi tạo đúng danh sách ds và các biến lưu trữ ban đầu (0.3đ)\n"
+        f"- Duyệt vòng lặp, kiểm tra đúng điều kiện chia hết cho 5 và cập nhật min (0.4đ)\n"
+        f"- In ra kết quả chính xác theo yêu cầu ({out}) (0.3đ)"
+    )
     q = {
-        "tinh_huong": f"Trong đợt khảo sát số liệu, thu được danh sách các số nguyên ds = {nums}.",
-        "yeu_cau_hoc_sinh": "Viết chương trình Python đếm số lượng các số chia hết cho 5 đồng thời tìm giá trị nhỏ nhất trong danh sách ds rồi in hai kết quả ra màn hình.",
+        "tinh_huong": f"Cho một danh sách các số nguyên ds = {nums}.",
+        "yeu_cau_hoc_sinh": "Viết chương trình Python duyệt danh sách ds để đếm số phần tử chia hết cho 5 và tìm giá trị nhỏ nhất trong danh sách; sau đó in hai kết quả ra màn hình.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
-            "Khởi tạo đúng biến đếm và biến lưu giá trị nhỏ nhất (0.3đ)",
-            "Duyệt danh sách và kiểm tra đúng hai điều kiện chia hết cho 5 và nhỏ hơn min_val (0.4đ)",
-            f"In ra hai kết quả chính xác cách nhau một dấu cách ({out}) (0.3đ)",
+            "Khởi tạo đúng danh sách ds và các biến lưu trữ ban đầu (0.3đ)",
+            "Duyệt vòng lặp, kiểm tra đúng điều kiện chia hết cho 5 và cập nhật min (0.4đ)",
+            f"In ra kết quả chính xác theo yêu cầu ({out}) (0.3đ)",
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_MIN_DIV5", "ec_min_div5", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_MIN_DIV5", "ec_min_div5", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_str_count_digits(bai_hoc: str = "Bài 31") -> dict:
-    codes = random.choice(["HS2026A1_09", "TinHoc10_88", "MaSo_2026_99", "Lop10A_123"])
+    code_str = random.choice(["HS2026_K10A1", "PY9876_VN", "CNTT10_2025", "DANANG2026"])
     code = (
-        f"ma = '{codes}'\n"
+        f"s = '{code_str}'\n"
         f"dem = 0\n"
-        f"for ch in ma:\n"
-        f"    if '0' <= ch <= '9':\n"
+        f"for ch in s:\n"
+        f"    if ch.isdigit():\n"
         f"        dem += 1\n"
         f"print(dem)"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Khởi tạo xâu s = '{code_str}' và biến đếm dem = 0.\n"
+        f"2. Duyệt từng kí tự ch trong xâu s bằng vòng lặp for.\n"
+        f"3. Dùng phương thức ch.isdigit() kiểm tra xem kí tự có phải là chữ số hay không, nếu đúng thì tăng dem lên 1.\n"
+        f"4. In ra tổng số chữ số có trong xâu ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Khởi tạo xâu s và biến đếm ban đầu (0.3đ)\n"
+        f"- Duyệt từng kí tự và kiểm tra đúng kí tự chữ số bằng isdigit() (0.4đ)\n"
+        f"- In ra số lượng chữ số chính xác ({out}) (0.3đ)"
+    )
     q = {
-        "tinh_huong": f"Một mã định danh học sinh được lưu dưới dạng xâu kí tự ma = '{codes}'.",
-        "yeu_cau_hoc_sinh": "Viết chương trình Python đếm số lượng các kí tự là chữ số xuất hiện trong xâu ma và in kết quả ra màn hình.",
+        "tinh_huong": f"Một chuỗi mã định danh học sinh được lưu trong xâu s = '{code_str}'.",
+        "yeu_cau_hoc_sinh": f"Viết chương trình Python đếm và in ra số lượng kí tự là chữ số xuất hiện trong xâu s = '{code_str}'.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
-            "Khởi tạo đúng xâu ma và biến đếm ban đầu (0.3đ)",
-            "Duyệt từng kí tự trong xâu và kiểm tra đúng điều kiện kí tự chữ số (0.4đ)",
-            f"In ra số lượng kí tự chữ số chính xác ({out}) (0.3đ)",
+            "Khởi tạo xâu s và biến đếm ban đầu (0.3đ)",
+            "Duyệt từng kí tự và kiểm tra đúng kí tự chữ số bằng isdigit() (0.4đ)",
+            f"In ra số lượng chữ số chính xác ({out}) (0.3đ)",
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_STR_DIGITS", "ec_str_digits", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_STR_DIGITS", "ec_str_digits", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_while_sum_limit(bai_hoc: str = "Bài 21") -> dict:
-    limit = random.choice([25, 30, 35])
+    target = random.choice([50, 70, 100, 120])
     code = (
+        f"S = 0\n"
         f"k = 1\n"
-        f"tong = 0\n"
-        f"while tong + k <= {limit}:\n"
-        f"    tong += k\n"
+        f"while S <= {target}:\n"
+        f"    S += k\n"
         f"    k += 1\n"
-        f"print(k - 1, tong)"
+        f"print(k - 1, S)"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Khởi tạo tổng S = 0 và số nguyên dương k = 1.\n"
+        f"2. Sử dụng vòng lặp while với điều kiện S <= {target}: mỗi bước cộng dồn S += k và tăng k += 1.\n"
+        f"3. Vòng lặp dừng lại ngay khi S vượt quá {target}. Lúc này số nguyên cuối cùng vừa cộng vào là k - 1.\n"
+        f"4. In ra giá trị k - 1 và tổng S ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Khởi tạo đúng biến tổng S = 0 và biến đếm k = 1 (0.3đ)\n"
+        f"- Xây dựng đúng vòng lặp while kiểm tra điều kiện S <= {target} và tăng k (0.4đ)\n"
+        f"- In ra đúng giá trị k - 1 và tổng S ({out}) (0.3đ)"
+    )
     q = {
-        "tinh_huong": f"Cần tìm số nguyên dương lớn nhất k sao cho tổng 1 + 2 + ... + k không vượt quá ngưỡng {limit}.",
-        "yeu_cau_hoc_sinh": "Viết chương trình Python sử dụng vòng lặp while để tìm giá trị lớn nhất đó cùng tổng tương ứng và in ra màn hình.",
+        "tinh_huong": f"Cần tìm số nguyên dương k nhỏ nhất sao cho tổng 1 + 2 + ... + k vượt ngưỡng {target}.",
+        "yeu_cau_hoc_sinh": f"Viết chương trình Python dùng vòng lặp while để tìm và in ra giá trị k đó cùng với tổng tích lũy đạt được khi vượt ngưỡng {target}.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
-            "Khởi tạo đúng biến đếm k và biến tích lũy ban đầu (0.3đ)",
-            f"Xây dựng đúng điều kiện vòng lặp while không vượt quá {limit} (0.4đ)",
-            f"Cập nhật biến và in đúng hai kết quả ra màn hình ({out}) (0.3đ)",
+            "Khởi tạo đúng biến tổng S = 0 và biến đếm k = 1 (0.3đ)",
+            f"Xây dựng đúng vòng lặp while kiểm tra điều kiện S <= {target} và tăng k (0.4đ)",
+            f"In ra đúng giá trị k - 1 và tổng S ({out}) (0.3đ)",
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_WHILE_LIMIT", "ec_while_limit", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_WHILE_LIMIT", "ec_while_limit", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_safe_div_debug(bai_hoc: str = "Bài 29") -> dict:
-    nums = random.sample([6, 8, 12, 16, 20], 4)
+    nums = random.sample([12, 18, 24, 30, 36], 4)
     code = (
         f"ds = {nums}\n"
-        f"chia = 2\n"
-        f"if chia != 0:\n"
-        f"    kq = round(sum(ds) / chia, 2)\n"
+        f"so_chia = 2\n"
+        f"if so_chia != 0:\n"
+        f"    kq = sum(ds) / so_chia\n"
         f"    print(kq)\n"
         f"else:\n"
         f"    print('Khong chia duoc cho 0')"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Khởi tạo danh sách ds = {nums} và biến so_chia = 2.\n"
+        f"2. Sử dụng cấu trúc rẽ nhánh if so_chia != 0 để phòng ngừa ngoại lệ ZeroDivisionError trước khi thực hiện phép tính.\n"
+        f"3. Nếu so_chia != 0: tính kết quả kq = sum(ds) / so_chia và in kq ra màn hình ({out}). Ngược lại in thông báo lỗi.\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Khởi tạo đúng danh sách ds và kiểm tra điều kiện khác 0 tránh ZeroDivisionError (0.4đ)\n"
+        f"- Tính chính xác kết quả phép chia khi hợp lệ (0.3đ)\n"
+        f"- In kết quả kiểm thử chính xác ({out}), chạy không lỗi (0.3đ)"
+    )
     q = {
         "tinh_huong": f"Để kiểm thử và phòng tránh ngoại lệ ZeroDivisionError khi chia tổng danh sách ds = {nums} cho số chia = 2.",
         "yeu_cau_hoc_sinh": "Viết chương trình Python kiểm tra điều kiện số chia khác 0 trước khi thực hiện phép chia và in kết quả kiểm thử ra màn hình.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
             "Khởi tạo đúng danh sách ds và kiểm tra điều kiện khác 0 tránh ZeroDivisionError (0.4đ)",
             "Tính chính xác kết quả phép chia khi hợp lệ (0.3đ)",
@@ -2036,7 +2151,7 @@ def _bp_ec_safe_div_debug(bai_hoc: str = "Bài 29") -> dict:
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_SAFE_DIV_DEBUG", "ec_safe_div_debug", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_SAFE_DIV_DEBUG", "ec_safe_div_debug", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_electricity_bill(bai_hoc: str = "Bài 19") -> dict:
@@ -2050,10 +2165,23 @@ def _bp_ec_electricity_bill(bai_hoc: str = "Bài 19") -> dict:
         f"print(tien)"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Khởi tạo biến so_kwh = {kwh}.\n"
+        f"2. Sử dụng cấu trúc rẽ nhánh if-else phân loại bậc thang điện sinh hoạt:\n"
+        f"   - Nếu so_kwh <= 50: số tiền tính là so_kwh * 1700.\n"
+        f"   - Ngược lại: 50 kWh đầu tính 50 * 1700, các kWh vượt tính (so_kwh - 50) * 2000.\n"
+        f"3. In ra số tiền điện phải trả ({out} đồng).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Khởi tạo đúng biến so_kwh ban đầu (0.2đ)\n"
+        f"- Xây dựng đúng điều kiện rẽ nhánh if-else phân loại bậc thang (0.4đ)\n"
+        f"- Tính chính xác số tiền theo từng mức và in ra màn hình ({out} đồng) (0.4đ)"
+    )
     q = {
         "tinh_huong": f"Một hộ gia đình tiêu thụ hết so_kwh = {kwh} kWh điện sinh hoạt trong tháng. Giá điện tính theo bậc thang: 50 kWh đầu giá 1700 đồng/kWh; các kWh từ 51 trở đi giá 2000 đồng/kWh.",
         "yeu_cau_hoc_sinh": "Viết chương trình Python sử dụng cấu trúc rẽ nhánh if-else để tính và in ra số tiền điện phải trả của hộ gia đình đó.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
             "Khởi tạo đúng biến so_kwh ban đầu (0.2đ)",
             "Xây dựng đúng điều kiện rẽ nhánh if-else phân loại bậc thang (0.4đ)",
@@ -2061,7 +2189,7 @@ def _bp_ec_electricity_bill(bai_hoc: str = "Bài 19") -> dict:
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_ELECTRICITY_BILL", "ec_elec_bill", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_ELECTRICITY_BILL", "ec_elec_bill", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_count_char_frequency(bai_hoc: str = "Bài 24") -> dict:
@@ -2081,10 +2209,22 @@ def _bp_ec_count_char_frequency(bai_hoc: str = "Bài 24") -> dict:
         f"print(dem)"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Khởi tạo xâu s = '{text}' và biến đếm dem = 0.\n"
+        f"2. Chuyển xâu về chữ thường s.lower() và duyệt từng kí tự ch bằng vòng lặp for.\n"
+        f"3. Dùng câu lệnh if so sánh ch == '{target_ch}', nếu đúng tăng dem lên 1.\n"
+        f"4. In ra số lần xuất hiện của kí tự '{target_ch}' trong xâu ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Khởi tạo xâu s và biến đếm ban đầu (0.3đ)\n"
+        f"- Duyệt từng kí tự qua vòng lặp for và so sánh chuẩn xác với kí tự '{target_ch}' (0.4đ)\n"
+        f"- In ra số lần xuất hiện chính xác ({out}) (0.3đ)"
+    )
     q = {
         "tinh_huong": f"Cho một xâu họ tên học sinh s = '{text}'.",
         "yeu_cau_hoc_sinh": f"Viết chương trình Python đếm số lần xuất hiện của kí tự '{target_ch}' (không phân biệt chữ hoa, chữ thường) trong xâu s và in kết quả ra màn hình.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
             "Khởi tạo xâu s và biến đếm ban đầu (0.3đ)",
             f"Duyệt từng kí tự qua vòng lặp for và so sánh chuẩn xác với kí tự '{target_ch}' (0.4đ)",
@@ -2092,7 +2232,7 @@ def _bp_ec_count_char_frequency(bai_hoc: str = "Bài 24") -> dict:
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_COUNT_CHAR", "ec_count_char", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_COUNT_CHAR", "ec_count_char", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_ec_even_odd_split(bai_hoc: str = "Bài 23") -> dict:
@@ -2106,10 +2246,22 @@ def _bp_ec_even_odd_split(bai_hoc: str = "Bài 23") -> dict:
         f"print(len(chan), sum(chan))"
     )
     out = _run_code_get_stdout(code)
+    gt = (
+        f"Giải thích thuật toán:\n"
+        f"1. Khởi tạo danh sách ds = {nums} và danh sách rỗng chan = [].\n"
+        f"2. Duyệt từng phần tử x trong ds qua vòng lặp for.\n"
+        f"3. Dùng câu lệnh if x % 2 == 0 kiểm tra số chẵn, nếu thỏa mãn thì thêm vào danh sách chan bằng chan.append(x).\n"
+        f"4. In ra số lượng phần tử len(chan) và tổng các số chẵn sum(chan) ({out}).\n\n"
+        f"Tiêu chí chấm điểm:\n"
+        f"- Khởi tạo đúng danh sách ban đầu ds và danh sách rỗng chan = [] (0.3đ)\n"
+        f"- Duyệt danh sách và dùng append() thêm các số chẵn thỏa mãn x % 2 == 0 (0.4đ)\n"
+        f"- In ra số lượng và tổng các số chẵn chính xác ({out}) (0.3đ)"
+    )
     q = {
         "tinh_huong": f"Một danh sách các số nguyên được cho trước là ds = {nums}.",
         "yeu_cau_hoc_sinh": "Viết chương trình Python duyệt danh sách ds, thêm các số chẵn vào một danh sách mới tên là chan, sau đó in ra số lượng và tổng của các số chẵn đó.",
         "dap_an_mau": code,
+        "giai_thich": gt,
         "tieu_chi_cham_diem": [
             "Khởi tạo đúng danh sách ban đầu ds và danh sách rỗng chan = [] (0.3đ)",
             "Duyệt danh sách và dùng append() thêm các số chẵn thỏa mãn x % 2 == 0 (0.4đ)",
@@ -2117,7 +2269,7 @@ def _bp_ec_even_odd_split(bai_hoc: str = "Bài 23") -> dict:
         ],
         "trich_dan_sgk": "",
     }
-    return _pack_skeleton("EC_EVEN_ODD_SPLIT", "ec_even_odd", bai_hoc, "ESSAY_CODE", q, out, True)
+    return _pack_skeleton("EC_EVEN_ODD_SPLIT", "ec_even_odd", bai_hoc, "ESSAY_CODE", q, out, True, verified_explanation=gt)
 
 
 def _bp_b21_tf_wrap() -> dict:
@@ -2125,142 +2277,88 @@ def _bp_b21_tf_wrap() -> dict:
 
 
 # ==============================================================================
-# BẢNG ĐĂNG KÝ BLUEPRINT MỞ RỘNG (~90+ BLUEPRINTS PHỦ ĐỦ 17 BÀI × 4 DẠNG)
+# BẢNG ĐĂNG KÝ BLUEPRINT MỞ RỘNG (155 BLUEPRINTS PHỦ ĐỦ 17 BÀI × 4 DẠNG)
 # ==============================================================================
 
 def _build_registry() -> dict[tuple[int, str], list[Callable[[], dict]]]:
-    """Ánh xạ đầy đủ mọi cặp (so_bai, loai_cau_hoi) sang danh sách hàm sinh khung tham số hóa."""
+    """Ánh xạ đầy đủ mọi cặp (so_bai, loai_cau_hoi) sang danh sách hàm sinh khung tham số hóa gốc (không gán chéo bài học)."""
     reg: dict[tuple[int, str], list[Callable[[], dict]]] = {
         # Bài 16
         (16, "MCQ"): [_bp_b16_mcq_script_mode, _bp_b16_mcq_high_level, _bp_b16_mcq_print_expr],
-        (16, "TRUE_FALSE"): [_bp_b18_tf_io, _bp_b19_tf_branch],
-        (16, "SHORT_ANSWER"): [_bp_b17_sa_div_mod, _bp_b18_sa_cast_calc],
-        (16, "ESSAY_CODE"): [lambda: _bp_ec_avg_score("Bài 16"), lambda: _bp_ec_electricity_bill("Bài 16")],
 
         # Bài 17
         (17, "MCQ"): [_bp_b17_mcq_valid_var, _bp_b17_mcq_assign_valid],
-        (17, "TRUE_FALSE"): [_bp_b18_tf_input_cast, _bp_b19_tf_branch],
         (17, "SHORT_ANSWER"): [_bp_b17_sa_div_mod, _bp_b17_sa_swap_update],
-        (17, "ESSAY_CODE"): [lambda: _bp_ec_avg_score("Bài 17"), lambda: _bp_ec_electricity_bill("Bài 17")],
 
         # Bài 18
         (18, "MCQ"): [_bp_b18_mcq_type_cast, _bp_b18_mcq_int_print],
         (18, "TRUE_FALSE"): [_bp_b18_tf_io, _bp_b18_tf_input_cast],
-        (18, "SHORT_ANSWER"): [_bp_b18_sa_cast_calc, _bp_b17_sa_div_mod],
-        (18, "ESSAY_CODE"): [lambda: _bp_ec_avg_score("Bài 18"), lambda: _bp_ec_electricity_bill("Bài 18")],
+        (18, "SHORT_ANSWER"): [_bp_b18_sa_cast_calc],
 
         # Bài 19
         (19, "MCQ"): [_bp_b19_mcq_if_elif, _bp_b19_mcq_logic_expr],
-        (19, "TRUE_FALSE"): [_bp_b19_tf_branch, _bp_b18_tf_input_cast],
+        (19, "TRUE_FALSE"): [_bp_b19_tf_branch],
         (19, "SHORT_ANSWER"): [_bp_b19_sa_branch, _bp_b19_sa_elif_grade],
-        (19, "ESSAY_CODE"): [lambda: _bp_ec_electricity_bill("Bài 19"), lambda: _bp_ec_temp_filter("Bài 19")],
+        (19, "ESSAY_CODE"): [_bp_ec_electricity_bill],
 
         # Bài 20
         (20, "MCQ"): [_bp_b20_mcq_for_sum, _bp_b20_mcq_for_count_mult3],
-        (20, "TRUE_FALSE"): [_bp_b20_tf_for_range, _bp_b21_tf_while],
+        (20, "TRUE_FALSE"): [_bp_b20_tf_for_range],
         (20, "SHORT_ANSWER"): [_bp_b20_sa_for_odd_sum, _bp_b20_sa_for_if_sum],
-        (20, "ESSAY_CODE"): [lambda: _bp_ec_max_value("Bài 20"), lambda: _bp_ec_temp_filter("Bài 20")],
 
         # Bài 21
-        (21, "MCQ"): [_bp_b21_mcq_while_steps, _bp_b21_mcq_while_condition],
+        (21, "MCQ"): [_bp_b21_mcq_while_condition, _bp_b21_mcq_while_steps],
         (21, "TRUE_FALSE"): [_bp_b21_tf_while, _bp_b21_tf_while_condition],
-        (21, "SHORT_ANSWER"): [_bp_b21_sa_while_acc, _bp_b20_sa_for_if_sum],
-        (21, "ESSAY_CODE"): [lambda: _bp_ec_while_sum_limit("Bài 21"), lambda: _bp_ec_electricity_bill("Bài 21")],
+        (21, "SHORT_ANSWER"): [_bp_b21_sa_while_acc],
+        (21, "ESSAY_CODE"): [_bp_ec_while_sum_limit],
 
         # Bài 22
         (22, "MCQ"): [_bp_b22_mcq_list_index, _bp_b22_mcq_list_modify],
-        (22, "TRUE_FALSE"): [_bp_b22_tf_list_filter, _bp_b22_tf_list_indexing_slice],
-        (22, "SHORT_ANSWER"): [_bp_b23_sa_list_ops, _bp_b23_sa_list_methods],
-        (22, "ESSAY_CODE"): [
-            lambda: _bp_ec_temp_filter("Bài 22"),
-            lambda: _bp_ec_avg_score("Bài 22"),
-            lambda: _bp_ec_max_value("Bài 22"),
-            lambda: _bp_ec_even_odd_split("Bài 22"),
-        ],
+        (22, "TRUE_FALSE"): [_bp_b22_tf_list_indexing_slice, _bp_b22_tf_list_filter],
+        (22, "ESSAY_CODE"): [_bp_ec_avg_score, _bp_ec_temp_filter, _bp_ec_max_value],
 
         # Bài 23
-        (23, "MCQ"): [_bp_b23_mcq_list_append, _bp_b23_mcq_list_slice, _bp_b22_mcq_list_index],
-        (23, "TRUE_FALSE"): [_bp_b22_tf_list_indexing_slice, _bp_b22_tf_list_filter],
+        (23, "MCQ"): [_bp_b23_mcq_list_append, _bp_b23_mcq_list_slice],
         (23, "SHORT_ANSWER"): [_bp_b23_sa_list_ops, _bp_b23_sa_list_methods],
-        (23, "ESSAY_CODE"): [
-            lambda: _bp_ec_even_odd_split("Bài 23"),
-            lambda: _bp_ec_max_value("Bài 23"),
-            lambda: _bp_ec_temp_filter("Bài 23"),
-        ],
+        (23, "ESSAY_CODE"): [_bp_ec_even_odd_split],
 
         # Bài 24
-        (24, "MCQ"): [_bp_b24_mcq_str_index, _bp_b24_mcq_str_len],
+        (24, "MCQ"): [_bp_b24_mcq_str_len, _bp_b24_mcq_str_index],
         (24, "TRUE_FALSE"): [_bp_b24_tf_str, _bp_b24_tf_str_immutable],
-        (24, "SHORT_ANSWER"): [_bp_b25_sa_str_find_count, _bp_b25_sa_str_split],
-        (24, "ESSAY_CODE"): [lambda: _bp_ec_count_char_frequency("Bài 24"), lambda: _bp_ec_str_count_digits("Bài 24")],
+        (24, "ESSAY_CODE"): [_bp_ec_count_char_frequency],
 
         # Bài 25
-        (25, "MCQ"): [_bp_b25_mcq_str_find, _bp_b24_mcq_str_index],
-        (25, "TRUE_FALSE"): [_bp_b24_tf_str_immutable, _bp_b24_tf_str],
+        (25, "MCQ"): [_bp_b25_mcq_str_find],
         (25, "SHORT_ANSWER"): [_bp_b25_sa_str_find_count, _bp_b25_sa_str_split],
-        (25, "ESSAY_CODE"): [lambda: _bp_ec_str_count_digits("Bài 25"), lambda: _bp_ec_count_char_frequency("Bài 25")],
 
         # Bài 26
-        (26, "MCQ"): [_bp_b26_mcq_return_val, _bp_b27_mcq_param_arg],
-        (26, "TRUE_FALSE"): [_bp_b26_tf_func_def, _bp_b27_tf_param_arg],
-        (26, "SHORT_ANSWER"): [_bp_b26_sa_func_call, _bp_b28_sa_scope_local_global],
-        (26, "ESSAY_CODE"): [
-            lambda: _bp_ec_func_password("Bài 26"),
-            lambda: _bp_ec_func_prime_count("Bài 26"),
-            lambda: _bp_ec_func_rect_area("Bài 26"),
-        ],
+        (26, "MCQ"): [_bp_b26_mcq_return_val],
+        (26, "TRUE_FALSE"): [_bp_b26_tf_func_def],
+        (26, "SHORT_ANSWER"): [_bp_b26_sa_func_call],
+        (26, "ESSAY_CODE"): [_bp_ec_func_rect_area, _bp_ec_func_password, _bp_ec_func_prime_count],
 
         # Bài 27
         (27, "MCQ"): [_bp_b27_mcq_param_arg, _bp_b27_mcq_default_param],
-        (27, "TRUE_FALSE"): [_bp_b27_tf_param_arg, _bp_b26_tf_func_def],
-        (27, "SHORT_ANSWER"): [_bp_b26_sa_func_call, _bp_b28_sa_scope_local_global],
-        (27, "ESSAY_CODE"): [
-            lambda: _bp_ec_func_rect_area("Bài 27"),
-            lambda: _bp_ec_func_password("Bài 27"),
-        ],
+        (27, "TRUE_FALSE"): [_bp_b27_tf_param_arg],
 
         # Bài 28
-        (28, "MCQ"): [_bp_b28_mcq_scope, _bp_b26_mcq_return_val],
-        (28, "TRUE_FALSE"): [_bp_b26_tf_func_def, _bp_b27_tf_param_arg],
-        (28, "SHORT_ANSWER"): [_bp_b28_sa_scope_local_global, _bp_b26_sa_func_call],
-        (28, "ESSAY_CODE"): [lambda: _bp_ec_func_prime_count("Bài 28"), lambda: _bp_ec_func_rect_area("Bài 28")],
+        (28, "MCQ"): [_bp_b28_mcq_scope],
+        (28, "SHORT_ANSWER"): [_bp_b28_sa_scope_local_global],
 
         # Bài 29
         (29, "MCQ"): [_bp_b29_mcq_error_classify, _bp_b29_mcq_syntax_vs_logic],
         (29, "TRUE_FALSE"): [_bp_b29_tf_error, _bp_b29_tf_syntax_vs_runtime],
-        (29, "SHORT_ANSWER"): [_bp_b30_sa_trace_fixed, _bp_b30_sa_trace_correction],
-        (29, "ESSAY_CODE"): [lambda: _bp_ec_safe_div_debug("Bài 29"), lambda: _bp_ec_electricity_bill("Bài 29")],
+        (29, "ESSAY_CODE"): [_bp_ec_safe_div_debug],
 
         # Bài 30
-        (30, "MCQ"): [_bp_b30_mcq_debug_test, _bp_b30_mcq_trace_bug, _bp_b29_mcq_error_classify],
-        (30, "TRUE_FALSE"): [_bp_b29_tf_syntax_vs_runtime, _bp_b29_tf_error],
-        (30, "SHORT_ANSWER"): [_bp_b30_sa_trace_fixed, _bp_b30_sa_trace_correction],
-        (30, "ESSAY_CODE"): [lambda: _bp_ec_safe_div_debug("Bài 30"), lambda: _bp_ec_even_odd_split("Bài 30")],
+        (30, "MCQ"): [_bp_b30_mcq_trace_bug, _bp_b30_mcq_debug_test],
+        (30, "SHORT_ANSWER"): [_bp_b30_sa_trace_correction, _bp_b30_sa_trace_fixed],
 
-        # Bài 31 & 32 (Thực hành & Ôn tập tổng hợp)
-        (31, "MCQ"): [_bp_b22_mcq_list_index, _bp_b20_mcq_for_count_mult3, _bp_b23_mcq_list_slice],
-        (31, "TRUE_FALSE"): [_bp_b22_tf_list_filter, _bp_b26_tf_func_def, _bp_b22_tf_list_indexing_slice],
-        (31, "SHORT_ANSWER"): [_bp_b26_sa_func_call, _bp_b23_sa_list_ops, _bp_b23_sa_list_methods],
-        (31, "ESSAY_CODE"): [
-            lambda: _bp_ec_min_and_count_div5("Bài 31"),
-            lambda: _bp_ec_str_count_digits("Bài 31"),
-            lambda: _bp_ec_max_value("Bài 31"),
-            lambda: _bp_ec_avg_score("Bài 31"),
-            lambda: _bp_ec_even_odd_split("Bài 31"),
-        ],
-        (32, "MCQ"): [_bp_b25_mcq_str_find, _bp_b19_mcq_logic_expr, _bp_b28_mcq_scope],
-        (32, "TRUE_FALSE"): [_bp_b26_tf_func_def, _bp_b20_tf_for_range, _bp_b24_tf_str_immutable],
-        (32, "SHORT_ANSWER"): [_bp_b28_sa_scope_local_global, _bp_b25_sa_str_find_count, _bp_b19_sa_elif_grade],
-        (32, "ESSAY_CODE"): [
-            lambda: _bp_ec_str_count_digits("Bài 32"),
-            lambda: _bp_ec_min_and_count_div5("Bài 32"),
-            lambda: _bp_ec_func_prime_count("Bài 32"),
-            lambda: _bp_ec_count_char_frequency("Bài 32"),
-            lambda: _bp_ec_electricity_bill("Bài 32"),
-        ],
+        # Bài 31
+        (31, "ESSAY_CODE"): [_bp_ec_min_and_count_div5, _bp_ec_str_count_digits],
     }
 
-    # Tích hợp toàn bộ 83 blueprint mở rộng từ core/symbolic_blueprints_ext.py
+    # Tích hợp toàn bộ blueprint mở rộng từ core/symbolic_blueprints_ext.py
     try:
         from core.symbolic_blueprints_ext import EXT_REGISTRY_ENTRIES
         for key, fns in EXT_REGISTRY_ENTRIES.items():
@@ -2311,6 +2409,7 @@ def build_verified_skeleton(
     Sinh khung câu hỏi & đáp án đã kiểm chứng toán học/Sandbox 100% theo kiến trúc Neuro-Symbolic.
     Ưu tiên bốc thăm không hoàn lại theo blueprint_id trong cùng một đề (used_blueprint_ids),
     đồng thời chống lặp xuyên đề bằng cách ưu tiên bốc các blueprint KHÔNG nằm trong recent_blueprint_ids.
+    Tuyệt đối không gán nhãn bài học giả; giữ nguyên bài học gốc của blueprint đã bốc.
     """
     lesson_num = _normalize_lesson_num(bai_hoc)
     norm_lesson = f"Bài {lesson_num}"
@@ -2327,14 +2426,14 @@ def build_verified_skeleton(
             "TRUE_FALSE": [_bp_b18_tf_input_cast, _bp_b19_tf_branch, _bp_b20_tf_for_range, _bp_b21_tf_while_condition, _bp_b22_tf_list_indexing_slice, _bp_b24_tf_str_immutable, _bp_b26_tf_func_def, _bp_b29_tf_syntax_vs_runtime],
             "SHORT_ANSWER": [_bp_b17_sa_div_mod, _bp_b19_sa_elif_grade, _bp_b20_sa_for_if_sum, _bp_b21_sa_while_acc, _bp_b23_sa_list_methods, _bp_b26_sa_func_call, _bp_b30_sa_trace_correction],
             "ESSAY_CODE": [
-                lambda: _bp_ec_temp_filter(norm_lesson),
-                lambda: _bp_ec_avg_score(norm_lesson),
-                lambda: _bp_ec_max_value(norm_lesson),
-                lambda: _bp_ec_min_and_count_div5(norm_lesson),
-                lambda: _bp_ec_str_count_digits(norm_lesson),
-                lambda: _bp_ec_electricity_bill(norm_lesson),
-                lambda: _bp_ec_count_char_frequency(norm_lesson),
-                lambda: _bp_ec_even_odd_split(norm_lesson),
+                _bp_ec_temp_filter,
+                _bp_ec_avg_score,
+                _bp_ec_max_value,
+                _bp_ec_min_and_count_div5,
+                _bp_ec_str_count_digits,
+                _bp_ec_electricity_bill,
+                _bp_ec_count_char_frequency,
+                _bp_ec_even_odd_split,
             ],
         }
         candidates = fallback_by_type.get(loai, [_bp_b19_mcq_if_elif])
@@ -2348,7 +2447,6 @@ def build_verified_skeleton(
     for fn in candidates:
         try:
             pack = fn()
-            pack["bai_hoc"] = norm_lesson
             bp_id = pack["blueprint_id"]
             any_packs.append(pack)
             if bp_id not in used:
@@ -2362,10 +2460,31 @@ def build_verified_skeleton(
         chosen_pack = random.choice(fresh_packs)
     elif fallback_packs:
         chosen_pack = random.choice(fallback_packs)
-    elif any_packs:
-        chosen_pack = random.choice(any_packs)
     else:
-        chosen_pack = candidates[0]()
-        chosen_pack["bai_hoc"] = norm_lesson
+        # Cặp (lesson_num, loai) đã hết blueprint chưa dùng trong đề này:
+        # Tìm trên toàn bộ các bài học khác trong registry có blueprint của loại này chưa dùng
+        global_fresh = []
+        global_fallback = []
+        for (l_other, t_other), fns in registry.items():
+            if t_other == loai and l_other != lesson_num:
+                for fn in fns:
+                    try:
+                        p = fn()
+                        bid = p["blueprint_id"]
+                        if bid not in used:
+                            if bid not in recent:
+                                global_fresh.append(p)
+                            else:
+                                global_fallback.append(p)
+                    except Exception:
+                        pass
+        if global_fresh:
+            chosen_pack = random.choice(global_fresh)
+        elif global_fallback:
+            chosen_pack = random.choice(global_fallback)
+        elif any_packs:
+            chosen_pack = random.choice(any_packs)
+        else:
+            chosen_pack = candidates[0]()
 
     return chosen_pack

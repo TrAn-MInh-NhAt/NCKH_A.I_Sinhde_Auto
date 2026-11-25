@@ -5,6 +5,7 @@ import json
 import time
 import random
 import requests
+import hashlib
 from typing import Any
 
 from docx import Document as DocxDocument
@@ -72,6 +73,7 @@ def _rotate_topic_f_specs(specs: list[dict]) -> list[dict]:
     bao gồm Bài 23 (thao tác danh sách), Bài 27 (tham số/đối số), Bài 30 (gỡ lỗi), Bài 32 (tổng hợp),
     và xoay vòng đa dạng giữa các bài toán phần tự luận ESSAY_CODE (lọc nhiệt độ, đếm số nguyên tố,
     tìm min/max, tính tiền điện/hóa đơn, kiểm tra mật khẩu, xử lý xâu mã học sinh, tính trung bình danh sách).
+    Chỉ gán bài học L cho dạng T nếu cặp (L, T) thực sự có blueprint khả dụng trong kho.
     """
     if not specs or len(specs) < 10:
         return specs
@@ -85,59 +87,105 @@ def _rotate_topic_f_specs(specs: list[dict]) -> list[dict]:
     sa_specs = [s for s in specs if s.get("loai_cau_hoi") == "SHORT_ANSWER"]
     ec_specs = [s for s in specs if s.get("loai_cau_hoi") == "ESSAY_CODE"]
 
-    # 1. Xoay vòng MCQ (phủ cả Bài 23, 27, 30, 32)
+    # 1. Xoay vòng MCQ (phủ cả Bài 16..32, đặc biệt Bài 23, 27, 30, 32)
     n_mcq = len(mcq_specs)
-    if n_mcq >= 8:
-        g1 = random.sample(["Bài 16", "Bài 17", "Bài 18"], 2)
-        g2 = random.sample(["Bài 19", "Bài 20", "Bài 21"], 2)
-        g3 = random.sample(["Bài 22", "Bài 23", "Bài 24", "Bài 25"], 2)
-        g4 = random.sample(["Bài 26", "Bài 27", "Bài 28", "Bài 29", "Bài 30", "Bài 31", "Bài 32"], n_mcq - 6)
-        chosen_mcq = g1 + g2 + g3 + g4
-        random.shuffle(chosen_mcq)
+    all_mcq_lessons = [f"Bài {i}" for i in range(16, 33)]
+    if n_mcq <= len(all_mcq_lessons):
+        if n_mcq >= 8:
+            g1 = ["Bài 16", "Bài 17", "Bài 18"]
+            g2 = ["Bài 19", "Bài 20", "Bài 21"]
+            g3 = ["Bài 22", "Bài 23", "Bài 24", "Bài 25"]
+            g4 = ["Bài 26", "Bài 27", "Bài 28", "Bài 29", "Bài 30", "Bài 31", "Bài 32"]
+            k1 = min(len(g1), max(2, n_mcq // 4))
+            k2 = min(len(g2), max(2, n_mcq // 4))
+            k3 = min(len(g3), max(2, n_mcq // 4))
+            c1 = random.sample(g1, k1)
+            c2 = random.sample(g2, k2)
+            c3 = random.sample(g3, k3)
+            rem = max(0, n_mcq - len(c1) - len(c2) - len(c3))
+            c4 = random.sample(g4, min(len(g4), rem))
+            chosen_mcq = c1 + c2 + c3 + c4
+            if len(chosen_mcq) < n_mcq:
+                unused_mcq = [x for x in all_mcq_lessons if x not in chosen_mcq]
+                chosen_mcq.extend(random.sample(unused_mcq, min(len(unused_mcq), n_mcq - len(chosen_mcq))))
+            random.shuffle(chosen_mcq)
+        else:
+            chosen_mcq = random.sample(all_mcq_lessons, n_mcq)
     else:
-        all_mcq_pool = ["Bài 16", "Bài 17", "Bài 18", "Bài 19", "Bài 20", "Bài 21", "Bài 22", "Bài 23", "Bài 24", "Bài 25", "Bài 26", "Bài 27", "Bài 28", "Bài 29", "Bài 30", "Bài 31", "Bài 32"]
-        chosen_mcq = random.sample(all_mcq_pool, min(n_mcq, len(all_mcq_pool)))
+        mult = (n_mcq // len(all_mcq_lessons)) + 1
+        extended_pool = all_mcq_lessons * mult
+        random.shuffle(extended_pool)
+        chosen_mcq = extended_pool[:n_mcq]
 
-    # 2. Xoay vòng TRUE_FALSE (phủ Bài 18, 19, 20, 21, 22, 24, 26, 27, 29)
+    # 2. Xoay vòng TRUE_FALSE (phủ các bài có blueprint Đúng/Sai thật)
     n_tf = len(tf_specs)
-    tf_p1 = ["Bài 18", "Bài 19", "Bài 20"]
-    tf_p2 = ["Bài 21", "Bài 22", "Bài 24"]
-    tf_p3 = ["Bài 26", "Bài 27", "Bài 29"]
-    if n_tf == 3:
-        chosen_tf = [random.choice(tf_p1), random.choice(tf_p2), random.choice(tf_p3)]
+    tf_available = ["Bài 16", "Bài 17", "Bài 18", "Bài 19", "Bài 20", "Bài 21", "Bài 22", "Bài 23", "Bài 24", "Bài 25", "Bài 26", "Bài 27", "Bài 28", "Bài 29", "Bài 30"]
+    if n_tf <= len(tf_available):
+        chosen_tf = random.sample(tf_available, n_tf)
     else:
-        full_tf = tf_p1 + tf_p2 + tf_p3
-        chosen_tf = random.sample(full_tf, min(n_tf, len(full_tf)))
+        mult = (n_tf // len(tf_available)) + 1
+        extended_tf = tf_available * mult
+        random.shuffle(extended_tf)
+        chosen_tf = extended_tf[:n_tf]
 
-    # 3. Xoay vòng SHORT_ANSWER (phủ Bài 17, 18, 19, 20, 21, 23, 25, 26, 28, 30)
+    # 3. Xoay vòng SHORT_ANSWER (phủ các bài có blueprint Trả lời ngắn thật)
     n_sa = len(sa_specs)
-    sa_p1 = ["Bài 17", "Bài 18"]
-    sa_p2 = ["Bài 19", "Bài 20", "Bài 21"]
-    sa_p3 = ["Bài 23", "Bài 25"]
-    sa_p4 = ["Bài 26", "Bài 28", "Bài 30"]
-    if n_sa == 4:
-        chosen_sa = [random.choice(sa_p1), random.choice(sa_p2), random.choice(sa_p3), random.choice(sa_p4)]
+    sa_available = ["Bài 16", "Bài 17", "Bài 18", "Bài 19", "Bài 20", "Bài 21", "Bài 22", "Bài 23", "Bài 24", "Bài 25", "Bài 26", "Bài 27", "Bài 28", "Bài 29", "Bài 30"]
+    if n_sa <= len(sa_available):
+        chosen_sa = random.sample(sa_available, n_sa)
     else:
-        full_sa = sa_p1 + sa_p2 + sa_p3 + sa_p4
-        chosen_sa = random.sample(full_sa, min(n_sa, len(full_sa)))
+        mult = (n_sa // len(sa_available)) + 1
+        extended_sa = sa_available * mult
+        random.shuffle(extended_sa)
+        chosen_sa = extended_sa[:n_sa]
 
-    # 4. Xoay vòng ESSAY_CODE (đa dạng hóa: nhiệt độ, số nguyên tố, min/max, tiền điện, mật khẩu, mã HS, trung bình)
+    # 4. Xoay vòng ESSAY_CODE (kho bài toán thực tế đa dạng, không trùng bài học)
     n_ec = len(ec_specs)
     ec_pool = [
+        ("Bài 18", "Tính chỉ số thể trạng BMI và phân loại"),
         ("Bài 19", "Tính tiền điện sinh hoạt theo bậc thang"),
+        ("Bài 19", "Tính tiền nước sinh hoạt gia đình"),
+        ("Bài 19", "Tính cước taxi theo km bậc thang"),
+        ("Bài 19", "Kiểm tra 3 cạnh của một tam giác"),
         ("Bài 20", "Tìm giá trị lớn nhất trong dãy số không dùng hàm max"),
+        ("Bài 20", "Đếm số lượng số chính phương trong đoạn"),
         ("Bài 21", "Vòng lặp while cộng dồn đến khi vượt ngưỡng"),
+        ("Bài 21", "Tính tiền gửi tiết kiệm lãi kép qua các năm"),
         ("Bài 22", "Lọc các ngày có nhiệt độ vượt ngưỡng trong danh sách"),
+        ("Bài 22", "Tính điểm trung bình học tập của học sinh"),
+        ("Bài 22", "Tìm phần tử lớn thứ nhì trong danh sách"),
+        ("Bài 22", "Lọc các khoản doanh thu đạt chỉ tiêu"),
         ("Bài 23", "Duyệt và tách danh sách các số chẵn"),
+        ("Bài 23", "Tách danh sách thành hai danh sách chẵn và lẻ"),
         ("Bài 24", "Đếm số lần xuất hiện của kí tự trong xâu họ tên"),
+        ("Bài 24", "Đếm số lượng nguyên âm trong xâu tiếng Anh"),
+        ("Bài 25", "Chuẩn hóa xâu họ tên loại bỏ khoảng trắng thừa"),
         ("Bài 26", "Hàm tính chu vi và diện tích hình chữ nhật"),
-        ("Bài 27", "Hàm kiểm tra tính hợp lệ của mật khẩu"),
-        ("Bài 28", "Hàm kiểm tra và đếm số lượng số nguyên tố"),
+        ("Bài 26", "Hàm kiểm tra tính hợp lệ của mật khẩu"),
+        ("Bài 26", "Hàm kiểm tra và đếm số lượng số nguyên tố"),
+        ("Bài 26", "Hàm tính diện tích hình tròn"),
+        ("Bài 27", "Hàm đánh giá độ mạnh của mật khẩu người dùng"),
         ("Bài 29", "Kiểm thử phòng ngừa lỗi chia cho 0 (ZeroDivisionError)"),
         ("Bài 31", "Đếm số chia hết cho 5 và tìm giá trị nhỏ nhất"),
+        ("Bài 31", "Lọc các từ có độ dài lớn hơn ngưỡng trong xâu"),
         ("Bài 32", "Đếm số lượng chữ số trong xâu mã học sinh"),
+        ("Bài 32", "Đếm tần suất xuất hiện từ khóa trong văn bản"),
     ]
-    chosen_ec = random.sample(ec_pool, min(n_ec, len(ec_pool)))
+    random.shuffle(ec_pool)
+    chosen_ec = []
+    seen_ec_lessons = set()
+    for bh, det in ec_pool:
+        if bh not in seen_ec_lessons:
+            chosen_ec.append((bh, det))
+            seen_ec_lessons.add(bh)
+            if len(chosen_ec) == n_ec:
+                break
+    if len(chosen_ec) < n_ec:
+        for item in ec_pool:
+            if item not in chosen_ec:
+                chosen_ec.append(item)
+                if len(chosen_ec) == n_ec:
+                    break
 
     rotated: list[dict] = []
     for orig, new_bh in zip(mcq_specs, chosen_mcq):
@@ -285,6 +333,13 @@ def _detect_exam_motifs(item: dict) -> list[tuple[str, str]]:
 # NODE EXAM_CRITIC: PHẢN BIỆN TOÀN ĐỀ (CHỐNG TRÙNG LẶP & LỘ ĐÁP ÁN CHÉO)
 # ==============================================================================
 
+def _get_item_stem_hash(item: dict) -> str:
+    """Tạo mã băm chuẩn hóa của câu dẫn để chống trùng 100%."""
+    stem = _extract_stem(item)
+    norm = re.sub(r"\s+", " ", stem).strip().lower()
+    return hashlib.md5(norm.encode("utf-8")).hexdigest()
+
+
 def exam_critic(draft_items: list[dict]) -> dict[str, Any]:
     """
     Phản biện toàn bộ đề dự thảo:
@@ -300,6 +355,8 @@ def exam_critic(draft_items: list[dict]) -> dict[str, Any]:
 
     kept_tokens: list[set[str]] = []
     kept_stems: list[str] = []
+    kept_blueprint_ids: set[str] = set()
+    kept_stem_hashes: set[str] = set()
     seen_motifs: dict[str, tuple[int, str]] = {}
     motif_counts: dict[str, int] = {}
 
@@ -310,6 +367,8 @@ def exam_critic(draft_items: list[dict]) -> dict[str, Any]:
         stem = _extract_stem(item)
         toks = _tokenize(full_txt)
         stem_norm = re.sub(r"\s+", " ", stem.lower())
+        stem_hash = _get_item_stem_hash(item)
+        bp_id = str(item.get("blueprint_id", "")).strip()
         item_motifs = _detect_exam_motifs(item)
 
         drop_reason = ""
@@ -319,6 +378,10 @@ def exam_critic(draft_items: list[dict]) -> dict[str, Any]:
             drop_reason = "Câu hỏi rỗng hoặc thiếu thân câu hỏi."
         elif isinstance(val_obj, dict) and val_obj and val_obj.get("is_pass") is False:
             drop_reason = "Câu hỏi chưa đạt chuẩn kiểm định 2 tầng (is_pass=False), đưa vào hàng đợi Backfill."
+        elif bp_id and bp_id in kept_blueprint_ids:
+            drop_reason = f"Trùng blueprint_id '{bp_id}' với câu đã có trong đề."
+        elif stem_hash and stem_hash in kept_stem_hashes:
+            drop_reason = f"Trùng lặp hoàn toàn câu dẫn (stem hash {stem_hash[:8]}) với câu đã có trong đề."
 
         # Bộ đếm chủ đề bài toán toàn đề: chỉ cho phép tối đa 1 câu duy nhất mỗi mô-típ dễ lặp
         if not drop_reason:
@@ -372,6 +435,10 @@ def exam_critic(draft_items: list[dict]) -> dict[str, Any]:
             kept_items.append(enriched)
             kept_tokens.append(toks)
             kept_stems.append(stem_norm)
+            if bp_id:
+                kept_blueprint_ids.add(bp_id)
+            if stem_hash:
+                kept_stem_hashes.add(stem_hash)
             for m_key, _ in item_motifs:
                 seen_motifs.setdefault(m_key, (new_pos, item["bai_hoc"]))
                 motif_counts[m_key] = motif_counts.get(m_key, 0) + 1
@@ -563,6 +630,8 @@ def assemble_exam(
     used_sigs_by_lesson: dict[str, list[str]] = {}
     used_sigs_all: list[str] = []
     used_blueprint_ids: set[str] = set()
+    used_in_current_exam: set[str] = set()
+    used_question_hashes: set[str] = set()
 
     print(f"\n=== PHA 2: SINH & KIỂM ĐỊNH TUẦN TỰ NEURO-SYMBOLIC ({target_count} CÂU - LLAMA3.2 4GB VRAM) ===", flush=True)
     for idx, (spec, slot_ev) in enumerate(zip(exam_specs, slot_evidences), 1):
@@ -605,18 +674,26 @@ def assemble_exam(
             "latency_sec": res.get("latency_sec", 0.0),
             "log_timestamp": res.get("log_timestamp", ""),
         }
-        # CHỈ đưa vào đề dự thảo các câu đạt chuẩn 100% (is_pass == True); câu rớt đẩy thẳng sang hàng đợi Backfill
-        if bool(val_res.get("is_pass", False)):
+        # CHỈ đưa vào đề dự thảo các câu đạt chuẩn 100% (is_pass == True) và KHÔNG trùng lặp
+        stem_hash = _get_item_stem_hash(item_record)
+        is_dup_bp = bool(bp_id and bp_id in used_in_current_exam)
+        is_dup_stem = bool(stem_hash and stem_hash in used_question_hashes)
+
+        if bool(val_res.get("is_pass", False)) and not is_dup_bp and not is_dup_stem:
             draft_items.append(item_record)
             if bp_id:
                 used_blueprint_ids.add(bp_id)
+                used_in_current_exam.add(bp_id)
+            if stem_hash:
+                used_question_hashes.add(stem_hash)
             sig = _extract_compact_code_signature(item_record)
             if sig:
                 used_sigs_by_lesson.setdefault(res["bai_hoc"], []).append(sig)
                 used_sigs_all.append(sig)
         else:
+            reason = "trùng blueprint/câu dẫn trong đề" if (is_dup_bp or is_dup_stem) else "chưa đạt is_pass=True"
             print(
-                f"   ↪ [CHẶN LỌT ĐỀ] Câu #{idx} ({res['bai_hoc']} - {loai}) chưa đạt is_pass=True -> chuyển sang hàng đợi Backfill.",
+                f"   ↪ [CHẶN LỌT ĐỀ] Câu #{idx} ({res['bai_hoc']} - {loai}) {reason} -> chuyển sang hàng đợi Backfill.",
                 flush=True,
             )
             failed_specs_queue.append(item_record)
@@ -714,17 +791,25 @@ def assemble_exam(
                 "latency_sec": res.get("latency_sec", 0.0),
                 "log_timestamp": res.get("log_timestamp", ""),
             }
-            if bool(bf_val.get("is_pass", False)):
+            bf_stem_hash = _get_item_stem_hash(new_rec)
+            bf_is_dup_bp = bool(bp_id and bp_id in used_in_current_exam)
+            bf_is_dup_stem = bool(bf_stem_hash and bf_stem_hash in used_question_hashes)
+
+            if bool(bf_val.get("is_pass", False)) and not bf_is_dup_bp and not bf_is_dup_stem:
                 kept_pool.append(new_rec)
                 if bp_id:
                     used_blueprint_ids.add(bp_id)
+                    used_in_current_exam.add(bp_id)
+                if bf_stem_hash:
+                    used_question_hashes.add(bf_stem_hash)
                 new_sig = _extract_compact_code_signature(new_rec)
                 if new_sig:
                     used_sigs_by_lesson.setdefault(res["bai_hoc"], []).append(new_sig)
                     used_sigs_all.append(new_sig)
             else:
+                bf_reason = "trùng blueprint/câu dẫn" if (bf_is_dup_bp or bf_is_dup_stem) else "vẫn chưa đạt is_pass=True"
                 print(
-                    f"   ↪ [BACKFILL V{bf_round}] Câu bù ({bh} - {loai}) vẫn chưa đạt is_pass=True -> loại bỏ, không đưa vào đề.",
+                    f"   ↪ [BACKFILL V{bf_round}] Câu bù ({bh} - {loai}) {bf_reason} -> loại bỏ, không đưa vào đề.",
                     flush=True,
                 )
                 round_still_failed.append(new_rec)
@@ -789,17 +874,24 @@ def assemble_exam(
                         )
                         break
 
-    # TUYỆT ĐỐI KHÔNG khôi phục câu rớt chuẩn (is_pass == False) hoặc câu bị loại do trùng mô-típ toàn đề
+    # TUYỆT ĐỐI KHÔNG khôi phục câu rớt chuẩn (is_pass == False) hoặc câu bị loại do trùng lặp toàn đề
     if reviewed["tong_so_cau"] < target_count:
         passed_removed = [
             it for it in reviewed.get("removed_items", [])
             if bool((it.get("validation_result") or {}).get("is_pass", False))
-            and "Trùng mô-típ" not in str(it.get("ly_do_loai", ""))
+            and "Trùng" not in str(it.get("ly_do_loai", ""))
+            and str(it.get("blueprint_id", "")).strip() not in used_in_current_exam
+            and _get_item_stem_hash(it) not in used_question_hashes
         ]
         if passed_removed:
             deficit = target_count - reviewed["tong_so_cau"]
             restored = passed_removed[:deficit]
             reviewed["items"].extend(restored)
+            for it in restored:
+                b = str(it.get("blueprint_id", "")).strip()
+                if b:
+                    used_in_current_exam.add(b)
+                used_question_hashes.add(_get_item_stem_hash(it))
             reviewed["removed_items"] = [it for it in reviewed.get("removed_items", []) if it not in restored]
             breakdown, tong_diem = _recompute_exam_summary(reviewed["items"], _get_point_map())
             reviewed["bang_diem_chi_tiet"] = breakdown

@@ -825,37 +825,28 @@ def _merge_symbolic_and_neural(
 
     merged = copy.deepcopy(base_q)
 
-    # 1. Khóa chuẩn 100% lời giải thích từ dữ liệu thật
+    # 1. Khóa chuẩn 100% lời giải thích từ dữ liệu thật (cấm tuyệt đối LLM 3B tự ý tính nhẩm sai)
     if loai in ("MCQ", "SHORT_ANSWER"):
-        if verified_exp:
-            merged["giai_thich"] = verified_exp
-        elif isinstance(neural_parsed, dict):
-            gt_llm = str(neural_parsed.get("giai_thich", "")).strip()
-            if len(gt_llm) >= 25:
-                merged["giai_thich"] = gt_llm
+        merged["giai_thich"] = verified_exp if verified_exp else str(base_q.get("giai_thich", "")).strip()
     elif loai == "TRUE_FALSE":
         for k in ("a", "b", "c", "d"):
             if isinstance(merged.get(k), dict):
-                if verified_tf.get(k):
-                    merged[k]["giai_thich"] = verified_tf[k]
-                elif isinstance(neural_parsed, dict):
-                    gt_k = str(neural_parsed.get(f"giai_thich_{k}", "")).strip()
-                    if len(gt_k) >= 20:
-                        merged[k]["giai_thich"] = gt_k
+                merged[k]["giai_thich"] = verified_tf.get(k) or str(base_q.get(k, {}).get("giai_thich", "")).strip()
     elif loai == "ESSAY_CODE":
         if isinstance(neural_parsed, dict):
             th_llm = _strip_sgk_hint_prefix(str(neural_parsed.get("tinh_huong_tu_nhien", "")).strip())
             orig_th = str(base_q.get("tinh_huong", ""))
             orig_lists = re.findall(r"\[[^\]]+\]", orig_th)
             orig_strs = re.findall(r"'[^']+'", orig_th)
+            orig_nums = re.findall(r"\b\d+\b", orig_th)
             if (
                 len(th_llm) >= 25
                 and all(lst in th_llm for lst in orig_lists)
                 and all(st in th_llm for st in orig_strs)
+                and all(num in th_llm for num in orig_nums)
             ):
                 merged["tinh_huong"] = th_llm
-        if verified_exp:
-            merged["giai_thich"] = verified_exp
+        merged["giai_thich"] = verified_exp if verified_exp else str(base_q.get("giai_thich", "")).strip()
 
     merged["trich_dan_sgk"] = _clean_sgk_citation(merged.get("trich_dan_sgk", ""))
     return merged
@@ -898,6 +889,7 @@ def generate_node(state: AgentState) -> dict:
 
         merged_q = _merge_symbolic_and_neural(skeleton, neural_parsed, loai, ev)
         return {
+            "bai_hoc": skeleton.get("bai_hoc", bai_hoc),
             "question_json": merged_q,
             "blueprint_id": skeleton.get("blueprint_id", ""),
             "symbolic_skeleton": skeleton,
