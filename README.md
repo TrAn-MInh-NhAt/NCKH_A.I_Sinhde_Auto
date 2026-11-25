@@ -5,7 +5,7 @@
 [![LangGraph](https://img.shields.io/badge/Agent-LangGraph%200.0.39-FF6F00.svg)](https://langchain.com/)
 [![Streamlit UI](https://img.shields.io/badge/Web%20UI-Streamlit%201.67-FF4B4B.svg?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Hardware](https://img.shields.io/badge/Hardware-RTX%203050%204GB%20VRAM-76B900.svg?logo=nvidia&logoColor=white)](https://nvidia.com/)
-[![Release](https://img.shields.io/badge/Release-v2.0.0-blue.svg)](CHANGELOG.md)
+[![Release](https://img.shields.io/badge/Release-v3.0.0-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Hệ thống AI Agent hỗ trợ sinh đề thi và kiểm định tự động môn **Tin học 10 (Chủ đề F – Giải quyết vấn đề với sự trợ giúp của máy tính: Lập trình Python, Bài 16 đến Bài 32)** theo định dạng cấu trúc đề kiểm tra mới (Trắc nghiệm nhiều lựa chọn 0,25đ; Trắc nghiệm Đúng/Sai bậc thang 0,1 – 0,25 – 0,5 – 1,0đ; Trả lời ngắn 0,5đ; Tự luận lập trình 1,0đ). 
@@ -39,7 +39,7 @@ flowchart TD
     end
 
     subgraph Core ["Lõi Xử Lý Neuro-Symbolic Agentic RAG (core/)"]
-        SE["Bộ sinh Ký hiệu Tham số hóa\n(155 Blueprints độc nhất, 283 Ánh xạ)"]
+        SE["Bộ sinh Ký hiệu Tham số hóa\n(157 Blueprints độc nhất, 285 Ánh xạ)"]
         SB["Python Sandbox Cô lập\n(Thực thi subprocess, Xác minh stdout 100%)"]
         RET["Truy xuất Ngữ cảnh RAG\n(ChromaDB v2 vector sạch theo bài học)"]
         LLM["Mô hình Cục bộ llama3.2_tinhoc10\n(Hiệu chỉnh sư phạm & Khóa chuẩn lời giải)"]
@@ -80,7 +80,7 @@ flowchart TD
 ### Các Trụ Cột Kỹ Thuật Chính:
 
 1. **Bộ sinh Khung bài toán Tham số hóa (`core/symbolic_engine.py` & `core/symbolic_blueprints_ext.py`):**
-   - Sở hữu **155 Blueprint độc nhất** (bao gồm **62** MCQ, **26** TRUE_FALSE, **32** SHORT_ANSWER, **35** ESSAY_CODE) với **283 lượt ánh xạ bài học** phủ kín toàn bộ 17 bài học Chủ đề F (Bài 16 – Bài 32).
+   - Sở hữu **157 Blueprint độc nhất** (bao gồm **61** MCQ, **28** TRUE_FALSE, **32** SHORT_ANSWER, **36** ESSAY_CODE) với **285 lượt ánh xạ bài học** phủ kín toàn bộ 17 bài học Chủ đề F (Bài 16 – Bài 32).
    - Tự động sinh ngẫu nhiên tên biến, phạm vi giá trị biên, xâu ký tự và cấu trúc điều khiển; không bao giờ lặp lại dữ liệu tĩnh.
 
 2. **Môi trường Python Sandbox Cô lập (`core/sandbox.py`):**
@@ -140,7 +140,7 @@ NCKH_A.I_Sinhde_Auto/
 │
 ├── core/                             # Lõi xử lý Neuro-Symbolic, Agentic RAG & Khảo thí
 │   ├── symbolic_engine.py            # Động cơ ký hiệu gốc: Khung skeleton & điều phối bốc thăm
-│   ├── symbolic_blueprints_ext.py    # Thư viện mở rộng 83 blueprints (tổng 155 blueprints độc nhất)
+│   ├── symbolic_blueprints_ext.py    # Thư viện mở rộng 86 blueprints (tổng 157 blueprints độc nhất)
 │   ├── exam_importer.py              # Bộ quét và nạp đề kiểm tra mẫu (.docx, .json, .txt) vào ngân hàng
 │   ├── generator.py                  # Đồ thị LangGraph điều phối vòng lặp sinh và tự sửa lỗi
 │   ├── validator.py                  # Bộ kiểm định 2 tầng: Tầng 1 Rule Hard Gate & Tầng 2 Logic mờ

@@ -445,6 +445,15 @@ def _clean_sgk_citation(text: str) -> str:
                 s = new_s
                 changed = True
     s = re.sub(r'^["“”\'«»]+|["“”\'«»]+$', "", s).strip()
+    # Loại bỏ chuỗi lời chào/tên riêng lạc từ văn bản SGK thô (VD: "Xin chào bạn Trần Quang Minh")
+    s = re.sub(
+        r"Xin\s+chào\s+bạn(?:\s+[A-ZÀ-Ỹ][A-Za-zÀ-ỹ]+){1,5}[.!,;:\s]*",
+        " ",
+        s,
+        flags=re.IGNORECASE,
+    )
+    s = re.sub(r"\bXin\s+chào\s+bạn\b[^.!?\n]*[.!?]?", " ", s, flags=re.IGNORECASE)
+    s = re.sub(r"\s{2,}", " ", s).strip()
     return s
 
 

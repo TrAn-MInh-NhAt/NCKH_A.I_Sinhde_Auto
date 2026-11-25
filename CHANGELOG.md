@@ -4,6 +4,39 @@ Tất cả các thay đổi và bản phát hành quan trọng của dự án Ng
 
 ---
 
+## [v3.0.0] – Bản phát hành hoàn thiện chuẩn Đề cương NCKH & Tối ưu tài nguyên biên
+*Ngày phát hành: 25/11/2026*
+
+**Đề tài NCKH:** Hệ thống AI Agent cục bộ kết hợp kiến trúc Neuro-Symbolic hỗ trợ sinh và kiểm định đề kiểm tra Tin học 10 – Chủ đề F  
+**Nhóm tác giả:** Trần Minh Nhật (Trưởng nhóm), Phạm Kỳ Hải, Nguyễn Hữu Lộc (Lớp 23SPT, Khoa Toán – Tin, Trường Đại học Sư phạm – Đại học Đà Nẵng)  
+**Giảng viên hướng dẫn:** ThS. Đoàn Duy Bình  
+**Kho mã nguồn:** https://github.com/TrAn-MInh-NhAt/NCKH_A.I_Sinhde_Auto
+
+### Điểm nâng cấp đột phá ở phiên bản 3.0
+
+1. **Mở rộng lên 157 Blueprints độc nhất & Bối cảnh thực tiễn 100% câu Đúng/Sai (`core/symbolic_engine.py`, `core/symbolic_blueprints_ext.py`):**
+   - Bổ sung 2 khuôn bài `TRUE_FALSE` mức `VD` cho Bài 26 (`TF_B26_ELEC_FUNC`, `TF_B26_AVG_NONE`), nâng tổng kho lên **157 Blueprints** (**61 MCQ** | **28 Đúng/Sai** | **32 Trả lời ngắn** | **36 Tự luận Python**), phủ kín Bài 16–32 SGK Tin học 10 – Kết nối tri thức.
+   - Gắn lời dẫn tình huống thực tiễn học đường/đời sống khớp tên biến cho 100% câu hỏi Đúng/Sai (`TRUE_FALSE`).
+
+2. **Kiểm soát chặt Mức độ nhận thức (`NB/TH/VD`) & Độ khó tăng dần `a → b → c → d`:**
+   - Lọc chính xác `muc_do` cho từng ô ma trận trong `build_verified_skeleton()` kèm bộ nhớ đệm metadata `_FN_META_CACHE` và fallback theo mức gần nhất.
+   - Chuẩn hóa phân tầng độ khó `a (Nhận biết) → b (Thông hiểu) → c (Thông hiểu/Vận dụng đầu ra) → d (Vận dụng biên/lỗi)` cho toàn bộ câu Đúng/Sai.
+
+3. **Gắn Chỉ báo năng lực Tin học (`chi_bao_NLc`: `CC1–CS3`) & Bảng Ma trận đặc tả:**
+   - Truyền trực tiếp mã `chi_bao_NLc` (GDPT 2018) vào từng câu hỏi trong `generator.py` và `exam_assembler.py`.
+   - Bổ sung cột **Chỉ báo năng lực (NLc)** vào bảng biểu điểm và **Bảng Ma trận đặc tả câu hỏi (`NLc` & `Rubric 9TC`)** khi xuất tệp Word `.docx`.
+
+4. **Chuẩn hóa bộ kiểm định Rubric 9 tiêu chí (`C1–C9`) với 3 cổng bắt buộc (Hard Gates):**
+   - Ánh xạ xác định bằng Python/AST/Sandbox trong `core/validator.py` gồm 3 cổng bắt buộc (`C1_CauTruc_JSON_Schema`, `C2_ThucThi_Sandbox_AST`, `C3_ChongTrung_Va_SạchPrompt`) và 6 tiêu chí chất lượng (`C4`–`C9`), không tốn thêm chi phí suy luận LLM.
+
+5. **Giải phóng VRAM tức thì (`keep_alive: 0`):**
+   - Bọc quy trình `assemble_exam()` trong khối `try...finally:` để tự động dỡ hoàn toàn cả `llama3.2_tinhoc10` và `nomic-embed-text` khỏi GPU/RAM ngay khi xuất đề xong.
+
+6. **Chống lặp xuyên đề LRU 90 & Khóa cứng giải thích Sandbox:**
+   - Duy trì tỷ lệ trùng lặp giữa các đề liên tiếp ở mức `0,0%`, khóa cứng 100% lời giải thích từ Sandbox, sửa lỗi lặp dấu bằng (`s = 24`) ở toán tử gán kết hợp và làm sạch hoàn toàn chuỗi rác/lời chào lạc trong trích dẫn SGK.
+
+---
+
 ## [v2.0.0] – Bản phát hành chính thức: Neuro-Symbolic Agentic RAG Đa Dạng Hóa Đề Thi
 *Ngày phát hành: 24/11/2026*
 

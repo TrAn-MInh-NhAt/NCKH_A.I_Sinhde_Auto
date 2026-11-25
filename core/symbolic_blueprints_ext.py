@@ -110,7 +110,7 @@ def _bp_b17_mcq_compound_ops() -> dict:
     code = f"s = {base}\ns -= {sub}\ns *= 2\nprint(s)"
     out = _run_code_get_stdout(code)
     opts, ans = _shuffle_mcq_options(out, _make_numeric_distractors(int(out)))
-    gt = f"Sau lệnh s -= {sub}, s = {base - sub}. Sau lệnh s *= 2, s = {(base - sub) * 2} = {out}."
+    gt = f"Sau lệnh s -= {sub}, s nhận giá trị {base - sub}. Sau lệnh s *= 2, s = {out}."
     q = {
         "cau_hoi": f"{lead}\n```python\n{code}\n```\nGiá trị in ra màn hình là bao nhiêu?",
         "phuong_an": opts,
@@ -842,6 +842,72 @@ def _bp_b30_tf_blackbox_testing() -> dict:
         ("Nếu chương trình chạy qua một bộ dữ liệu thử nghiệm (test case) duy nhất mà không báo lỗi thì khẳng định 100% chương trình không có lỗi.", False, "Một ca kiểm thử đơn lẻ không thể chứng minh chương trình đúng với mọi dữ liệu biên.")
     )
     return _pack_skeleton("TF_B30_TESTING", "tf_testing", "Bài 30", "TRUE_FALSE", q, "", False)
+
+
+def _bp_b26_tf_elec_bill_func() -> dict:
+    kwh = random.choice([40, 60, 75])
+    code = (
+        f"def tinh_tien_dien(so_kwh):\n"
+        f"    if so_kwh <= 50:\n"
+        f"        return so_kwh * 1800\n"
+        f"    return 50 * 1800 + (so_kwh - 50) * 2200\n"
+        f"kq = tinh_tien_dien({kwh})\n"
+        f"print(kq)"
+    )
+    out = _run_code_get_stdout(code)
+    is_tier1 = kwh <= 50
+    gt_tf = {
+        "a": "Từ khóa def dùng để định nghĩa hàm tinh_tien_dien với một tham số hình thức là so_kwh.",
+        "b": f"Với so_kwh = {kwh}, biểu thức điều kiện so_kwh <= 50 nhận giá trị {'True nên tính theo đơn giá bậc 1' if is_tier1 else 'False nên tính phần vượt mức theo đơn giá 2200'}.",
+        "c": f"Khi gọi tinh_tien_dien({kwh}), hàm trả về kết quả {out} và gán vào biến kq.",
+        "d": "Nếu xóa câu lệnh return trong hàm tinh_tien_dien thì hàm mặc định trả về giá trị None thay vì số tiền.",
+    }
+    stem = (
+        f"Để tính tiền điện sinh hoạt cho một hộ gia đình sử dụng {kwh} kWh theo bậc định mức (50 kWh đầu giá 1800đ, phần vượt giá 2200đ), chương trình định nghĩa hàm sau:\n"
+        f"```python\n{code}\n```\n"
+        "Xét tính Đúng/Sai của các nhận định sau:"
+    )
+    q = _make_tf_question(
+        stem,
+        ("Từ khóa def dùng để khai báo hàm tinh_tien_dien nhận tham số so_kwh.", True, gt_tf["a"]),
+        (f"Khi gọi tinh_tien_dien({kwh}), nhánh điều kiện so_kwh <= 50 được thực thi để trả về kết quả.", is_tier1, gt_tf["b"]),
+        (f"Kết quả in ra màn hình của biến kq là {out}.", True, gt_tf["c"]),
+        ("Nếu bỏ câu lệnh return trong hàm tinh_tien_dien thì biến kq vẫn nhận được giá trị tiền điện như cũ.", False, gt_tf["d"]),
+    )
+    return _pack_skeleton("TF_B26_ELEC_FUNC", "tf_b26_elec_func", "Bài 26", "TRUE_FALSE", q, out, True, verified_tf_explanations=gt_tf, muc_do="VD")
+
+
+def _bp_b26_tf_weighted_avg_none() -> dict:
+    toan_v, tin_v = random.choice([(8, 8), (9, 6), (7, 10), (8, 11)])
+    if tin_v > 10:
+        tin_v = 8
+        toan_v = 8
+    code = (
+        f"def tinh_diem_tb(toan, tin):\n"
+        f"    return round((toan * 2 + tin) / 3, 1)\n"
+        f"tb = tinh_diem_tb({toan_v}, {tin_v})\n"
+        f"print(tb)"
+    )
+    out = _run_code_get_stdout(code)
+    gt_tf = {
+        "a": "Hàm tinh_diem_tb được khai báo bằng def với hai tham số đầu vào là toan và tin.",
+        "b": "Trong biểu thức tính toán, điểm toan được nhân hệ số 2 và điểm tin giữ hệ số 1 trước khi chia cho 3.",
+        "c": f"Lời gọi hàm tinh_diem_tb({toan_v}, {tin_v}) trả về giá trị {out} cho biến tb.",
+        "d": "Nếu hàm không có câu lệnh return, Python mặc định trả về giá trị đặc biệt là None.",
+    }
+    stem = (
+        f"Một giáo viên viết hàm tính điểm trung bình có trọng số (Toán hệ số 2, Tin hệ số 1) cho học sinh đạt {toan_v} điểm Toán và {tin_v} điểm Tin:\n"
+        f"```python\n{code}\n```\n"
+        "Xét tính Đúng/Sai của các nhận định sau:"
+    )
+    q = _make_tf_question(
+        stem,
+        ("Hàm tinh_diem_tb có hai tham số hình thức là toan và tin.", True, gt_tf["a"]),
+        ("Trong công thức của hàm, điểm tin được tính hệ số 2 còn điểm toan tính hệ số 1.", False, gt_tf["b"]),
+        (f"Kết quả in ra màn hình của biến tb là {out}.", True, gt_tf["c"]),
+        ("Nếu xóa từ khóa return trong hàm tinh_diem_tb thì giá trị trả về cho biến tb sẽ là None.", True, gt_tf["d"]),
+    )
+    return _pack_skeleton("TF_B26_AVG_NONE", "tf_b26_avg_none", "Bài 26", "TRUE_FALSE", q, out, True, verified_tf_explanations=gt_tf, muc_do="VD")
 
 
 # ==============================================================================
@@ -1860,6 +1926,7 @@ EXT_REGISTRY_ENTRIES: Dict[Tuple[int, str], List[Callable[[], dict]]] = {
 
     # Bài 26
     (26, "MCQ"): [_bp_b26_mcq_no_return],
+    (26, "TRUE_FALSE"): [_bp_b26_tf_elec_bill_func, _bp_b26_tf_weighted_avg_none],
     (26, "SHORT_ANSWER"): [_bp_b26_sa_func_compose],
     (26, "ESSAY_CODE"): [
         _bp_ec_func_circle_area,

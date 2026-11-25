@@ -126,7 +126,7 @@ BLUEPRINT_MUC_DO_MAP: dict[str, str] = {
     # Vận dụng (VD)
     "MCQ_B19_NESTED_IF": "VD", "MCQ_B20_FOR_BREAK": "VD", "MCQ_B21_WHILE_BREAK": "VD",
     "B22_TF_LIST_FILTER": "VD", "TF_B20_NESTED": "VD", "TF_B23_SLICE_MUT": "VD",
-    "B24_TF_STR_IMMUTABLE": "VD", "B26_TF_FUNC_DEF": "VD", "B27_TF_PARAM_ARG": "VD", "TF_B28_SCOPE": "VD",
+    "B24_TF_STR_IMMUTABLE": "VD", "B26_TF_FUNC_DEF": "VD", "TF_B26_ELEC_FUNC": "VD", "TF_B26_AVG_NONE": "VD", "B27_TF_PARAM_ARG": "VD", "TF_B28_SCOPE": "VD",
     "SA_B16_PRIORITY": "VD", "B20_SA_FOR_IF": "VD", "SA_B20_STEP_SUM": "VD", "SA_B20_BREAK_VAL": "VD",
     "SA_B21_DIGIT_SUM": "VD", "SA_B22_NEG_SLICE": "VD", "B23_SA_LIST_OPS": "VD",
     "B25_SA_STR_FIND": "VD", "SA_B25_SPLIT_CNT": "VD", "SA_B26_COMPOSE": "VD",
@@ -1450,7 +1450,7 @@ def _bp_b26_mcq_return_val() -> dict:
     out = _run_code_get_stdout(code)
     val = int(out)
     opts, ans = _shuffle_mcq_options(out, _make_numeric_distractors(val))
-    gt = f"Hàm tinh({a}, {b}) thực hiện phép tính return {a} * {b} - 2 = {a * b - 2} = {out} nên lệnh print(kq) in ra {out}."
+    gt = f"Hàm tinh({a}, {b}) thực hiện phép tính return {a} * {b} - 2 = {out} nên lệnh print(kq) in ra {out}."
     q = {
         "cau_hoi": f"{lead}\n{code}\nKết quả in ra màn hình là bao nhiêu?",
         **opts,

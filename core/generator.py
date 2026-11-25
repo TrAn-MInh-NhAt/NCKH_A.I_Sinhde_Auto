@@ -21,6 +21,7 @@ from core.validator import (
     _compute_sgk_citation_overlap,
     _extract_verbatim_sgk_sentences,
     _normalize_code_mau,
+    _clean_sgk_citation,
 )
 from experiments.logger import log_generation_event
 
@@ -775,29 +776,6 @@ def _build_neuro_symbolic_prompt(skeleton: dict, ev: dict, loai: str, muc_do: st
         f"- CHỈ xuất DUY NHẤT 1 JSON hợp lệ đúng dạng sau:\n{schema_out}"
     )
     return prompt, estimate_tokens(prompt)
-
-
-def _clean_sgk_citation(text: str) -> str:
-    """Cắt bỏ triệt để các tiền tố chỉ thị prompt bị rò rỉ trong trich_dan_sgk."""
-    s = str(text or "").strip()
-    patterns = [
-        (r"^(?:Chép\s+(?:nguyên\s+văn|NGUYÊN\s+VĂN)\s+1\s+câu\s+từ\s+(?:mục\s+)?BẰNG\s+CHỨNG\s+SGK\s*(?:ở\s+trên)?\s*[:\-]*)", re.I),
-        (r"^(?:Bằng\s+chứng\s+SGK\s*(?:ở\s+trên)?\s*[:\-]*)", re.I),
-        (r"^(?:Trích\s+dẫn\s+SGK\s*[:\-]*)", re.I),
-        (r"^(?:Câu\s+hỏi\s*[:\-]*)", re.I),
-        (r"^(?:Gợi\s+ý\s*[:\-]*)", re.I),
-        (r"^(?:SGK\s*[:\-]*)", re.I),
-    ]
-    changed = True
-    while changed:
-        changed = False
-        for pat, flags in patterns:
-            new_s = re.sub(pat, "", s, flags=flags).strip()
-            if new_s != s:
-                s = new_s
-                changed = True
-    s = re.sub(r'^["“”\'«»]+|["“”\'«»]+$', "", s).strip()
-    return s
 
 
 def _ground_sgk_citation_fast(q: dict, ev: dict) -> dict:
